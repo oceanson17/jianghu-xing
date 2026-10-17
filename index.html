@@ -3700,6 +3700,15 @@ try { saveGameSilent(); } catch (e) {}
     data.investGold = typeof raw.investGold === "number" ? raw.investGold : 0;
     data.companion = raw.companion || null;
     data.companionSwapDay = typeof raw.companionSwapDay === "number" ? raw.companionSwapDay : 0;
+    // v7.1: clear broken / invalid stuck companion without wiping whole save
+    if (data.companion) {
+      const cNpc = NPCS[data.companion];
+      const cf = (data.fates && data.fates[data.companion]) || "default";
+      if (!cNpc || cf === "dead" || cf === "vanished" || cf === "enemy" || cf === "retired" || cf === "hermit") {
+        data.companion = null;
+        data.companionSwapDay = 0;
+      }
+    }
     data.cookMealLevel = typeof raw.cookMealLevel === "number" ? raw.cookMealLevel : 0;
     data.endingId = raw.endingId || null;
     data.ending = raw.ending || null;
@@ -3763,6 +3772,13 @@ try { saveGameSilent(); } catch (e) {}
       ensureAllNpcMem();
       ensureBonds();
       ensureQuests();
+      if (S.companion) {
+        const cNpc = NPCS[S.companion];
+        const cf = S.fates[S.companion];
+        if (!cNpc || cf === "dead" || cf === "vanished" || cf === "enemy" || cf === "retired" || cf === "hermit") {
+          S.companion = null; S.companionSwapDay = 0;
+        }
+      }
       if (S.prison && S.prison.place) S.loc = S.prison.place;
       if (migrated) {
         localStorage.setItem(SAVE_KEY, JSON.stringify(S));
@@ -5667,18 +5683,41 @@ try { saveGameSilent(); } catch (e) {}
     if (S.companion && S.companionSwapDay === S.day) return toast("今日已更換過同行（日限1次）", true);
     S.companion = npcId;
     S.companionSwapDay = S.day;
-    showStory((NPCS[npcId].name) + "點頭：「便同行一程。」\n地圖將顯示同行夥伴；戰鬥中可助攻／開場減傷。");
+    try { saveGameSilent(); } catch (e) {}
+    showStory((NPCS[npcId].name) + "點頭：「便同行一程。」\n地圖將顯示同行夥伴；戰鬥中可助攻／開場減傷。地圖橫幅可隨時「解散同行」。");
   }
-  function dismissCompanion() {
+  function dismissCompanion(opts) {
+    opts = opts || {};
     if (!S.companion) return toast("沒有同行", true);
-    if (S.companionSwapDay === S.day) return toast("今日已操作過同行", true);
     const n = NPCS[S.companion] ? NPCS[S.companion].name : S.companion;
     S.companion = null;
-    S.companionSwapDay = S.day;
-    toast(n + "暫別", true); render();
+    // 解散不佔「今日更換」名額，避免邀完即日無法離開（舊版卡住主因）
+    if (opts.consumeSwap) S.companionSwapDay = S.day;
+    try { saveGameSilent(); } catch (e) {}
+    if (!opts.silent) toast(n + "暫別同行", true);
+    if (!opts.skipRender) render();
+    return true;
   }
   function companionName() {
     return S.companion && NPCS[S.companion] ? NPCS[S.companion].name : "";
+  }
+  function isHomeboundCompanion(npcId) {
+    if (!npcId || !NPCS[npcId]) return false;
+    const home = NPCS[npcId].loc;
+    const palaceHomes = ["huanggong","hougong","neiting","yanhui","dongchang","yangxin","qianqing","yuhuayuan","xingxing_tai","yongxing_shi","tianlao"];
+    return palaceHomes.indexOf(home) >= 0;
+  }
+  /** 宮廷／皇城本職人物：離開其原居地後自動暫別，避免「一見面就永遠黏着」。江湖遊俠同行則可隨行。 */
+  function maybeCompanionPartOnTravel(newLoc) {
+    if (!S.companion || !NPCS[S.companion]) return null;
+    const id = S.companion;
+    const home = NPCS[id].loc;
+    if (!home || home === newLoc) return null;
+    if (!isHomeboundCompanion(id)) return null;
+    const n = NPCS[id].name;
+    S.companion = null;
+    try { saveGameSilent(); } catch (e) {}
+    return n + "拱手：「此去非本職地界——就送到這兒，有事回" + (LOCATIONS.find(function(l){return l.id===home;}) || {name:"原處"}).name + "找我。」（已解散同行）";
   }
   function ch3EvidenceCount() {
     let n = 0;
@@ -6647,10 +6686,13 @@ try { saveGameSilent(); } catch (e) {}
       }
     }
 
+    if (S.companion && NPCS[S.companion]) {
+      acts.push({ label: "解散同行（" + NPCS[S.companion].name + "）", fn: () => dismissCompanion() });
+    }
     const presentHere = Object.keys(NPCS).filter(nid => NPCS[nid].loc === locId && canInviteCompanion(nid));
     presentHere.forEach(nid => {
       if (S.companion === nid) {
-        acts.push({ label: "請" + NPCS[nid].name + "暫別同行", fn: () => dismissCompanion() });
+        // already have global 解散同行 above
       } else {
         acts.push({ label: "邀請" + NPCS[nid].name + "同行", fn: () => inviteCompanion(nid) });
       }
@@ -7512,7 +7554,7 @@ try { saveGameSilent(); } catch (e) {}
       <div class="header header-with-avatar">${heroAvatarHtml("sm")}
         <div class="header-text"><h2>${escapeHtml(S.name)} · Lv${S.level}</h2>
         <span class="chip">${S.faction ? FACTIONS[S.faction].name : "散人"} · D${S.day}${isImprisoned() ? " · ⛓關押" : ""}${hasItem("hanxue_horse") ? " · 🐎汗血" : ""}${S.disguise==="nan"?" · 男裝":""}${flag("donggong_slave") ? (flag("donggong_truth_known") ? " · 廠奴・玄梧" : " · 廠奴・督公") : ""}${S.palaceRole ? " · 帝心"+(S.emperorFavor||0) : ""}</span>
-        ${S.companion && NPCS[S.companion] ? `<span class="chip companion-chip">同行：${escapeHtml(NPCS[S.companion].name)}</span>` : ""}${(typeof listDatingPartners==="function" && listDatingPartners().length) ? `<button type="button" class="chip heart-chip" id="btn-dating-open">♥ 戀人×${listDatingPartners().length}</button>` : ""}</div></div>
+        ${S.companion && NPCS[S.companion] ? `<button type="button" class="chip companion-chip" id="btn-dismiss-companion-chip" title="點擊解散同行">同行：${escapeHtml(NPCS[S.companion].name)} ×</button>` : ""}${(typeof listDatingPartners==="function" && listDatingPartners().length) ? `<button type="button" class="chip heart-chip" id="btn-dating-open">♥ 戀人×${listDatingPartners().length}</button>` : ""}</div></div>
       <div class="stats-bar">
         <span>氣血<b>${S.hp}/${st.hpMax}</b></span>
         <span>內力<b>${S.neili}/${st.neiliMax}</b></span>
@@ -7630,6 +7672,8 @@ try { saveGameSilent(); } catch (e) {}
       return;
     }
     S.loc = id;
+    let companionPartMsg = null;
+    try { companionPartMsg = maybeCompanionPartOnTravel(id); } catch (e) { companionPartMsg = null; }
     if (hasItem("hanxue_horse")) {
       S.neili = Math.min(effectiveStats().neiliMax, S.neili + 8);
       toast("汗血一騎・抵達 " + loc.name, true);
@@ -7641,6 +7685,9 @@ try { saveGameSilent(); } catch (e) {}
     let questStory = false;
     try { questStory = tryAdvanceQuestOnArrive(id); } catch (e) {}
     render();
+    if (companionPartMsg) {
+      setTimeout(function(){ try { showStory(companionPartMsg); } catch (e) {} }, 220);
+    }
     setTimeout(function() {
       try { if (!questStory) maybeTravelEvent(); } catch (e) {}
       try { checkKarmaPlots({ travel: true }); } catch (e) {}
@@ -7681,7 +7728,7 @@ try { saveGameSilent(); } catch (e) {}
         </div>
       </div>
       <div class="story-box">${escapeHtml(storyText())}</div>
-      ${S.companion && NPCS[S.companion] ? `<div class="companion-banner">同行：${escapeHtml(NPCS[S.companion].name)} · 戰鬥可助攻／開場減傷</div>` : ""}
+      ${S.companion && NPCS[S.companion] ? `<div class="companion-banner">同行：${escapeHtml(NPCS[S.companion].name)} · 戰鬥可助攻／開場減傷 <button type="button" class="btn" id="btn-dismiss-companion" style="display:inline-block;min-height:28px;padding:2px 10px;margin-left:8px">解散同行</button></div>` : ""}
       ${(typeof listDatingPartners==="function" && listDatingPartners().length) ? `<div class="dating-banner">♥ 拍拖中：${listDatingPartners().map(id=>escapeHtml(typeof datingDisplayName==="function"?datingDisplayName(id):(NPCS[id]?NPCS[id].name:id))).join("、")} <button type="button" class="btn heart-chip" id="btn-dating-open-map" style="display:inline-block;min-height:28px;padding:2px 10px;margin-left:6px">密語</button></div>` : ""}
       ${npcBlock}
       <div class="free-box world-composer">
@@ -7934,6 +7981,10 @@ try { saveGameSilent(); } catch (e) {}
     };
     const bdate = document.getElementById("btn-dating-open");
     if (bdate) bdate.onclick = () => openDatingHub();
+    const bDisComp = document.getElementById("btn-dismiss-companion");
+    if (bDisComp) bDisComp.onclick = () => dismissCompanion();
+    const bDisChip = document.getElementById("btn-dismiss-companion-chip");
+    if (bDisChip) bDisChip.onclick = () => dismissCompanion();
     const bdate2 = document.getElementById("btn-dating-open-map");
     if (bdate2) bdate2.onclick = () => openDatingHub();
     const bdate3 = document.getElementById("btn-dating-story");
@@ -8103,7 +8154,7 @@ try { saveGameSilent(); } catch (e) {}
     ensureNpcMem, ensureBonds, applyOfferGrants, matchOffer, evaluateOfferGates,
     NPC_OFFERS, classifyIntent, handleFreeInput, applyAiResult, saveGameSilent,
     NPCS, ITEMS, SKILLS, defaultState, migrateSave, ensureQuests, storyText,
-    resolveEnding, estimateEndingId, finishChapter3, inviteCompanion, openRumorBoard,
+    resolveEnding, estimateEndingId, finishChapter3, inviteCompanion, dismissCompanion, openRumorBoard,
     campOvernight, ENDING_DEFS, locationActions, startCombat, finishChapter2,
     bumpDonggongTrust, openDonggongTruthChoice, donggongNightTalk, donggongSlaveCommand,
     isDating, listDatingPartners, openDatingChat, openDatingHub, onDatingStarted, maybeLoverInitiative, datingAffOf
