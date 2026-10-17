@@ -678,6 +678,10 @@ section.block { margin-bottom: 14px; }
 .map-list-details > summary::before { content: "▸ "; }
 .map-list-details[open] > summary::before { content: "▾ "; }
 
+.map-hero { position: relative; }
+.map-hero-av { position: absolute; left: 8px; top: 8px; z-index: 2; }
+.map-hero-av .chibi, .map-hero-av .hero-av { width: 40px; height: 40px; border-radius: 6px; border: 1px solid #c9a86c; }
+
 </style>
 </head>
 <body>
@@ -1291,6 +1295,7 @@ window.__JH_ASSETS = {
     { id: "cangyun", name: "蒼雲寺", desc: "雲霧古剎，僧人習武護寺。", unlock: true, region: "中原" },
     { id: "heishui", name: "黑水寨", desc: "江湖人避之則吉的山寨。", unlock: true, region: "中原" },
     { id: "jingji", name: "京畿客棧", desc: "通往京城外的喧鬧客棧。", unlock: true, region: "中原", shop: true },
+    { id: "gongmen_yi", name: "青梧宮門驛", desc: "宮牆外最後一驛。由此可直接叩門，開啟入宮開場劇情。", unlock: true, region: "京畿皇城" },
     { id: "luohe", name: "洛河渡", desc: "渡口船家多聞江湖秘事。", unlock: true, region: "中原" },
     { id: "yaogu", name: "藥谷", desc: "谷中百草，亦藏奇人。", unlock: false, needFlag: "heard_yaogu", region: "中原" },
     { id: "jianzhong", name: "劍冢", desc: "亂葬劍之崗，殘鋒猶寒。", unlock: false, needFlag: "map_jianzhong", region: "中原" },
@@ -1347,6 +1352,7 @@ window.__JH_ASSETS = {
     cangyun: { x: 46, y: 42 },
     heishui: { x: 40, y: 52 },
     jingji: { x: 58, y: 34 },
+    gongmen_yi: { x: 60, y: 30 },
     luohe: { x: 55, y: 50 },
     yaogu: { x: 50, y: 40 },
     jianzhong: { x: 43, y: 46 },
@@ -5054,6 +5060,29 @@ try { saveGameSilent(); } catch (e) {}
     if (Math.random() > 0.35 && !flag("renyazi_ambush")) return false;
     return trySoldAsEunuchEvent(isImprisoned() ? "關押虛弱" : "危難／惡名");
   }
+
+  function startPalaceIntroPlot() {
+    setFlag("palace_entry");
+    setFlag("map_huanggong");
+    setFlag("palace_access");
+    setFlag("palace_intro_started");
+    ensureQuests();
+    if (S.quests.side_palace_line) {
+      S.quests.side_palace_line.step = Math.max(S.quests.side_palace_line.step || 0, 1);
+    } else {
+      S.quests.side_palace_line = { id: "side_palace_line", title: "支線・青梧宮門", step: 1, done: false };
+    }
+    S.loc = "huanggong";
+    S.day = (S.day || 1) + 1;
+    const pg = (typeof perceivedGender === "function") ? perceivedGender() : ((S.gender === "女" || S.gender === "female") && S.disguise !== "nan" ? "女" : "男");
+    let hint = "禁軍喝問來意。外廷廊柱如林，宮燈未熄。";
+    if (pg === "女") hint += "\\n有人低語：後宮缺灑掃之人……亦可憑才貌求見掌事。";
+    else hint += "\\n羽林與東廠皆在招人；若無憑證，也可先觀牆伺機。";
+    showStory("【入宮開場】你自青梧宮門驛叩門，吏卒驗身後放你入外廷。\\n" + hint + "\\n（青梧宮外廷已開。請於此地選擇宮職／觀氣象，繼續皇宮線。）");
+    toast("入宮線・外廷已開", true);
+    render();
+  }
+
   function setPalaceRole(role) {
     if (role === "fanzi" || role === "dongchang_boss") role = "dongchang";
     S.palaceRole = role;
@@ -5068,6 +5097,17 @@ try { saveGameSilent(); } catch (e) {}
 
   function appendPalaceAndCh3Actions(acts, locId) {
     ensureQuests();
+    // Direct palace-entry hub
+    if (locId === "gongmen_yi" || locId === "jingji" || locId === "hub") {
+      if (!flag("palace_intro_started") && !hasPalaceAccess()) {
+        acts.push({ label: "【皇宮線】叩青梧宮門・開啟入宮劇情", fn: function(){ startPalaceIntroPlot(); } });
+      } else if (hasPalaceAccess() && locId === "gongmen_yi") {
+        acts.push({ label: "再入青梧宮外廷", fn: function(){
+          S.loc = "huanggong"; toast("入・青梧宮外廷", true); render();
+        }});
+      }
+    }
+
     // Hub: camp + board
     if (locId === "jingji" || locId === "qingcheng") {
       acts.push({ label: "江湖榜／傳聞", fn: function(){ openRumorBoard(); } });
@@ -5742,6 +5782,7 @@ try { saveGameSilent(); } catch (e) {}
       side_sand: { id: "side_sand", title: "支線・黃沙刀約", step: 0, done: false },
       side_karma_good: { id: "side_karma_good", title: "支線・善名／贖罪", step: 0, done: false },
       side_karma_evil: { id: "side_karma_evil", title: "支線・黑道密約", step: 0, done: false },
+      side_palace_line: { id: "side_palace_line", title: "支線・青梧宮門", step: 0, done: false },
       side_palace_revenge: { id: "side_palace_revenge", title: "支線・宮牆血債", step: 0, done: false },
       side_eunuch_revenge: { id: "side_eunuch_revenge", title: "支線・淨身血債", step: 0, done: false },
       side_cangfeng: { id: "side_cangfeng", title: "支線・蒼峰論劍", step: 0, done: false },
@@ -7592,7 +7633,7 @@ try { saveGameSilent(); } catch (e) {}
     LOCATIONS.forEach(l => { const r = l.region || "其他"; (regions[r] = regions[r] || []).push(l); });
     const sceneUrl = sceneUrlForLoc(S.loc);
     const present = npcAtLocation(S.loc);
-    const questLocs = activeQuestLocIds();
+    const questLocs = (typeof activeQuestLocIds === "function") ? activeQuestLocIds() : new Set();
     let npcBlock = "";
     if (present.length) {
       npcBlock = `<h3>在場人物</h3>`;
@@ -7606,49 +7647,10 @@ try { saveGameSilent(); } catch (e) {}
           </div></div>`;
       });
     }
-    // Interactive world map pins
-    let pinsHtml = "";
-    mapPinLocIds().forEach(function(id) {
-      const pin = MAP_PINS[id];
-      const loc = LOCATIONS.find(function(l){ return l.id === id; });
-      if (!pin || !loc) return;
-      const unlocked = locUnlocked(loc);
-      const npcs = unlocked ? npcAtLocation(id) : [];
-      const showN = npcs.slice(0, 3);
-      const extra = npcs.length - showN.length;
-      let faces = "";
-      showN.forEach(function(nid) {
-        faces += `<span class="map-pin-face">${chibiHtml(nid, "sm")}</span>`;
-      });
-      if (extra > 0) faces += `<span class="map-pin-more">+${extra}</span>`;
-      const qmark = questLocs.has(id) ? `<span class="map-pin-quest" title="任務">❗</span>` : "";
-      const hereCls = id === S.loc ? " here" : "";
-      const lockCls = unlocked ? "" : " locked";
-      const disabled = unlocked ? "" : "disabled";
-      pinsHtml += `<button type="button" class="map-pin${hereCls}${lockCls}" data-go="${id}" ${disabled}
-        style="left:${pin.x}%;top:${pin.y}%" title="${escapeHtml(loc.name)}">
-        <span class="map-pin-dot"></span>
-        ${qmark}
-        <span class="map-pin-label">${escapeHtml(loc.name)}${id===S.loc?" ·此處":""}</span>
-        ${faces ? `<span class="map-pin-faces">${faces}</span>` : ""}
-      </button>`;
-    });
-    const heroAv = heroAvatarHtml("md");
-    const listOpen = (ui.mapListOpen ? " open" : "");
-    let html = `<div class="world-map-wrap">
-      <div class="world-map-status">${heroAv}
-        <div class="world-map-status-meta"><strong>${escapeHtml(S.name||"俠客")}</strong>
-          <div class="small">${here ? escapeHtml(here.name) : S.loc} · D${S.day}${S.disguise==="nan"?" · 男裝":""}</div>
-        </div>
-      </div>
-      <div class="world-map-scroller" id="world-map-scroller">
-        <div class="world-map-canvas">
-          <img class="world-map-img" src="${asset("worldmap")}" alt="江湖地圖" draggable="false" />
-          <div class="world-map-pins">${pinsHtml}</div>
-        </div>
-      </div>
-      <div class="small world-map-hint">點地圖釘前往 · ❗為進行中任務地 · 可捲動／捏放</div>
-    </div>
+    const heroAv = (typeof heroAvatarHtml === "function") ? heroAvatarHtml("sm") : "";
+    let html = `<div class="map-hero"><img class="map-img" src="${asset("worldmap")}" alt="江湖地圖" />
+        <div class="map-caption">繪本地圖 · 點下方地點前往${S.disguise==="nan"?" · 男裝示人":""}</div>
+        ${heroAv ? `<div class="map-hero-av">${heroAv}</div>` : ""}</div>
       <div class="scene-banner" style="background-image:url('${sceneUrl}')">
         <div class="scene-title">${here ? escapeHtml(here.name) : S.loc}
           <span class="scene-sub">${here ? escapeHtml(here.region + " · " + here.desc) : ""}</span>
@@ -7668,9 +7670,7 @@ try { saveGameSilent(); } catch (e) {}
           <button type="button" class="btn primary" id="btn-world-free">送出</button>
         </div>
       </div>
-      <h3>此地行動</h3><div class="btn-row" id="loc-acts"></div>
-      <details class="map-list-details${listOpen}" id="map-list-details">
-        <summary>列表模式（分區地點）</summary>`;
+      <h3>此地行動</h3><div class="btn-row" id="loc-acts"></div>`;
     Object.keys(regions).forEach(region => {
       html += `<h3 style="margin-top:12px">${region}</h3><div class="map-grid">`;
       regions[region].forEach(l => {
@@ -7681,14 +7681,15 @@ try { saveGameSilent(); } catch (e) {}
           ? `background-image:${grad},url('${thumb}')`
           : `background-image:url('${thumb}')`;
         const q = questLocs.has(l.id) ? " ❗" : "";
+        const npcN = unlocked ? npcAtLocation(l.id).length : 0;
+        const npcMeta = npcN ? ` · 人物${npcN}` : "";
         html += `<button class="btn map-card ${l.id===S.loc?"here":""} ${unlocked?"":"locked"}" data-go="${l.id}" ${unlocked?"":"disabled"} style="${bg}">
           <div class="map-card-body">${l.name}${q}${l.id===S.loc?" · 此處":""}
-          <span class="loc-card-meta">${unlocked ? (l.shop ? "可購物 · " : "") + (l.hub ? "營地" : "可前往") : "未解鎖"}</span></div>
+          <span class="loc-card-meta">${unlocked ? (l.shop ? "可購物 · " : "") + (l.hub ? "營地" : "可前往") + npcMeta : "未解鎖"}</span></div>
         </button>`;
       });
       html += "</div>";
     });
-    html += `</details>`;
     return html;
   }
   function renderBag() {
