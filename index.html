@@ -3474,17 +3474,17 @@ try { saveGameSilent(); } catch (e) {}
   function loadSettings() {
     try {
       return Object.assign({
-        deepseekKey: "", deepseekUrl: "https://api.deepseek.com", model: "deepseek-chat"
+        deepseekKey: "", deepseekUrl: "https://api.deepseek.com", model: "deepseek-v4-pro"
       }, JSON.parse(localStorage.getItem(SETTINGS_KEY) || "{}"));
     } catch (e) {
-      return { deepseekKey: "", deepseekUrl: "https://api.deepseek.com", model: "deepseek-chat" };
+      return { deepseekKey: "", deepseekUrl: "https://api.deepseek.com", model: "deepseek-v4-pro" };
     }
   }
   function saveSettings() {
     localStorage.setItem(SETTINGS_KEY, JSON.stringify({
       deepseekKey: settings.deepseekKey || "",
       deepseekUrl: settings.deepseekUrl || "https://api.deepseek.com",
-      model: settings.model || "deepseek-chat"
+      model: (typeof normalizeDeepseekModel==="function"?normalizeDeepseekModel(settings.model):settings.model) || "deepseek-v4-pro"
     }));
   }
 
@@ -3937,24 +3937,48 @@ try { saveGameSilent(); } catch (e) {}
     }
     return out;
   }
+  function normalizeDeepseekModel(m) {
+    const raw = (m || "").trim();
+    // legacy aliases → current catalog
+    if (!raw || raw === "deepseek-chat" || raw === "deepseek-reasoner" || raw === "deepseek-v3" || raw === "deepseek-r1") {
+      return "deepseek-v4-pro";
+    }
+    if (raw === "deepseek-v4-flash" || raw === "deepseek-v4-flash-vision-exp") return "deepseek-flash";
+    return raw;
+  }
   async function deepseekChat(systemPrompt, userPrompt, maxTokens) {
     if (!settings.deepseekKey) return null;
     try {
+      const model = normalizeDeepseekModel(settings.model || "deepseek-v4-pro");
+      settings.model = model;
+      const isPro = model.indexOf("pro") >= 0 || model === "deepseek-v4-pro";
+      const body = {
+        model: model,
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: userPrompt }
+        ],
+        max_tokens: Math.max(maxTokens || 500, isPro ? 800 : 500)
+      };
+      // V4：更強模型開思考模式；Flash 預設非思考以求速度
+      if (isPro) {
+        body.thinking = { type: "enabled" };
+        body.reasoning_effort = "high";
+      } else {
+        body.temperature = 0.75;
+        body.thinking = { type: "disabled" };
+      }
       const res = await fetch((settings.deepseekUrl || "https://api.deepseek.com").replace(/\/$/, "") + "/v1/chat/completions", {
         method: "POST",
         headers: { "Content-Type": "application/json", "Authorization": "Bearer " + settings.deepseekKey },
-        body: JSON.stringify({
-          model: settings.model || "deepseek-chat",
-          messages: [
-            { role: "system", content: systemPrompt },
-            { role: "user", content: userPrompt }
-          ],
-          temperature: 0.75, max_tokens: maxTokens || 500
-        })
+        body: JSON.stringify(body)
       });
       if (!res.ok) throw new Error("HTTP " + res.status);
       const data = await res.json();
-      return (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) || null;
+      const msg = data.choices && data.choices[0] && data.choices[0].message;
+      if (!msg) return null;
+      // 思考模式：最終答覆在 content；reasoning_content 僅內部
+      return (msg.content && String(msg.content).trim()) || null;
     } catch (err) {
       console.warn("DeepSeek failed", err);
       toast("AI 失敗，改離線回應", true);
@@ -8042,14 +8066,18 @@ try { saveGameSilent(); } catch (e) {}
     const ca = document.getElementById("btn-companion-assist"); if (ca) ca.onclick = companionAssist;
   }
   function showSettings() {
+    const cur = normalizeDeepseekModel(settings.model || "deepseek-v4-pro");
     openModal(`<h3>DeepSeek 設定</h3>
-      <p class="small">金鑰只存本機。自由說話／行動會回 JSON 並寫入 NPC 記憶。CORS 失敗則離線。</p>
+      <p class="small">金鑰只存本機。預設用更強的 <b>deepseek-v4-pro</b>（開思考模式）。Flash 較快較平。Search 係另一套搜尋 API，唔等於更強對話。</p>
       <label class="small">API Key</label>
       <input class="input" id="ds-key" type="password" placeholder="${settings.deepseekKey ? "（已儲存，貼上可更換）" : "sk-…"}" />
       <label class="small" style="margin-top:8px;display:block">Base URL</label>
       <input class="input" id="ds-url" value="${settings.deepseekUrl || "https://api.deepseek.com"}" />
-      <label class="small" style="margin-top:8px;display:block">Model</label>
-      <input class="input" id="ds-model" value="${settings.model || "deepseek-chat"}" />
+      <label class="small" style="margin-top:8px;display:block">模型</label>
+      <select class="input" id="ds-model">
+        <option value="deepseek-v4-pro"${cur==="deepseek-v4-pro"?" selected":""}>deepseek-v4-pro（更強・思考）</option>
+        <option value="deepseek-flash"${cur==="deepseek-flash"?" selected":""}>deepseek-flash（更快・較平）</option>
+      </select>
       <div class="btn-row" style="margin-top:12px">
         <button class="btn primary" id="ds-save">儲存</button>
         <button class="btn" id="ds-clear">清除金鑰</button>
@@ -8059,8 +8087,8 @@ try { saveGameSilent(); } catch (e) {}
       const k = document.getElementById("ds-key").value.trim();
       if (k) settings.deepseekKey = k;
       settings.deepseekUrl = document.getElementById("ds-url").value.trim() || "https://api.deepseek.com";
-      settings.model = document.getElementById("ds-model").value.trim() || "deepseek-chat";
-      saveSettings(); toast("設定已儲存", true); closeModal();
+      settings.model = normalizeDeepseekModel(document.getElementById("ds-model").value.trim() || "deepseek-v4-pro");
+      saveSettings(); toast("已切換 " + settings.model, true); closeModal();
     };
     document.getElementById("ds-clear").onclick = () => { settings.deepseekKey = ""; saveSettings(); toast("已清除", true); closeModal(); };
   }
