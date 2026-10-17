@@ -4906,7 +4906,7 @@ try { saveGameSilent(); } catch (e) {}
     if (!isFemale()) { toast("男主角無需易裝", true); return; }
     S.disguise = mode === "nan" ? "nan" : null;
     saveGameSilent();
-    toast(S.disguise === "nan" ? "而以男裝示人" : "而以女裝示人", true);
+    toast(S.disguise === "nan" ? "已改以男裝示人" : "已改以女裝示人", true);
     render();
   }
   function palaceRoleLabel() {
