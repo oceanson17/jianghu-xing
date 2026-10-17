@@ -1,5 +1,5 @@
-# 江湖行
+# 江湖行（GitHub Pages）
 
-青梧朝像素江湖 RPG（Safari／手機瀏覽器可玩單頁）。
+單檔 Safari／手機可玩版。來源：`wuxia-heroes` 建置。
 
-玩：打開 GitHub Pages 網址即可。
+開玩：https://oceanson17.github.io/jianghu-xing/

@@ -532,6 +532,15 @@ section.block { margin-bottom: 14px; }
 .dating-partner-meta { flex: 1; }
 .dating-empty { opacity: 0.7; text-align: center; padding: 12px; }
 
+/* v9 relations */
+.rel-grid { display:flex; flex-direction:column; gap:6px; margin-bottom:12px; }
+.rel-npc-btn { cursor:pointer; border:1px solid rgba(180,140,80,.35); background:rgba(40,30,20,.35); }
+.rel-npc-btn:hover { border-color:#c9a227; }
+.rel-card .rel-arcs { margin:8px 0; line-height:1.55; }
+.rel-card .rel-list { padding-left:1.1em; margin:6px 0; }
+.rel-card .rel-type { display:inline-block; min-width:3em; color:#c9a227; font-weight:600; }
+.rel-card .linkish { background:none; border:none; color:#7ec8e3; text-decoration:underline; cursor:pointer; padding:0; font:inherit; }
+
 </style>
 </head>
 <body>
@@ -641,10 +650,11 @@ window.__JH_ASSETS = {
 (function () {
   "use strict";
 
-  const SAVE_KEY = "jianghu_walk_save_v7";
-  const SAVE_KEY_OLD = "jianghu_walk_save_v6";
-  const SAVE_KEY_OLDER = "jianghu_walk_save_v5";
-  const SAVE_KEY_OLDEST = "jianghu_walk_save_v4";
+  const SAVE_KEY = "jianghu_walk_save_v8";
+  const SAVE_KEY_OLD = "jianghu_walk_save_v7";
+  const SAVE_KEY_OLDER = "jianghu_walk_save_v6";
+  const SAVE_KEY_OLDEST = "jianghu_walk_save_v5";
+  const SAVE_KEY_V4 = "jianghu_walk_save_v4";
   const SAVE_KEY_V1 = "jianghu_walk_save_v3";
   const SAVE_KEY_V1B = "jianghu_walk_save_v2";
   const SAVE_KEY_V1C = "jianghu_walk_save_v1";
@@ -789,6 +799,48 @@ window.__JH_ASSETS = {
     shen_guifei: { r: 1, c: 1 },
     liu_zhaoyi: { r: 1, c: 0 },
     da_jiangjun: { r: 3, c: 2 },
+    ye_qingshan: { r: 3, c: 3 },
+    lin_feng: { r: 0, c: 2 },
+    ning_shuying: { r: 1, c: 0 },
+    ye_xiaoyu: { r: 1, c: 0 },
+    lin_chen: { r: 0, c: 2 },
+    ren_yingluo: { r: 2, c: 2 },
+    feng_qingya: { r: 3, c: 0 },
+    qu_yangqin: { r: 1, c: 0 },
+    qiao_fengshan: { r: 0, c: 3 },
+    duan_muyu: { r: 1, c: 1 },
+    xu_zhuoyun: { r: 0, c: 0 },
+    zhang_wujiang: { r: 2, c: 0 },
+    zhao_minyan: { r: 1, c: 1 },
+    zhou_zhi_xue: { r: 1, c: 0 },
+    hong_qigong_x: { r: 1, c: 3 },
+    huang_yaoshi_x: { r: 2, c: 3 },
+    ouyang_fengdu: { r: 3, c: 1 },
+    xiao_longyin: { r: 3, c: 0 },
+    yang_guochen: { r: 0, c: 2 },
+    guo_jingyi: { r: 2, c: 0 },
+    huang_rongya: { r: 1, c: 0 },
+    dongfang_gubai: { r: 2, c: 2 },
+    zuo_lengying: { r: 3, c: 2 },
+    mu_gaofeng_x: { r: 0, c: 3 },
+    wei_xiaozhou: { r: 1, c: 3 },
+    chen_jinnan_x: { r: 2, c: 0 },
+    jianning_jun: { r: 1, c: 1 },
+    hai_dafu_x: { r: 3, c: 0 },
+    ao_baiying: { r: 3, c: 2 },
+    shuang_er_x: { r: 1, c: 0 },
+    su_quan_x: { r: 1, c: 1 },
+    hong_antong_x: { r: 0, c: 3 },
+    jiu_nan_x: { r: 3, c: 3 },
+    a_ke_x: { r: 1, c: 0 },
+    mu_jianping_x: { r: 1, c: 0 },
+    fang_yi_x: { r: 1, c: 1 },
+    mao_dongzhu_x: { r: 1, c: 1 },
+    duo_long_x: { r: 3, c: 2 },
+    suo_etu_x: { r: 3, c: 3 },
+    wu_sangui_x: { r: 3, c: 2 },
+    shi_lang_x: { r: 2, c: 3 },
+    mao_shiba_x: { r: 0, c: 3 },
     daoxuan:     { r: 3, c: 3 },
     // new cast (reuse closest sprite slots)
     tiesuanpan:  { r: 1, c: 3 },
@@ -1369,7 +1421,177 @@ window.__JH_ASSETS = {
       destinies: { ally: "通風報信。", enemy: "向貴妃獻你。", default: "侍奉左右。" } },
     da_jiangjun: { id: "da_jiangjun", name: "霍鎮北", title: "鎮北大將軍", loc: "yulin", major: true,
       intro: "金甲耀目，殺氣沉於骨。",
-      destinies: { ally: "兵符相助。", dead: "陣前殞命。", enemy: "一刀斷頭。", rival: "沙場再見。", default: "坐鎮羽林。" } }
+      destinies: { ally: "兵符相助。", dead: "陣前殞命。", enemy: "一刀斷頭。", rival: "沙場再見。", default: "坐鎮羽林。" } },
+
+    // ===== v9 cast =====
+    ye_qingshan: { id: "ye_qingshan", name: "葉青山", title: "蒼峰劍派掌門", loc: "chixia", major: true, line: "jianghu",
+      intro: "青衫長鬚，笑意溫和卻不達眼底。",
+      arcs: { main: "主線：蒼峰偽君子——假仁假義，暗害同門以固權。", side: "支線：可助林風／寧書影揭穿其偽。", hidden: "隱藏：與左冷影密約併吞五峰，證據在崖下石室。" },
+      destinies: { ally: "暫與你合作。", dead: "偽面撕破，隕於論劍。", enemy: "全派追殺。", exposed: "偽君子之名傳遍江湖。", default: "端坐蒼峰。" } },
+    lin_feng: { id: "lin_feng", name: "林風", title: "蒼峰大弟子", loc: "chixia", major: true, line: "jianghu",
+      intro: "青衫負劍，笑裡帶三分酒意。",
+      arcs: { main: "主線：被逐後浪跡，可拜隱師風清崖。", side: "支線：與任盈蘿情緣／葉小雨青梅。", hidden: "隱藏：手握葉青山害師兄鐵證。" },
+      destinies: { ally: "與你把酒論劍。", dead: "醉倒崖下。", enemy: "劍鋒相對。", teacher: "授你浪劍半式。", muse: "情關未了。", default: "仍在赤霞崖徘徊。" } },
+    ning_shuying: { id: "ning_shuying", name: "寧書影", title: "蒼峰女俠", loc: "chixia", major: true, line: "jianghu",
+      intro: "素衣執劍，目光清明。",
+      arcs: { main: "主線：護林風、抑夫偽面。", side: "支線：教你蒼峰女劍。", hidden: "隱藏：早知葉青山不軌，隱忍待證。" },
+      destinies: { ally: "並肩護門。", dead: "血染素衣。", enemy: "劍指於你。", teacher: "授女劍一式。", default: "守於蒼峰。" } },
+    ye_xiaoyu: { id: "ye_xiaoyu", name: "葉小雨", title: "蒼峰少主", loc: "longmen", major: true, line: "jianghu",
+      intro: "雲髻斜簪，語氣嬌蠻卻含憂。",
+      arcs: { main: "主線：父命錯嫁／逃婚至龍門。", side: "支線：青梅林風舊情。", hidden: "隱藏：可證葉青山偽書。" },
+      destinies: { ally: "認你作知己。", dead: "淚盡而亡。", enemy: "拒見。", married: "與你私奔。", muse: "心繫舊人。", default: "寄居龍門。" } },
+    lin_chen: { id: "lin_chen", name: "林辰", title: "滅門遺孤", loc: "qingcheng", major: true, line: "jianghu",
+      intro: "少年白衣，袖藏斷刀。",
+      arcs: { main: "主線：血仇復仇——仇人指向木高風。", side: "支線：可投破碗幫或蒼峰。", hidden: "隱藏：滅門實另有朝廷黑手。" },
+      destinies: { ally: "結為血友。", dead: "仇未報身先死。", enemy: "刀下不留。", hero: "仇報名揚。", default: "青城尋仇。" } },
+    ren_yingluo: { id: "ren_yingluo", name: "任盈蘿", title: "紅蓮副座", loc: "honglian", major: true, line: "jianghu",
+      intro: "紅衣如火，笑裡藏鋒。",
+      arcs: { main: "主線：魔教聖女情緣。", side: "支線：助林風／與周芷雪三角。", hidden: "隱藏：東方孤白篡位之內應線索。" },
+      destinies: { ally: "許你教中客座。", dead: "火海焚衣。", enemy: "火毒追杀。", muse: "情絲暗繫。", convert: "引你入紅蓮。", default: "坐鎮紅蓮。" } },
+    feng_qingya: { id: "feng_qingya", name: "風清崖", title: "蒼峰隱劍", loc: "wuyin", major: true, line: "jianghu",
+      intro: "白髮披肩，劍匣落塵。",
+      arcs: { main: "主線：隱師授獨孤一脈劍意（原創致敬）。", side: "支線：收林風為徒。", hidden: "隱藏：當年被葉青山逼隱。" },
+      destinies: { ally: "授你隱劍。", dead: "劍匣空置。", enemy: "拒授。", teacher: "收你入門。", hermit: "更深隱去。", default: "隱於無音。" } },
+    qu_yangqin: { id: "qu_yangqin", name: "曲陽琴", title: "魔教琴客", loc: "meihua", major: true, line: "jianghu",
+      intro: "負琴青衣，步履從容。",
+      arcs: { main: "主線：正邪琴交。", side: "支線：與梅塢合譜。", hidden: "隱藏：曲中藏紅蓮密信。" },
+      destinies: { ally: "以琴相助。", dead: "弦斷人亡。", enemy: "琴音拒客。", muse: "為你譜曲。", default: "遊走梅塢。" } },
+    qiao_fengshan: { id: "qiao_fengshan", name: "喬峰山", title: "破碗前任幫主", loc: "qingcheng", major: true, line: "jianghu",
+      intro: "人高馬大，碗大如盆。",
+      arcs: { main: "主線：身分危機——身世成謎。", side: "支線：與洪七影、破碗長老。", hidden: "隱藏：邊關血脈，可聯義或自絕於江湖。" },
+      destinies: { ally: "結義金蘭。", dead: "聚賢一戰殞命。", enemy: "幫規不容。", sworn: "與你結義。", vanished: "遠走塞外。", default: "蹲於青城。" } },
+    duan_muyu: { id: "duan_muyu", name: "段沐雨", title: "南疆遊歷郡主", loc: "luohe", major: true, line: "jianghu",
+      intro: "白馬輕裘，一笑傾城。",
+      arcs: { main: "主線：多情遊歷。", side: "支線：可與多角情緣交錯。", hidden: "隱藏：段氏一陽指殘訣。" },
+      destinies: { ally: "以指法相授。", dead: "客死異鄉。", enemy: "拂袖而去。", muse: "情絲纏繞。", teacher: "授一陽殘訣。", default: "遊於洛河。" } },
+    xu_zhuoyun: { id: "xu_zhuoyun", name: "虛竹雲", title: "蒼雲啞徒", loc: "cangyun", major: true, line: "jianghu",
+      intro: "僧衣素淨，從不言語。",
+      arcs: { main: "主線：意外傳承——珍瓏殘棋開竅。", side: "支線：雲空暗護。", hidden: "隱藏：可成逍遙傳人（原創致敬）。" },
+      destinies: { ally: "以掌相護。", dead: "圓寂。", enemy: "閉門不見。", teacher: "傳你棋意掌。", promoted: "繼任住持候補。", default: "寺中掃葉。" } },
+    zhang_wujiang: { id: "zhang_wujiang", name: "張無疆", title: "邊關少年", loc: "bianguan", major: true, line: "jianghu",
+      intro: "純善眉眼，背負乾糧袋。",
+      arcs: { main: "主線：純善糾結——正邪兩難。", side: "支線：聯郭靖義／趙敏嫣。", hidden: "隱藏：乾糧袋藏奇門殘頁。" },
+      destinies: { ally: "與你共守邊關。", dead: "中毒而亡。", enemy: "心死遠走。", hero: "名震邊關。", muse: "情關難斷。", default: "邊關徘徊。" } },
+    zhao_minyan: { id: "zhao_minyan", name: "趙敏嫣", title: "京畿郡主微服", loc: "jingji", major: true, line: "jianghu",
+      intro: "男裝束髮，眼神狡黠。",
+      arcs: { main: "主線：郡主混江湖。", side: "支線：試探張無疆／玩家。", hidden: "隱藏：實為京畿郡主，握兵符半枚。" },
+      destinies: { ally: "可向你借兵符半枚。", dead: "微服遇刺。", enemy: "京畿通緝。", muse: "情絲暗結。", default: "京畿巷弄。" } },
+    zhou_zhi_xue: { id: "zhou_zhi_xue", name: "周芷雪", title: "紅蓮外門", loc: "honglian", major: true, line: "jianghu",
+      intro: "素顏紅繩，目光執拗。",
+      arcs: { main: "主線：情敵三角。", side: "支線：可助或阻任盈蘿。", hidden: "隱藏：身世與邊關有關。" },
+      destinies: { ally: "為你療傷。", dead: "火毒攻心。", enemy: "反目。", muse: "單相思成劫。", default: "紅蓮外門。" } },
+    hong_qigong_x: { id: "hong_qigong_x", name: "洪七影", title: "破碗太上", loc: "qingcheng", major: true, line: "jianghu",
+      intro: "破衣垢面，笑罵江湖。",
+      arcs: { main: "主線：丐幫太上，可授棒法。", side: "支線：考核喬峰山／玩家義氣。", hidden: "隱藏：知喬峰山身世而不說破。" },
+      destinies: { ally: "留碗粥給你。", dead: "碗碎人亡。", enemy: "全幫封殺。", teacher: "授棒法真傳。", default: "青城要飯。" } },
+    huang_yaoshi_x: { id: "huang_yaoshi_x", name: "黃藥石", title: "落英島主", loc: "yanhui", major: true, line: "jianghu",
+      intro: "青袍負手，語帶機鋒。",
+      arcs: { main: "主線：東海奇人，奇門陣法。", side: "支線：考校海狂生／玩家。", hidden: "隱藏：與歐陽風毒舊怨。" },
+      destinies: { ally: "陣法相助。", dead: "葬身怒濤。", enemy: "海上圍殺。", teacher: "傳奇門半卷。", hermit: "閉島不見。", default: "醉臥煙港。" } },
+    ouyang_fengdu: { id: "ouyang_fengdu", name: "歐陽風毒", title: "黃沙毒叟", loc: "shamo", major: true, line: "jianghu",
+      intro: "白髮披散，蛇杖叮噹。",
+      arcs: { main: "主線：西毒仇敵線。", side: "支線：可拜毒或殺毒。", hidden: "隱藏：逆練毒功走火入魔。" },
+      destinies: { ally: "授你毒功半式。", dead: "毒發而亡。", enemy: "沙中伏殺。", mad: "徹底入魔。", teacher: "收毒徒。", default: "黃沙驛徘徊。" } },
+    xiao_longyin: { id: "xiao_longyin", name: "小龍吟", title: "幽墓傳人", loc: "yewang", major: true, line: "jianghu",
+      intro: "白衣如雪，目若寒星。",
+      arcs: { main: "主線：師徒禁忌情對象。", side: "支線：與楊過塵／慕幽蘭／夜塵。", hidden: "隱藏：墓中藏玉女心經殘卷。" },
+      destinies: { ally: "授柔掌。", dead: "與墓同寂。", enemy: "永拒墓門。", muse: "禁忌情深。", teacher: "收你為徒。", default: "守於墓影。" } },
+    yang_guochen: { id: "yang_guochen", name: "楊過塵", title: "古墓棄徒", loc: "yewang", major: true, line: "jianghu",
+      intro: "黑衣桀驁，神情如狼。",
+      arcs: { main: "主線：師徒禁忌情。", side: "支線：玄鐵重劍線。", hidden: "隱藏：活死人墓禁制鑰匙。" },
+      destinies: { ally: "並肩破墓。", dead: "崖下折劍。", enemy: "劍鋒相對。", muse: "情關難捨。", rival: "互為宿敵。", default: "墓外徘徊。" } },
+    guo_jingyi: { id: "guo_jingyi", name: "郭靖義", title: "襄邊義俠", loc: "bianguan", major: true, line: "jianghu",
+      intro: "忠厚眉目，掌風沉雄。",
+      arcs: { main: "主線：忠厚大俠，邊關禦敵。", side: "支線：與黃蓉芽伴侶。", hidden: "隱藏：可傳降龍十八式殘章。" },
+      destinies: { ally: "邊關結義。", dead: "殉於邊關。", enemy: "視你為內奸。", hero: "名震天下。", teacher: "授降龍殘式。", default: "坐鎮邊關。" } },
+    huang_rongya: { id: "huang_rongya", name: "黃蓉芽", title: "機靈女俠", loc: "jingji", major: true, line: "jianghu",
+      intro: "髮間木釵，笑裡藏針。",
+      arcs: { main: "主線：機靈伴侶線。", side: "支線：與黃靈兒可聯手。", hidden: "隱藏：落英奇門家傳。" },
+      destinies: { ally: "為你出謀。", dead: "巷中失蹤。", enemy: "設計坑你。", muse: "情絲暗結。", married: "定情共守。", default: "京畿遊走。" } },
+    dongfang_gubai: { id: "dongfang_gubai", name: "東方孤白", title: "紅蓮前教主", loc: "honglian", major: true, line: "jianghu",
+      intro: "紅衣勝雪，陰陽莫辨。",
+      arcs: { main: "主線：篡位隱線。", side: "支線：邪功殘本能誘。", hidden: "隱藏：可助或殺任盈蘿／紅蓮聖女。" },
+      destinies: { ally: "許你教中客卿。", dead: "教壇火起。", enemy: "必欲除你。", muse: "亦正亦邪情。", convert: "引你入邪。", default: "隱於教壇後。" } },
+    zuo_lengying: { id: "zuo_lengying", name: "左冷影", title: "五峰會盟主", loc: "leifeng", major: true, line: "jianghu",
+      intro: "灰袍冷面，聲如冰裂。",
+      arcs: { main: "主線：併吞野心。", side: "支線：逼蒼峰／五峰會盟。", hidden: "隱藏：與葉青山密約。" },
+      destinies: { ally: "暫聯。", dead: "盟主之位崩。", enemy: "五峰追殺。", rival: "宿敵。", default: "坐鎮雷峰。" } },
+    mu_gaofeng_x: { id: "mu_gaofeng_x", name: "木高風", title: "駝背惡霸", loc: "heishui", major: true, line: "jianghu",
+      intro: "駝背金爪，笑裡藏刀。",
+      arcs: { main: "主線：逼徒仇——逼害林辰師門。", side: "支線：可殺可囚。", hidden: "隱藏：受朝廷密令滅門。" },
+      destinies: { ally: "你竟與惡霸同行。", dead: "爪斷人亡。", enemy: "金爪追杀。", default: "潛伏黑水。" } },
+    wei_xiaozhou: { id: "wei_xiaozhou", name: "韋小舟", title: "尚膳監小太監", loc: "huanggong", major: true, line: "court",
+      intro: "眉眼靈動，說話滴水不漏。",
+      arcs: { main: "主線：雙面混混——帝側香主夾心。", side: "支線：夾心於景安帝與青梧會。", hidden: "隱藏：可同時握多枚香主令／情緣。" },
+      destinies: { ally: "宮裡罩你。", dead: "暴斃宮牆。", enemy: "密摺參你。", sworn: "結拜兄弟。", muse: "情絲亂纏。", promoted: "升尚膳監掌印。", default: "尚膳監跑腿。" } },
+    chen_jinnan_x: { id: "chen_jinnan_x", name: "陳近南影", title: "青梧會總舵", loc: "yanhui", major: true, line: "court",
+      intro: "青衫儒巾，目光如炬。",
+      arcs: { main: "主線：反朝師尊。", side: "支線：收韋小舟／玩家入會。", hidden: "隱藏：與九難影有舊。" },
+      destinies: { ally: "授你會中密信。", dead: "殉於國事。", enemy: "會令追殺。", teacher: "收你為徒。", default: "坐鎮煙港密舵。" } },
+    jianning_jun: { id: "jianning_jun", name: "建寧郡主", title: "青梧郡主", loc: "hougong", major: true, line: "court",
+      intro: "驕縱明豔，叱聲如鈴。",
+      arcs: { main: "主線：驕縱情緣。", side: "支線：強娶／綁架式告白。", hidden: "隱藏：可助或亂宮變。" },
+      destinies: { ally: "准你入璇璣。", dead: "暴卒。", enemy: "杖斃你。", married: "強冊為駙。", muse: "情絲霸道。", default: "後宮撒潑。" } },
+    hai_dafu_x: { id: "hai_dafu_x", name: "海大富影", title: "慎刑司總管", loc: "dongchang", major: true, line: "court",
+      intro: "雙眼矇布，耳極聰。",
+      arcs: { main: "主線：盲眼權監。", side: "支線：可鬥東廠督公。", hidden: "隱藏：身懷化骨綿掌。" },
+      destinies: { ally: "廠外另開一路。", dead: "慎刑司倒斃。", enemy: "點你死穴。", teacher: "授綿掌。", default: "坐鎮慎刑司。" } },
+    ao_baiying: { id: "ao_baiying", name: "鰲拜影", title: "攝政大將", loc: "yulin", major: true, line: "court",
+      intro: "金甲熊腰，殺氣騰騰。",
+      arcs: { main: "主線：權臣可擒。", side: "支線：羽林兵變／擒鰲。", hidden: "隱藏：與吳三桂影暗通。" },
+      destinies: { ally: "暫借兵符。", dead: "囚於天牢。", enemy: "滿門抄斬令。", rival: "沙場再見。", default: "坐鎮羽林。" } },
+    shuang_er_x: { id: "shuang_er_x", name: "雙兒影", title: "莊府丫鬟", loc: "jingji", major: true, line: "court",
+      intro: "挽髻圍裙，眼神極忠。",
+      arcs: { main: "主線：忠心女侍。", side: "支線：可隨侍玩家。", hidden: "隱藏：莊府血案倖存。" },
+      destinies: { ally: "貼身照料。", dead: "為主殉。", enemy: "絕望遠走。", apprentice: "跟你江湖。", muse: "默默情深。", default: "京畿等候。" } },
+    su_quan_x: { id: "su_quan_x", name: "蘇荃影", title: "神龍教夫人", loc: "yanhui", major: true, line: "court",
+      intro: "白衣勝雪，持劍而立。",
+      arcs: { main: "主線：島教夫人。", side: "支線：可反洪安通影。", hidden: "隱藏：教主夫人可奪教。" },
+      destinies: { ally: "島上護你。", dead: "葬身島礁。", enemy: "神龍令追杀。", muse: "情絲暗結。", convert: "引你入教。", default: "坐鎮神龍分舵。" } },
+    hong_antong_x: { id: "hong_antong_x", name: "洪安通影", title: "神龍島教主", loc: "yanhui", major: true, line: "court",
+      intro: "蟒袍冠帶，目露凶光。",
+      arcs: { main: "主線：島教教主。", side: "支線：海戰／入教考驗。", hidden: "隱藏：可被蘇荃影取而代之。" },
+      destinies: { ally: "封你島上客卿。", dead: "教主之位崩。", enemy: "神龍令必殺。", convert: "強收你入教。", default: "端坐神龍壇。" } },
+    jiu_nan_x: { id: "jiu_nan_x", name: "九難影", title: "白衣神尼", loc: "tiantai", major: true, line: "court",
+      intro: "白衣勝雪，眉目悲憫。",
+      arcs: { main: "主線：前朝公主隱修。", side: "支線：授阿珂影武功。", hidden: "隱藏：刺駕——可刺景安帝。" },
+      destinies: { ally: "授你禪劍。", dead: "圓寂。", enemy: "刺駕敗露。", teacher: "收你入門。", hermit: "閉關。", default: "天台觀旁靜室。" } },
+    a_ke_x: { id: "a_ke_x", name: "阿珂影", title: "神尼徒弟", loc: "qingcheng", major: true, line: "court",
+      intro: "絕色明豔，袖藏軟劍。",
+      arcs: { main: "主線：美貌刺客。", side: "支線：行刺任務可改。", hidden: "隱藏：身世與前朝有關。" },
+      destinies: { ally: "暗中護你。", dead: "刺駕殉。", enemy: "軟劍封喉。", muse: "情關亂刺。", apprentice: "改投你門。", default: "青城徘徊。" } },
+    mu_jianping_x: { id: "mu_jianping_x", name: "沐劍屏影", title: "沐府郡主", loc: "neiting", major: true, line: "court",
+      intro: "稚氣未脫，腰懸短劍。",
+      arcs: { main: "主線：入宮隱身分。", side: "支線：與方怡影同行。", hidden: "隱藏：沐府反朝血脈。" },
+      destinies: { ally: "認你作哥哥／姐姐。", dead: "宮變身殞。", enemy: "被逮問斬。", muse: "孩童情深。", default: "內廷花廊。" } },
+    fang_yi_x: { id: "fang_yi_x", name: "方怡影", title: "沐府刺客", loc: "neiting", major: true, line: "court",
+      intro: "青衣蒙面，目露猶豫。",
+      arcs: { main: "主線：入宮行刺。", side: "支線：可被策反。", hidden: "隱藏：與神龍教有關。" },
+      destinies: { ally: "放棄行刺。", dead: "刺駕失敗。", enemy: "必欲殺駕。", muse: "情關亂心。", default: "潛伏內廷。" } },
+    mao_dongzhu_x: { id: "mao_dongzhu_x", name: "毛東珠影", title: "「太后」", loc: "hougong", major: true, line: "court",
+      intro: "鳳冠霞帔，聲口似真。",
+      arcs: { main: "主線：假太后。", side: "支線：揭穿／助其竊國。", hidden: "隱藏：實為神龍教细作。" },
+      destinies: { ally: "後宮罩你。", dead: "假面撕破賜死。", enemy: "懿旨拿你。", exposed: "假太后之醜傳遍。", default: "端居慈寧。" } },
+    duo_long_x: { id: "duo_long_x", name: "多隆影", title: "御前侍衛", loc: "yulin", major: true, line: "court",
+      intro: "豪邁大笑，臂膀如猿。",
+      arcs: { main: "主線：帝側玩伴。", side: "支線：可助擒鰲拜影。", hidden: "隱藏：對韋小舟極義氣。" },
+      destinies: { ally: "御前罩你。", dead: "殉於宮牆。", enemy: "拒你於營。", sworn: "結拜。", default: "巡營不輟。" } },
+    suo_etu_x: { id: "suo_etu_x", name: "索額圖影", title: "大學士", loc: "qianqing", major: true, line: "court",
+      intro: "朝服端正，城府極深。",
+      arcs: { main: "主線：朝臣結拜。", side: "支線：政爭／票擬。", hidden: "隱藏：可聯或賣韋小舟。" },
+      destinies: { ally: "票擬助你。", dead: "賜帛。", enemy: "密摺參死。", sworn: "結拜。", default: "乾清宮當值。" } },
+    wu_sangui_x: { id: "wu_sangui_x", name: "吳三桂影", title: "平西王", loc: "bianguan", major: true, line: "court",
+      intro: "王袍披風，野心寫在眼底。",
+      arcs: { main: "主線：藩王野心。", side: "支線：聯清或反清。", hidden: "隱藏：可自立為帝線。" },
+      destinies: { ally: "兵馬相助。", dead: "藩王安在。", enemy: "稱兵。", rival: "分庭抗禮。", promoted: "加封。", default: "坐鎮邊關王府行營。" } },
+    shi_lang_x: { id: "shi_lang_x", name: "施琅影", title: "水師提督", loc: "yanhui", major: true, line: "court",
+      intro: "戎裝佩刀，海風滿面。",
+      arcs: { main: "主線：海戰支線。", side: "支線：平台／攻島。", hidden: "隱藏：可聯或鎮神龍島。" },
+      destinies: { ally: "水師相助。", dead: "葬身怒濤。", enemy: "海上封殺。", promoted: "加太子太保虛銜。", default: "煙港水營。" } },
+    mao_shiba_x: { id: "mao_shiba_x", name: "茅十八影", title: "江洋大盜", loc: "luohe", major: true, line: "court",
+      intro: "刀疤橫臉，義氣卻真。",
+      arcs: { main: "主線：帶路入京。", side: "支線：可劫囚車救你。", hidden: "隱藏：與青梧會有舊。" },
+      destinies: { ally: "帶你入京。", dead: "斬於市。", enemy: "黑道追殺。", sworn: "結拜。", default: "洛河渡潛伏。" } },
 
   };
 
@@ -1384,6 +1606,29 @@ window.__JH_ASSETS = {
   NPCS.meifuren.destinies = { ally: "塢門為你常開。", dead: "梅塢人去樓空。", enemy: "拒你於塢外。", host: "以莊主禮待你。", default: "仍守梅花塢。" };
   NPCS.chixiaxian.destinies = { ally: "授你崖上一式。", dead: "紅衣墜崖。", enemy: "劍指於你。", immortal: "傳說她羽化而去。", default: "仍立赤霞崖。" };
   NPCS.wuyinqinmo.destinies = { ally: "以無音曲助你。", dead: "琴碎人亡。", enemy: "無音殺意。", mad: "徹底入魔。", default: "仍居無音谷。" };
+
+  // v9: annotate backbone NPCs with line/arcs
+  (function annotateOldNpcs(){
+    const A = {
+      jingandi: { line:"court", arcs:{ main:"主線：青梧天子。", side:"支線：羽林／香主。", hidden:"隱藏：與督公為兄弟。" } },
+      dongchang_gong: { line:"court", arcs:{ main:"主線：東廠影事。", side:"支線：廠奴／情緣。", hidden:"隱藏：靖王真名。" } },
+      honglianzhu: { line:"jianghu", arcs:{ main:"主線：紅蓮教主。", side:"支線：入教。", hidden:"隱藏：東方孤白篡位。" } },
+      masteryun: { line:"jianghu", arcs:{ main:"主線：蒼雲住持。", side:"支線：收徒。", hidden:"隱藏：虛竹雲傳承。" } },
+      powan_zhang: { line:"jianghu", arcs:{ main:"主線：破碗舵主。", side:"支線：棒法。", hidden:"隱藏：喬峰山身世。" } },
+      yechen: { line:"jianghu", arcs:{ main:"主線：守陵。", side:"支線：墓道。", hidden:"隱藏：幽墓同脈。" } },
+      mu_youlan: { line:"jianghu", arcs:{ main:"主線：幽墓隱士。", side:"支線：柔掌。", hidden:"隱藏：禁忌情旁觀。" } },
+      hai_kuang: { line:"jianghu", arcs:{ main:"主線：落英怪傑。", side:"支線：奇門。", hidden:"隱藏：島主同僚。" } },
+      shen_guifei: { line:"court", arcs:{ main:"主線：後宮深心。", side:"支線：宮鬥。", hidden:"隱藏：聯假太后。" } },
+      yulin_tongling: { line:"court", arcs:{ main:"主線：衛宮。", side:"支線：羽林。", hidden:"隱藏：對權臣。" } },
+      da_jiangjun: { line:"court", arcs:{ main:"主線：鎮北。", side:"支線：兵符。", hidden:"隱藏：對鰲拜影。" } },
+      gu_xiaoran: { line:"jianghu", arcs:{ main:"主線：蒼峰棄徒。", side:"支線：論劍。", hidden:"隱藏：與葉青山有隙。" } }
+    };
+    Object.keys(A).forEach(function(id){
+      if (!NPCS[id]) return;
+      if (!NPCS[id].line) NPCS[id].line = A[id].line;
+      if (!NPCS[id].arcs) NPCS[id].arcs = A[id].arcs;
+    });
+  })();
 
   const ENEMIES = {
     wolf: { name: "野狼", hp: 40, atk: 8, def: 1, agi: 6, exp: 5, gold: 8, loot: ["herb"] },
@@ -1463,7 +1708,49 @@ window.__JH_ASSETS = {
     hai_kuang: { personality:"cunning", label:"島上奇人", martial:72, awareness:80, desc:"陣法困敵。", onDetect:"trap", onOpenAttack:"attack", onSteal:"trap", prisonPlace:"yanhui", prisonName:"船艙", paroleDays:1 },
     shen_guifei: { personality:"cunning", label:"後宮深心", martial:20, awareness:78, desc:"善借刀殺人。", onDetect:"capture", onOpenAttack:"flee", onSteal:"trap", prisonPlace:"hougong", prisonName:"冷宮", paroleDays:0 },
     liu_zhaoyi: { personality:"timid", label:"柔弱昭儀", martial:10, awareness:40, desc:"遇險即逃。", onDetect:"flee", onOpenAttack:"flee", onSteal:"flee", prisonPlace:null, prisonName:null, paroleDays:0 },
-    da_jiangjun: { personality:"ruthless", label:"大將殺伐", martial:92, awareness:82, desc:"動輒斬立決。", onDetect:"attack", onOpenAttack:"attack", onSteal:"attack", prisonPlace:"yulin", prisonName:"軍獄", paroleDays:0 }
+    da_jiangjun: { personality:"ruthless", label:"大將殺伐", martial:92, awareness:82, desc:"動輒斬立決。", onDetect:"attack", onOpenAttack:"attack", onSteal:"attack", prisonPlace:"yulin", prisonName:"軍獄", paroleDays:0 },
+    ye_qingshan: { personality:"cunning", label:"偽君子掌門", martial:85, awareness:88, desc:"笑裡藏刀。", onDetect:"capture", onOpenAttack:"duel", onSteal:"trap", prisonPlace:"chixia", prisonName:"靜室", paroleDays:1 },
+    lin_feng: { personality:"proud", label:"放浪棄徒", martial:78, awareness:70, desc:"劍意灑脫。", onDetect:"duel", onOpenAttack:"duel", onSteal:"rebuke", prisonPlace:"chixia", prisonName:"靜室", paroleDays:1 },
+    ning_shuying: { personality:"merciful", label:"掌門妻護徒", martial:72, awareness:80, desc:"掌門妻護徒", onDetect:"capture", onOpenAttack:"rebuke", onSteal:"rebuke", prisonPlace:"chixia", prisonName:"靜室", paroleDays:1 },
+    ye_xiaoyu: { personality:"timid", label:"掌門女", martial:35, awareness:55, desc:"掌門女", onDetect:"flee", onOpenAttack:"flee", onSteal:"flee", prisonPlace:"longmen", prisonName:"靜室", paroleDays:0 },
+    lin_chen: { personality:"ruthless", label:"血仇遺孤", martial:55, awareness:50, desc:"血仇遺孤", onDetect:"attack", onOpenAttack:"duel", onSteal:"rebuke", prisonPlace:"qingcheng", prisonName:"靜室", paroleDays:1 },
+    ren_yingluo: { personality:"cunning", label:"魔教聖女", martial:82, awareness:85, desc:"魔教聖女", onDetect:"attack", onOpenAttack:"duel", onSteal:"trap", prisonPlace:"honglian", prisonName:"靜室", paroleDays:0 },
+    feng_qingya: { personality:"merciful", label:"隱師授劍", martial:95, awareness:92, desc:"隱師授劍", onDetect:"capture", onOpenAttack:"rebuke", onSteal:"rebuke", prisonPlace:"wuyin", prisonName:"靜室", paroleDays:3 },
+    qu_yangqin: { personality:"merciful", label:"正邪琴客", martial:50, awareness:75, desc:"正邪琴客", onDetect:"flee", onOpenAttack:"rebuke", onSteal:"flee", prisonPlace:"meihua", prisonName:"靜室", paroleDays:1 },
+    qiao_fengshan: { personality:"lawful", label:"身分危機", martial:90, awareness:70, desc:"身分危機", onDetect:"duel", onOpenAttack:"duel", onSteal:"rebuke", prisonPlace:"qingcheng", prisonName:"靜室", paroleDays:1 },
+    duan_muyu: { personality:"proud", label:"多情郡主", martial:75, awareness:72, desc:"多情郡主", onDetect:"duel", onOpenAttack:"duel", onSteal:"rebuke", prisonPlace:"luohe", prisonName:"靜室", paroleDays:1 },
+    xu_zhuoyun: { personality:"merciful", label:"意外傳承", martial:40, awareness:60, desc:"意外傳承", onDetect:"flee", onOpenAttack:"flee", onSteal:"rebuke", prisonPlace:"cangyun", prisonName:"靜室", paroleDays:3 },
+    zhang_wujiang: { personality:"merciful", label:"純善少年", martial:70, awareness:55, desc:"純善少年", onDetect:"flee", onOpenAttack:"rebuke", onSteal:"rebuke", prisonPlace:"bianguan", prisonName:"靜室", paroleDays:1 },
+    zhao_minyan: { personality:"cunning", label:"微服郡主", martial:45, awareness:78, desc:"微服郡主", onDetect:"trap", onOpenAttack:"flee", onSteal:"trap", prisonPlace:"jingji", prisonName:"靜室", paroleDays:1 },
+    zhou_zhi_xue: { personality:"timid", label:"情敵外門", martial:30, awareness:40, desc:"情敵外門", onDetect:"flee", onOpenAttack:"flee", onSteal:"flee", prisonPlace:"honglian", prisonName:"靜室", paroleDays:0 },
+    hong_qigong_x: { personality:"merciful", label:"破碗太上", martial:88, awareness:85, desc:"破碗太上", onDetect:"capture", onOpenAttack:"rebuke", onSteal:"rebuke", prisonPlace:"qingcheng", prisonName:"靜室", paroleDays:2 },
+    huang_yaoshi_x: { personality:"cunning", label:"東海奇人", martial:92, awareness:95, desc:"東海奇人", onDetect:"trap", onOpenAttack:"attack", onSteal:"trap", prisonPlace:"yanhui", prisonName:"靜室", paroleDays:1 },
+    ouyang_fengdu: { personality:"ruthless", label:"西毒仇敵", martial:90, awareness:80, desc:"西毒仇敵", onDetect:"attack", onOpenAttack:"attack", onSteal:"attack", prisonPlace:"shamo", prisonName:"靜室", paroleDays:0 },
+    xiao_longyin: { personality:"proud", label:"幽墓傳人", martial:80, awareness:88, desc:"幽墓傳人", onDetect:"capture", onOpenAttack:"duel", onSteal:"trap", prisonPlace:"yewang", prisonName:"靜室", paroleDays:1 },
+    yang_guochen: { personality:"proud", label:"古墓棄徒", martial:85, awareness:75, desc:"古墓棄徒", onDetect:"duel", onOpenAttack:"duel", onSteal:"rebuke", prisonPlace:"yewang", prisonName:"靜室", paroleDays:1 },
+    guo_jingyi: { personality:"lawful", label:"忠厚大俠", martial:88, awareness:70, desc:"忠厚大俠", onDetect:"capture", onOpenAttack:"duel", onSteal:"rebuke", prisonPlace:"bianguan", prisonName:"靜室", paroleDays:1 },
+    huang_rongya: { personality:"cunning", label:"機靈女俠", martial:55, awareness:90, desc:"機靈女俠", onDetect:"trap", onOpenAttack:"flee", onSteal:"trap", prisonPlace:"jingji", prisonName:"靜室", paroleDays:1 },
+    dongfang_gubai: { personality:"ruthless", label:"篡位隱線", martial:96, awareness:92, desc:"篡位隱線", onDetect:"attack", onOpenAttack:"attack", onSteal:"trap", prisonPlace:"honglian", prisonName:"靜室", paroleDays:0 },
+    zuo_lengying: { personality:"ruthless", label:"併吞野心", martial:80, awareness:85, desc:"併吞野心", onDetect:"capture", onOpenAttack:"attack", onSteal:"rebuke", prisonPlace:"leifeng", prisonName:"靜室", paroleDays:1 },
+    mu_gaofeng_x: { personality:"ruthless", label:"逼徒惡霸", martial:65, awareness:55, desc:"逼徒惡霸", onDetect:"attack", onOpenAttack:"attack", onSteal:"attack", prisonPlace:"heishui", prisonName:"靜室", paroleDays:0 },
+    wei_xiaozhou: { personality:"cunning", label:"雙面香主", martial:35, awareness:88, desc:"雙面香主", onDetect:"flee", onOpenAttack:"flee", onSteal:"trap", prisonPlace:"huanggong", prisonName:"靜室", paroleDays:1 },
+    chen_jinnan_x: { personality:"lawful", label:"反朝師尊", martial:86, awareness:90, desc:"反朝師尊", onDetect:"capture", onOpenAttack:"duel", onSteal:"trap", prisonPlace:"yanhui", prisonName:"密舵暗室", paroleDays:2 },
+    jianning_jun: { personality:"proud", label:"驕縱郡主", martial:25, awareness:50, desc:"驕縱郡主", onDetect:"capture", onOpenAttack:"flee", onSteal:"rebuke", prisonPlace:"hougong", prisonName:"冷宮", paroleDays:0 },
+    hai_dafu_x: { personality:"ruthless", label:"盲眼權監", martial:88, awareness:95, desc:"盲眼權監", onDetect:"capture", onOpenAttack:"attack", onSteal:"trap", prisonPlace:"dongchang", prisonName:"慎刑司黑牢", paroleDays:0 },
+    ao_baiying: { personality:"ruthless", label:"權臣可擒", martial:93, awareness:70, desc:"權臣可擒", onDetect:"attack", onOpenAttack:"attack", onSteal:"attack", prisonPlace:"yulin", prisonName:"軍獄", paroleDays:0 },
+    shuang_er_x: { personality:"timid", label:"忠心女侍", martial:20, awareness:45, desc:"忠心女侍", onDetect:"flee", onOpenAttack:"flee", onSteal:"flee", prisonPlace:"jingji", prisonName:"靜室", paroleDays:0 },
+    su_quan_x: { personality:"proud", label:"島教夫人", martial:78, awareness:80, desc:"島教夫人", onDetect:"duel", onOpenAttack:"duel", onSteal:"trap", prisonPlace:"yanhui", prisonName:"靜室", paroleDays:1 },
+    hong_antong_x: { personality:"ruthless", label:"島教教主", martial:85, awareness:75, desc:"島教教主", onDetect:"attack", onOpenAttack:"attack", onSteal:"trap", prisonPlace:"yanhui", prisonName:"靜室", paroleDays:0 },
+    jiu_nan_x: { personality:"merciful", label:"前朝神尼", martial:94, awareness:92, desc:"前朝神尼", onDetect:"capture", onOpenAttack:"rebuke", onSteal:"trap", prisonPlace:"tiantai", prisonName:"觀中靜室", paroleDays:3 },
+    a_ke_x: { personality:"cunning", label:"美貌刺客", martial:70, awareness:78, desc:"美貌刺客", onDetect:"attack", onOpenAttack:"attack", onSteal:"trap", prisonPlace:"qingcheng", prisonName:"靜室", paroleDays:1 },
+    mu_jianping_x: { personality:"timid", label:"沐府郡主", martial:28, awareness:40, desc:"沐府郡主", onDetect:"flee", onOpenAttack:"flee", onSteal:"flee", prisonPlace:"neiting", prisonName:"罰跪廊", paroleDays:0 },
+    fang_yi_x: { personality:"cunning", label:"入宮刺客", martial:62, awareness:70, desc:"入宮刺客", onDetect:"attack", onOpenAttack:"attack", onSteal:"trap", prisonPlace:"neiting", prisonName:"靜室", paroleDays:1 },
+    mao_dongzhu_x: { personality:"cunning", label:"假太后", martial:55, awareness:85, desc:"假太后", onDetect:"capture", onOpenAttack:"flee", onSteal:"trap", prisonPlace:"hougong", prisonName:"冷宮", paroleDays:0 },
+    duo_long_x: { personality:"lawful", label:"御前玩伴", martial:75, awareness:60, desc:"御前玩伴", onDetect:"capture", onOpenAttack:"duel", onSteal:"trap", prisonPlace:"yulin", prisonName:"營中禁閉", paroleDays:2 },
+    suo_etu_x: { personality:"cunning", label:"朝臣結拜", martial:20, awareness:88, desc:"朝臣結拜", onDetect:"capture", onOpenAttack:"flee", onSteal:"trap", prisonPlace:"qianqing", prisonName:"天牢", paroleDays:0 },
+    wu_sangui_x: { personality:"ruthless", label:"藩王野心", martial:80, awareness:82, desc:"藩王野心", onDetect:"attack", onOpenAttack:"attack", onSteal:"trap", prisonPlace:"bianguan", prisonName:"軍獄", paroleDays:0 },
+    shi_lang_x: { personality:"lawful", label:"水師提督", martial:78, awareness:75, desc:"水師提督", onDetect:"capture", onOpenAttack:"duel", onSteal:"trap", prisonPlace:"yanhui", prisonName:"水營禁閉", paroleDays:2 },
+    mao_shiba_x: { personality:"ruthless", label:"帶路大盜", martial:60, awareness:55, desc:"帶路大盜", onDetect:"attack", onOpenAttack:"attack", onSteal:"trap", prisonPlace:"luohe", prisonName:"黑牢", paroleDays:0 },
   };
   function npcProfile(id) {
     const base = NPC_PROFILES[id] || { personality:"lawful", label:"江湖人", martial:40, awareness:45, desc:"", onDetect:"attack", onOpenAttack:"attack", onSteal:"rebuke", prisonPlace:null, prisonName:null, paroleDays:0 };
@@ -2011,11 +2298,533 @@ window.__JH_ASSETS = {
       rejectSay: "人牙子獰笑：「生意歸生意。」",
       acceptSay: "他拔刀：「那就見識見識！」",
       grants: { flags: ["renyazi_ambush"], attrs: {}, unlocks: [], renown: 0, trustBonus: -5 }
+    }],
+    ye_qingshan: [{
+      id: "ye_qingshan_bond", role: "rival", fate: "ally",
+      intents: ["ask_sworn", "ask_disciple", "ask_teach", "ask_partner", "ask_marry", "ask_join_cult"],
+      keywords: /拜師|入派|蒼峰|掌門/,
+      needTrust: 4, needHonor: 0,
+      softTrust: 1, softKindLogs: 1,
+      rejectSay: "葉青山撫鬚：「心術未正，暫且回去。」",
+      acceptSay: "葉青山點頭：「既有誠心，便入蒼峰門牆。」",
+      grants: { flags: ["cangfeng_invite", "met_ye_qingshan"], items: [], skills: [], attrs: {}, unlocks: [], renown: 2, trustBonus: 4 }
+    }],
+    lin_feng: [{
+      id: "lin_feng_bond", role: "sworn", fate: "ally",
+      intents: ["ask_sworn", "ask_disciple", "ask_teach", "ask_partner", "ask_marry", "ask_join_cult"],
+      keywords: /結義|金蘭|兄弟|同盟|請教劍/,
+      needTrust: 4, needHonor: 0,
+      softTrust: 1, softKindLogs: 1,
+      rejectSay: "林風晃晃酒葫蘆：「酒未熱，義未至。」",
+      acceptSay: "林風砸葫蘆：「好！今日起你我把酒論劍。」",
+      grants: { flags: ["met_lin_feng", "lin_feng_sworn"], items: [], skills: ["cangfeng_sword"], attrs: {}, unlocks: [], renown: 2, trustBonus: 4 }
+    }],
+    ning_shuying: [{
+      id: "ning_shuying_bond", role: "teacher", fate: "teacher",
+      intents: ["ask_sworn", "ask_disciple", "ask_teach", "ask_partner", "ask_marry", "ask_join_cult"],
+      keywords: /拜師|請教|女劍|收我|蒼峰/,
+      needTrust: 4, needHonor: 0,
+      softTrust: 1, softKindLogs: 1,
+      rejectSay: "寧書影：「時機未到。」",
+      acceptSay: "寧書影執劍為禮：「便授你女劍一式。」",
+      grants: { flags: ["met_ning_shuying"], items: [], skills: ["cloud_slash"], attrs: {}, unlocks: [], renown: 2, trustBonus: 4 }
+    }],
+    ye_xiaoyu: [{
+      id: "ye_xiaoyu_bond", role: "muse", fate: "muse",
+      intents: ["ask_sworn", "ask_disciple", "ask_teach", "ask_partner", "ask_marry", "ask_join_cult"],
+      keywords: /定情|知己|幫助|逃婚|保護/,
+      needTrust: 4, needHonor: 0,
+      softTrust: 1, softKindLogs: 1,
+      rejectSay: "葉小雨別過臉：「……你不懂。」",
+      acceptSay: "她低聲：「若你肯護我……我便信你一次。」",
+      grants: { flags: ["met_ye_xiaoyu", "ye_xiaoyu_trust"], items: [], skills: [], attrs: {}, unlocks: [], renown: 2, trustBonus: 4 }
+    }],
+    lin_chen: [{
+      id: "lin_chen_bond", role: "sworn", fate: "ally",
+      intents: ["ask_sworn", "ask_disciple", "ask_teach", "ask_partner", "ask_marry", "ask_join_cult"],
+      keywords: /結義|報仇|同盟|幫助|血仇/,
+      needTrust: 4, needHonor: 0,
+      softTrust: 1, softKindLogs: 1,
+      rejectSay: "林辰冷聲：「仇未報，不言義。」",
+      acceptSay: "林辰割掌：「血仇共擔——你我便是血友。」",
+      grants: { flags: ["met_lin_chen", "lin_chen_sworn"], items: [], skills: [], attrs: {}, unlocks: [], renown: 2, trustBonus: 4 }
+    }],
+    ren_yingluo: [{
+      id: "ren_yingluo_bond", role: "muse", fate: "muse",
+      intents: ["ask_sworn", "ask_disciple", "ask_teach", "ask_partner", "ask_marry", "ask_join_cult"],
+      keywords: /定情|情緣|入教|同盟|盈蘿/,
+      needTrust: 4, needHonor: 0,
+      softTrust: 1, softKindLogs: 1,
+      rejectSay: "任盈蘿輕笑：「火未燃透。」",
+      acceptSay: "她挑起紅袖：「既敢近火——便記下你。」",
+      grants: { flags: ["met_ren_yingluo", "lin_ren_love"], items: [], skills: ["lotus_flame"], attrs: {}, unlocks: [], renown: 2, trustBonus: 4 }
+    }],
+    feng_qingya: [{
+      id: "feng_qingya_bond", role: "disciple", fate: "teacher",
+      intents: ["ask_sworn", "ask_disciple", "ask_teach", "ask_partner", "ask_marry", "ask_join_cult"],
+      keywords: /拜師|請教|隱劍|收我|獨孤|劍意/,
+      needTrust: 4, needHonor: 0,
+      softTrust: 1, softKindLogs: 1,
+      rejectSay: "風清崖閉目：「劍緣未至。」",
+      acceptSay: "他啟匣半寸：「可。記住——劍在人在，人亡劍亡。」",
+      grants: { flags: ["met_feng_qingya", "disciple_feng"], items: [], skills: ["peak_intent"], attrs: {}, unlocks: [], renown: 2, trustBonus: 4 }
+    }],
+    qu_yangqin: [{
+      id: "qu_yangqin_bond", role: "muse", fate: "muse",
+      intents: ["ask_sworn", "ask_disciple", "ask_teach", "ask_partner", "ask_marry", "ask_join_cult"],
+      keywords: /知音|譜曲|琴|請教|合奏/,
+      needTrust: 4, needHonor: 0,
+      softTrust: 1, softKindLogs: 1,
+      rejectSay: "曲陽琴輕撥：「曲未成。」",
+      acceptSay: "他微笑：「既是知音，這首《笑傲殘章》贈你。」",
+      grants: { flags: ["met_qu_yangqin"], items: [], skills: ["qin_strike"], attrs: {}, unlocks: [], renown: 2, trustBonus: 4 }
+    }],
+    qiao_fengshan: [{
+      id: "qiao_fengshan_bond", role: "sworn", fate: "ally",
+      intents: ["ask_sworn", "ask_disciple", "ask_teach", "ask_partner", "ask_marry", "ask_join_cult"],
+      keywords: /結義|金蘭|兄弟|身世|幫主/,
+      needTrust: 4, needHonor: 0,
+      softTrust: 1, softKindLogs: 1,
+      rejectSay: "喬峰山沉聲：「此事……日後再說。」",
+      acceptSay: "他砸碗為盟：「好！今日起你我便是生死兄弟。」",
+      grants: { flags: ["met_qiao_fengshan", "qiao_sworn"], items: [], skills: ["jiaohua_quan"], attrs: {}, unlocks: [], renown: 2, trustBonus: 4 }
+    }],
+    duan_muyu: [{
+      id: "duan_muyu_bond", role: "muse", fate: "muse",
+      intents: ["ask_sworn", "ask_disciple", "ask_teach", "ask_partner", "ask_marry", "ask_join_cult"],
+      keywords: /定情|請教|一陽|指法|郡主/,
+      needTrust: 4, needHonor: 0,
+      softTrust: 1, softKindLogs: 1,
+      rejectSay: "段沐雨掩扇：「心猿未定。」",
+      acceptSay: "她點穴為禮：「便授你殘訣半式——莫妄用於情敵。」",
+      grants: { flags: ["met_duan_muyu"], items: [], skills: ["void_finger"], attrs: {}, unlocks: [], renown: 2, trustBonus: 4 }
+    }],
+    xu_zhuoyun: [{
+      id: "xu_zhuoyun_bond", role: "disciple", fate: "teacher",
+      intents: ["ask_sworn", "ask_disciple", "ask_teach", "ask_partner", "ask_marry", "ask_join_cult"],
+      keywords: /拜師|棋|請教|傳承|掌法/,
+      needTrust: 4, needHonor: 0,
+      softTrust: 1, softKindLogs: 1,
+      rejectSay: "虛竹雲搖頭（仍不語）。",
+      acceptSay: "他將一枚棋子塞你掌心——棋意掌初成。",
+      grants: { flags: ["met_xu_zhuoyun", "xuzhu_open"], items: [], skills: ["cloud_palm"], attrs: {}, unlocks: [], renown: 2, trustBonus: 4 }
+    }],
+    zhang_wujiang: [{
+      id: "zhang_wujiang_bond", role: "sworn", fate: "ally",
+      intents: ["ask_sworn", "ask_disciple", "ask_teach", "ask_partner", "ask_marry", "ask_join_cult"],
+      keywords: /結義|幫助|乾糧|同盟|無疆/,
+      needTrust: 4, needHonor: 0,
+      softTrust: 1, softKindLogs: 1,
+      rejectSay: "張無疆：「我……還不配。」",
+      acceptSay: "他遞過半塊餅：「以後有難，找我。」",
+      grants: { flags: ["met_zhang_wujiang"], items: [], skills: [], attrs: {}, unlocks: [], renown: 2, trustBonus: 4 }
+    }],
+    zhao_minyan: [{
+      id: "zhao_minyan_bond", role: "muse", fate: "muse",
+      intents: ["ask_sworn", "ask_disciple", "ask_teach", "ask_partner", "ask_marry", "ask_join_cult"],
+      keywords: /定情|郡主|兵符|同盟|微服/,
+      needTrust: 4, needHonor: 0,
+      softTrust: 1, softKindLogs: 1,
+      rejectSay: "趙敏嫣哼聲：「本郡主還沒看上你。」",
+      acceptSay: "她摘下面罩：「既識破我——便記下這半枚兵符緣。」",
+      grants: { flags: ["met_zhao_minyan", "zhao_min_reveal"], items: [], skills: [], attrs: {}, unlocks: [], renown: 2, trustBonus: 4 }
+    }],
+    zhou_zhi_xue: [{
+      id: "zhou_zhi_xue_bond", role: "muse", fate: "muse",
+      intents: ["ask_sworn", "ask_disciple", "ask_teach", "ask_partner", "ask_marry", "ask_join_cult"],
+      keywords: /定情|療傷|幫助|芷雪/,
+      needTrust: 4, needHonor: 0,
+      softTrust: 1, softKindLogs: 1,
+      rejectSay: "周芷雪低頭：「我……配不上。」",
+      acceptSay: "她繫紅繩於你腕：「莫忘今日。」",
+      grants: { flags: ["met_zhou_zhi_xue"], items: [], skills: [], attrs: {}, unlocks: [], renown: 2, trustBonus: 4 }
+    }],
+    hong_qigong_x: [{
+      id: "hong_qigong_x_bond", role: "disciple", fate: "teacher",
+      intents: ["ask_sworn", "ask_disciple", "ask_teach", "ask_partner", "ask_marry", "ask_join_cult"],
+      keywords: /拜師|棒法|叫花|收我|太上/,
+      needTrust: 4, needHonor: 0,
+      softTrust: 1, softKindLogs: 1,
+      rejectSay: "洪七影扒飯：「還沒資格。」",
+      acceptSay: "他扔你一根打狗棒：「醜歸醜，打得巧才是真。」",
+      grants: { flags: ["met_hong_qigong", "disciple_hongqi"], items: [], skills: ["dogstick_form"], attrs: {}, unlocks: [], renown: 2, trustBonus: 4 }
+    }],
+    huang_yaoshi_x: [{
+      id: "huang_yaoshi_x_bond", role: "disciple", fate: "teacher",
+      intents: ["ask_sworn", "ask_disciple", "ask_teach", "ask_partner", "ask_marry", "ask_join_cult"],
+      keywords: /拜師|奇門|落英|陣法|島主/,
+      needTrust: 4, needHonor: 0,
+      softTrust: 1, softKindLogs: 1,
+      rejectSay: "黃藥石冷哼：「才學不足。」",
+      acceptSay: "他擲一瓣落英：「半卷奇門——莫辱師門。」",
+      grants: { flags: ["met_huang_yaoshi", "sea_pass"], items: [], skills: ["odd_formation"], attrs: {}, unlocks: [], renown: 2, trustBonus: 4 }
+    }],
+    ouyang_fengdu: [{
+      id: "ouyang_fengdu_bond", role: "disciple", fate: "teacher",
+      intents: ["ask_sworn", "ask_disciple", "ask_teach", "ask_partner", "ask_marry", "ask_join_cult"],
+      keywords: /拜師|毒功|蛇杖|收我|毒叟/,
+      needTrust: 4, needHonor: 0,
+      softTrust: 1, softKindLogs: 1,
+      rejectSay: "歐陽風毒：「血不夠毒。」",
+      acceptSay: "他迫你服半丸：『既拜我——便與毒為伍。』",
+      grants: { flags: ["met_ouyang_fengdu"], items: [], skills: ["iron_sand_palm"], attrs: {}, unlocks: [], renown: 2, trustBonus: 4 }
+    }],
+    xiao_longyin: [{
+      id: "xiao_longyin_bond", role: "muse", fate: "muse",
+      intents: ["ask_sworn", "ask_disciple", "ask_teach", "ask_partner", "ask_marry", "ask_join_cult"],
+      keywords: /定情|拜師|柔掌|墓|龍吟/,
+      needTrust: 4, needHonor: 0,
+      softTrust: 1, softKindLogs: 1,
+      rejectSay: "小龍吟淡聲：「墓中無情。」",
+      acceptSay: "她拂袖：「既入墓緣——便授你柔掌半式。」",
+      grants: { flags: ["met_xiao_longyin", "tomb_taboo"], items: [], skills: ["soft_yin_palm"], attrs: {}, unlocks: [], renown: 2, trustBonus: 4 }
+    }],
+    yang_guochen: [{
+      id: "yang_guochen_bond", role: "sworn", fate: "ally",
+      intents: ["ask_sworn", "ask_disciple", "ask_teach", "ask_partner", "ask_marry", "ask_join_cult"],
+      keywords: /結義|重劍|同盟|過塵|墓/,
+      needTrust: 4, needHonor: 0,
+      softTrust: 1, softKindLogs: 1,
+      rejectSay: "楊過塵冷笑：「你也配？」",
+      acceptSay: "他扔你半截玄鐵：「拿去——別死太快。」",
+      grants: { flags: ["met_yang_guochen", "tomb_taboo"], items: [], skills: ["void_finger"], attrs: {}, unlocks: [], renown: 2, trustBonus: 4 }
+    }],
+    guo_jingyi: [{
+      id: "guo_jingyi_bond", role: "sworn", fate: "ally",
+      intents: ["ask_sworn", "ask_disciple", "ask_teach", "ask_partner", "ask_marry", "ask_join_cult"],
+      keywords: /結義|降龍|請教|大俠|邊關/,
+      needTrust: 4, needHonor: 0,
+      softTrust: 1, softKindLogs: 1,
+      rejectSay: "郭靖義：「國難當前，私義且緩。」",
+      acceptSay: "他鄭重抱拳：「既願守邊——你我便是兄弟。」",
+      grants: { flags: ["met_guo_jingyi", "border_sworn"], items: [], skills: ["xiake_strike"], attrs: {}, unlocks: [], renown: 2, trustBonus: 4 }
+    }],
+    huang_rongya: [{
+      id: "huang_rongya_bond", role: "muse", fate: "muse",
+      intents: ["ask_sworn", "ask_disciple", "ask_teach", "ask_partner", "ask_marry", "ask_join_cult"],
+      keywords: /定情|計謀|奇門|蓉芽|幫手/,
+      needTrust: 4, needHonor: 0,
+      softTrust: 1, softKindLogs: 1,
+      rejectSay: "黃蓉芽眨眼：「還不夠機靈。」",
+      acceptSay: "她塞你一張紙條：「跟我走——別問。」",
+      grants: { flags: ["met_huang_rongya"], items: [], skills: ["petal_rain"], attrs: {}, unlocks: [], renown: 2, trustBonus: 4 }
+    }],
+    dongfang_gubai: [{
+      id: "dongfang_gubai_bond", role: "convert", fate: "convert",
+      intents: ["ask_sworn", "ask_disciple", "ask_teach", "ask_partner", "ask_marry", "ask_join_cult"],
+      keywords: /入教|篡位|孤白|教主|同盟/,
+      needTrust: 4, needHonor: 0,
+      softTrust: 1, softKindLogs: 1,
+      rejectSay: "東方孤白：「尚未配見我。」",
+      acceptSay: "其眸光一閃：「既願——便踏這條不歸路。」",
+      grants: { flags: ["met_dongfang_gubai", "dongfang_reveal"], items: [], skills: ["lotus_flame"], attrs: {}, unlocks: [], renown: 2, trustBonus: 4 }
+    }],
+    zuo_lengying: [{
+      id: "zuo_lengying_bond", role: "rival", fate: "rival",
+      intents: ["ask_sworn", "ask_disciple", "ask_teach", "ask_partner", "ask_marry", "ask_join_cult"],
+      keywords: /會盟|同盟|五峰|併吞/,
+      needTrust: 4, needHonor: 0,
+      softTrust: 1, softKindLogs: 1,
+      rejectSay: "左冷影：「滾。」",
+      acceptSay: "他擲下一紙盟約：「暫用你——別礙事。」",
+      grants: { flags: ["met_zuo_lengying"], items: [], skills: [], attrs: {}, unlocks: [], renown: 2, trustBonus: 4 }
+    }],
+    mu_gaofeng_x: [{
+      id: "mu_gaofeng_x_bond", role: "enemy", fate: "enemy",
+      intents: ["ask_sworn", "ask_disciple", "ask_teach", "ask_partner", "ask_marry", "ask_join_cult"],
+      keywords: /報仇|討債|惡霸|金爪|殺死/,
+      needTrust: 4, needHonor: 0,
+      softTrust: 1, softKindLogs: 1,
+      rejectSay: "木高風獰笑：「生意歸生意。」",
+      acceptSay: "他亮爪：「那就來！」",
+      grants: { flags: ["met_mu_gaofeng"], items: [], skills: [], attrs: {}, unlocks: [], renown: 2, trustBonus: 4 }
+    }],
+    wei_xiaozhou: [{
+      id: "wei_xiaozhou_bond", role: "sworn", fate: "ally",
+      intents: ["ask_sworn", "ask_disciple", "ask_teach", "ask_partner", "ask_marry", "ask_join_cult"],
+      keywords: /結拜|香主|同盟|幫我|小舟/,
+      needTrust: 4, needHonor: 0,
+      softTrust: 1, softKindLogs: 1,
+      rejectSay: "韋小舟擠眼：「還沒到火候。」",
+      acceptSay: "他塞你一塊腰牌：「從今日起——有難找小舟。」",
+      grants: { flags: ["met_wei_xiaozhou", "court_double"], items: [], skills: [], attrs: {}, unlocks: [], renown: 2, trustBonus: 4 }
+    }],
+    chen_jinnan_x: [{
+      id: "chen_jinnan_x_bond", role: "disciple", fate: "teacher",
+      intents: ["ask_sworn", "ask_disciple", "ask_teach", "ask_partner", "ask_marry", "ask_join_cult"],
+      keywords: /拜師|入會|青梧|反清|總舵/,
+      needTrust: 4, needHonor: 0,
+      softTrust: 1, softKindLogs: 1,
+      rejectSay: "陳近南影：「心未定，不可入會。」",
+      acceptSay: "他授你一枚香主令：「記住——反的是昏政，不是百姓。」",
+      grants: { flags: ["met_chen_jinnan", "qingwu_member"], items: [], skills: ["xiake_strike"], attrs: {}, unlocks: [], renown: 2, trustBonus: 4 }
+    }],
+    jianning_jun: [{
+      id: "jianning_jun_bond", role: "spouse", fate: "married",
+      intents: ["ask_sworn", "ask_disciple", "ask_teach", "ask_partner", "ask_marry", "ask_join_cult"],
+      keywords: /定情|嫁|娶|郡主|駙馬/,
+      needTrust: 4, needHonor: 0,
+      softTrust: 1, softKindLogs: 1,
+      rejectSay: "建寧郡主跺腳：「本宮還沒答應！」",
+      acceptSay: "她扔出一方手帕：「從今日起你是本宮的人！」",
+      grants: { flags: ["met_jianning", "jianning_love"], items: [], skills: [], attrs: {}, unlocks: [], renown: 2, trustBonus: 4 }
+    }],
+    hai_dafu_x: [{
+      id: "hai_dafu_x_bond", role: "ally", fate: "ally",
+      intents: ["ask_sworn", "ask_disciple", "ask_teach", "ask_partner", "ask_marry", "ask_join_cult"],
+      keywords: /同盟|綿掌|慎刑|太監|海公/,
+      needTrust: 4, needHonor: 0,
+      softTrust: 1, softKindLogs: 1,
+      rejectSay: "海大富影冷笑：「聽不見。」",
+      acceptSay: "他點你肩穴：「記住這條命——欠我的。」",
+      grants: { flags: ["met_hai_dafu"], items: [], skills: ["soft_yin_palm"], attrs: {}, unlocks: [], renown: 2, trustBonus: 4 }
+    }],
+    ao_baiying: [{
+      id: "ao_baiying_bond", role: "rival", fate: "enemy",
+      intents: ["ask_sworn", "ask_disciple", "ask_teach", "ask_partner", "ask_marry", "ask_join_cult"],
+      keywords: /兵符|挑戰|擒拿|攝政|大將/,
+      needTrust: 4, needHonor: 0,
+      softTrust: 1, softKindLogs: 1,
+      rejectSay: "鰲拜影狂笑：「乳臭未乾。」",
+      acceptSay: "他拔刀：「有種——羽林見。」",
+      grants: { flags: ["met_ao_baiying"], items: [], skills: [], attrs: {}, unlocks: [], renown: 2, trustBonus: 4 }
+    }],
+    shuang_er_x: [{
+      id: "shuang_er_x_bond", role: "apprentice", fate: "apprentice",
+      intents: ["ask_sworn", "ask_disciple", "ask_teach", "ask_partner", "ask_marry", "ask_join_cult"],
+      keywords: /跟隨|丫鬟|雙兒|照顧|忠心/,
+      needTrust: 4, needHonor: 0,
+      softTrust: 1, softKindLogs: 1,
+      rejectSay: "雙兒影搖頭：「主尚未允。」",
+      acceptSay: "她福身：「奴婢……願跟著你。」",
+      grants: { flags: ["met_shuang_er", "shuang_er_follow"], items: [], skills: [], attrs: {}, unlocks: [], renown: 2, trustBonus: 4 }
+    }],
+    su_quan_x: [{
+      id: "su_quan_x_bond", role: "muse", fate: "muse",
+      intents: ["ask_sworn", "ask_disciple", "ask_teach", "ask_partner", "ask_marry", "ask_join_cult"],
+      keywords: /定情|神龍|夫人|入教|蘇荃/,
+      needTrust: 4, needHonor: 0,
+      softTrust: 1, softKindLogs: 1,
+      rejectSay: "蘇荃影：「教規不容。」",
+      acceptSay: "她低聲：「若你助我……或可改寫島上命運。」",
+      grants: { flags: ["met_su_quan"], items: [], skills: [], attrs: {}, unlocks: [], renown: 2, trustBonus: 4 }
+    }],
+    hong_antong_x: [{
+      id: "hong_antong_x_bond", role: "convert", fate: "convert",
+      intents: ["ask_sworn", "ask_disciple", "ask_teach", "ask_partner", "ask_marry", "ask_join_cult"],
+      keywords: /入教|神龍|教主|同盟/,
+      needTrust: 4, needHonor: 0,
+      softTrust: 1, softKindLogs: 1,
+      rejectSay: "洪安通影：「還未配。」",
+      acceptSay: "他擲下神龍令：「既入教——終身為奴為榮。」",
+      grants: { flags: ["met_hong_antong"], items: [], skills: [], attrs: {}, unlocks: [], renown: 2, trustBonus: 4 }
+    }],
+    jiu_nan_x: [{
+      id: "jiu_nan_x_bond", role: "disciple", fate: "teacher",
+      intents: ["ask_sworn", "ask_disciple", "ask_teach", "ask_partner", "ask_marry", "ask_join_cult"],
+      keywords: /拜師|神尼|刺駕|白衣|公主/,
+      needTrust: 4, needHonor: 0,
+      softTrust: 1, softKindLogs: 1,
+      rejectSay: "九難影合十：「殺業未消，不可授。」",
+      acceptSay: "她輕歎：「既執意——便授你一式。莫造殺業。」",
+      grants: { flags: ["met_jiu_nan", "jiunan_disciple"], items: [], skills: ["zen_breath"], attrs: {}, unlocks: [], renown: 2, trustBonus: 4 }
+    }],
+    a_ke_x: [{
+      id: "a_ke_x_bond", role: "muse", fate: "muse",
+      intents: ["ask_sworn", "ask_disciple", "ask_teach", "ask_partner", "ask_marry", "ask_join_cult"],
+      keywords: /定情|刺客|阿珂|軟劍|別刺/,
+      needTrust: 4, needHonor: 0,
+      softTrust: 1, softKindLogs: 1,
+      rejectSay: "阿珂影別過臉：「任務在身。」",
+      acceptSay: "她收劍：「……今日，不算。」",
+      grants: { flags: ["met_a_ke"], items: [], skills: [], attrs: {}, unlocks: [], renown: 2, trustBonus: 4 }
+    }],
+    mu_jianping_x: [{
+      id: "mu_jianping_x_bond", role: "ally", fate: "ally",
+      intents: ["ask_sworn", "ask_disciple", "ask_teach", "ask_partner", "ask_marry", "ask_join_cult"],
+      keywords: /幫助|郡主|沐府|保護|姐姐/,
+      needTrust: 4, needHonor: 0,
+      softTrust: 1, softKindLogs: 1,
+      rejectSay: "沐劍屏影：「姑姑不准。」",
+      acceptSay: "她拉你袖：「那你要保護我哦。」",
+      grants: { flags: ["met_mu_jianping"], items: [], skills: [], attrs: {}, unlocks: [], renown: 2, trustBonus: 4 }
+    }],
+    fang_yi_x: [{
+      id: "fang_yi_x_bond", role: "ally", fate: "ally",
+      intents: ["ask_sworn", "ask_disciple", "ask_teach", "ask_partner", "ask_marry", "ask_join_cult"],
+      keywords: /策反|別刺|同盟|方怡|沐府/,
+      needTrust: 4, needHonor: 0,
+      softTrust: 1, softKindLogs: 1,
+      rejectSay: "方怡影：「命令難違。」",
+      acceptSay: "她卸下面罩：「若你保沐府……我便收手。」",
+      grants: { flags: ["met_fang_yi", "fang_yi_turned"], items: [], skills: [], attrs: {}, unlocks: [], renown: 2, trustBonus: 4 }
+    }],
+    mao_dongzhu_x: [{
+      id: "mao_dongzhu_x_bond", role: "ally", fate: "ally",
+      intents: ["ask_sworn", "ask_disciple", "ask_teach", "ask_partner", "ask_marry", "ask_join_cult"],
+      keywords: /太后|懿旨|同盟|慈寧/,
+      needTrust: 4, needHonor: 0,
+      softTrust: 1, softKindLogs: 1,
+      rejectSay: "「太后」：「大膽。」",
+      acceptSay: "她低聲：「既識破……便一榮俱榮。」",
+      grants: { flags: ["met_mao_dongzhu", "fake_empress"], items: [], skills: [], attrs: {}, unlocks: [], renown: 2, trustBonus: 4 }
+    }],
+    duo_long_x: [{
+      id: "duo_long_x_bond", role: "sworn", fate: "ally",
+      intents: ["ask_sworn", "ask_disciple", "ask_teach", "ask_partner", "ask_marry", "ask_join_cult"],
+      keywords: /結拜|兄弟|侍衛|多隆|玩伴/,
+      needTrust: 4, needHonor: 0,
+      softTrust: 1, softKindLogs: 1,
+      rejectSay: "多隆影撓頭：「皇上還沒點頭。」",
+      acceptSay: "他砸胸：「好兄弟！喝酒！」",
+      grants: { flags: ["met_duo_long"], items: [], skills: [], attrs: {}, unlocks: [], renown: 2, trustBonus: 4 }
+    }],
+    suo_etu_x: [{
+      id: "suo_etu_x_bond", role: "sworn", fate: "ally",
+      intents: ["ask_sworn", "ask_disciple", "ask_teach", "ask_partner", "ask_marry", "ask_join_cult"],
+      keywords: /結拜|大學士|票擬|同盟|朝臣/,
+      needTrust: 4, needHonor: 0,
+      softTrust: 1, softKindLogs: 1,
+      rejectSay: "索額圖影：「朝局未穩。」",
+      acceptSay: "他拱手：「既結拜——朝中有我一份力。」",
+      grants: { flags: ["met_suo_etu"], items: [], skills: [], attrs: {}, unlocks: [], renown: 2, trustBonus: 4 }
+    }],
+    wu_sangui_x: [{
+      id: "wu_sangui_x_bond", role: "ally", fate: "ally",
+      intents: ["ask_sworn", "ask_disciple", "ask_teach", "ask_partner", "ask_marry", "ask_join_cult"],
+      keywords: /藩王|同盟|兵馬|平西|獨立/,
+      needTrust: 4, needHonor: 0,
+      softTrust: 1, softKindLogs: 1,
+      rejectSay: "吳三桂影冷笑：「你還不夠看。」",
+      acceptSay: "他擲下一枚虎符：「暫借你三成兵馬——別讓我後悔。」",
+      grants: { flags: ["met_wu_sangui", "fan_wang"], items: [], skills: [], attrs: {}, unlocks: [], renown: 2, trustBonus: 4 }
+    }],
+    shi_lang_x: [{
+      id: "shi_lang_x_bond", role: "ally", fate: "ally",
+      intents: ["ask_sworn", "ask_disciple", "ask_teach", "ask_partner", "ask_marry", "ask_join_cult"],
+      keywords: /水師|海戰|提督|同盟|戰船/,
+      needTrust: 4, needHonor: 0,
+      softTrust: 1, softKindLogs: 1,
+      rejectSay: "施琅影：「潮未至。」",
+      acceptSay: "他拍船舷：「准你一艦隊——海戰聽調。」",
+      grants: { flags: ["met_shi_lang", "sea_pass"], items: [], skills: [], attrs: {}, unlocks: [], renown: 2, trustBonus: 4 }
+    }],
+    mao_shiba_x: [{
+      id: "mao_shiba_x_bond", role: "sworn", fate: "ally",
+      intents: ["ask_sworn", "ask_disciple", "ask_teach", "ask_partner", "ask_marry", "ask_join_cult"],
+      keywords: /結拜|帶路|入京|大盜|十八/,
+      needTrust: 4, needHonor: 0,
+      softTrust: 1, softKindLogs: 1,
+      rejectSay: "茅十八影：「還不夠義氣。」",
+      acceptSay: "他拽你上船：「走！進京一趟。」",
+      grants: { flags: ["met_mao_shiba", "palace_entry", "map_huanggong"], items: [], skills: [], attrs: {}, unlocks: [], renown: 2, trustBonus: 4 }
     }]
   };
 
 
   function ensureBonds() {
+  const NPC_RELATIONS = {
+    lin_feng: [{ type:"master", target:"ye_qingshan", label:"師徒（決裂）", reveal:"default" }, { type:"master", target:"feng_qingya", label:"隱師授劍", revealFlag:"met_feng_qingya" }, { type:"romance", target:"ren_yingluo", label:"情緣", revealFlag:"lin_ren_love" }, { type:"rival", target:"ye_qingshan", label:"師徒反目", revealFlag:"ye_exposed" }, { type:"romance", target:"ye_xiaoyu", label:"青梅舊情", reveal:"default" }],
+    ye_qingshan: [{ type:"family", target:"ye_xiaoyu", label:"父女", reveal:"default" }, { type:"romance", target:"ning_shuying", label:"夫妻（貌合）", reveal:"default" }, { type:"rival", target:"lin_feng", label:"逐徒", revealFlag:"ye_exposed" }, { type:"ally", target:"zuo_lengying", label:"密約併吞", revealFlag:"ye_exposed" }],
+    ning_shuying: [{ type:"family", target:"ye_qingshan", label:"夫妻", reveal:"default" }, { type:"ally", target:"lin_feng", label:"護徒", reveal:"default" }],
+    ye_xiaoyu: [{ type:"family", target:"ye_qingshan", label:"父女", reveal:"default" }, { type:"romance", target:"lin_feng", label:"青梅", reveal:"default" }],
+    feng_qingya: [{ type:"disciple", target:"lin_feng", label:"隱師", revealFlag:"met_feng_qingya" }, { type:"enemy", target:"ye_qingshan", label:"逼隱之仇", revealFlag:"met_feng_qingya" }],
+    ren_yingluo: [{ type:"romance", target:"lin_feng", label:"情緣", revealFlag:"lin_ren_love" }, { type:"faction", target:"honglianzhu", label:"紅蓮副座", reveal:"default" }, { type:"rival", target:"zhou_zhi_xue", label:"情敵三角", revealFlag:"met_zhou_zhi_xue" }, { type:"rival", target:"dongfang_gubai", label:"篡位威脅", revealFlag:"dongfang_reveal" }],
+    dongfang_gubai: [{ type:"rival", target:"honglianzhu", label:"前教主篡位", revealFlag:"dongfang_reveal" }, { type:"rival", target:"ren_yingluo", label:"副座之爭", revealFlag:"dongfang_reveal" }],
+    zhou_zhi_xue: [{ type:"romance", target:"zhang_wujiang", label:"單相思", revealFlag:"met_zhou_zhi_xue" }, { type:"rival", target:"ren_yingluo", label:"情敵", revealFlag:"met_zhou_zhi_xue" }],
+    honglianzhu: [{ type:"faction", target:"ren_yingluo", label:"教主—副座", reveal:"default" }, { type:"enemy", target:"dongfang_gubai", label:"篡位之敵", revealFlag:"dongfang_reveal" }],
+    yang_guochen: [{ type:"romance", target:"xiao_longyin", label:"師徒禁忌情", revealFlag:"tomb_taboo" }, { type:"master", target:"xiao_longyin", label:"師徒", revealFlag:"tomb_taboo" }],
+    xiao_longyin: [{ type:"romance", target:"yang_guochen", label:"禁忌情", revealFlag:"tomb_taboo" }, { type:"master", target:"yang_guochen", label:"師尊", revealFlag:"tomb_taboo" }, { type:"ally", target:"mu_youlan", label:"同門幽墓", reveal:"default" }, { type:"ally", target:"yechen", label:"守陵同道", reveal:"default" }],
+    yechen: [{ type:"ally", target:"mu_youlan", label:"守陵／隱士", reveal:"default" }, { type:"ally", target:"xiao_longyin", label:"墓緣", revealFlag:"met_xiao_longyin" }],
+    mu_youlan: [{ type:"ally", target:"xiao_longyin", label:"同脈", reveal:"default" }, { type:"ally", target:"yechen", label:"墓中舊識", reveal:"default" }],
+    qiao_fengshan: [{ type:"master", target:"hong_qigong_x", label:"太上師尊", reveal:"default" }, { type:"faction", target:"powan_zhang", label:"破碗前後任", reveal:"default" }, { type:"sworn", target:"guo_jingyi", label:"英雄相惜", revealFlag:"met_guo_jingyi" }],
+    hong_qigong_x: [{ type:"disciple", target:"qiao_fengshan", label:"太上收徒", reveal:"default" }, { type:"faction", target:"powan_zhang", label:"破碗太上—舵主", reveal:"default" }],
+    powan_zhang: [{ type:"faction", target:"hong_qigong_x", label:"舵主—太上", reveal:"default" }, { type:"faction", target:"qiao_fengshan", label:"現任—前任", reveal:"default" }],
+    guo_jingyi: [{ type:"romance", target:"huang_rongya", label:"伴侣", reveal:"default" }, { type:"ally", target:"qiao_fengshan", label:"義氣相惜", revealFlag:"met_qiao_fengshan" }, { type:"ally", target:"zhang_wujiang", label:"邊關前輩", reveal:"default" }],
+    huang_rongya: [{ type:"romance", target:"guo_jingyi", label:"伴侣", reveal:"default" }, { type:"family", target:"huang_yaoshi_x", label:"父女（致敬）", revealFlag:"met_huang_yaoshi" }],
+    huang_yaoshi_x: [{ type:"family", target:"huang_rongya", label:"父女", revealFlag:"met_huang_rongya" }, { type:"enemy", target:"ouyang_fengdu", label:"舊怨", revealFlag:"met_ouyang_fengdu" }, { type:"ally", target:"hai_kuang", label:"島上奇人同僚", reveal:"default" }],
+    hai_kuang: [{ type:"ally", target:"huang_yaoshi_x", label:"落英同僚", reveal:"default" }],
+    ouyang_fengdu: [{ type:"enemy", target:"huang_yaoshi_x", label:"西毒東邪怨", reveal:"default" }, { type:"enemy", target:"guo_jingyi", label:"邊關死敵", revealFlag:"met_guo_jingyi" }],
+    lin_chen: [{ type:"enemy", target:"mu_gaofeng_x", label:"滅門血仇", reveal:"default" }],
+    mu_gaofeng_x: [{ type:"enemy", target:"lin_chen", label:"逼徒仇", reveal:"default" }],
+    zuo_lengying: [{ type:"ally", target:"ye_qingshan", label:"密約", revealFlag:"ye_exposed" }, { type:"rival", target:"chixiaxian", label:"五峰爭鋒", reveal:"default" }],
+    qu_yangqin: [{ type:"ally", target:"linqing", label:"正邪琴交", reveal:"default" }, { type:"faction", target:"honglianzhu", label:"魔教琴客", reveal:"default" }],
+    linqing: [{ type:"ally", target:"qu_yangqin", label:"琴交", revealFlag:"met_qu_yangqin" }],
+    duan_muyu: [{ type:"ally", target:"qiao_fengshan", label:"遊歷相識", revealFlag:"met_qiao_fengshan" }],
+    xu_zhuoyun: [{ type:"master", target:"masteryun", label:"蒼雲師徒", reveal:"default" }],
+    masteryun: [{ type:"disciple", target:"xu_zhuoyun", label:"啞徒", reveal:"default" }],
+    zhang_wujiang: [{ type:"romance", target:"zhao_minyan", label:"郡主纠结", revealFlag:"met_zhao_minyan" }, { type:"romance", target:"zhou_zhi_xue", label:"情絲", revealFlag:"met_zhou_zhi_xue" }],
+    zhao_minyan: [{ type:"romance", target:"zhang_wujiang", label:"試探情緣", revealFlag:"met_zhang_wujiang" }, { type:"ally", target:"huang_rongya", label:"京畿機靈黨", revealFlag:"met_huang_rongya" }],
+    jingandi: [{ type:"family", target:"dongchang_gong", label:"兄弟（隱藏）", revealFlag:"donggong_truth_known" }, { type:"ally", target:"wei_xiaozhou", label:"帝側玩伴／結拜", reveal:"default" }, { type:"enemy", target:"jiu_nan_x", label:"刺駕隱敵", revealFlag:"jiunan_assassin" }, { type:"enemy", target:"ao_baiying", label:"權臣可擒", revealFlag:"met_ao_baiying" }],
+    dongchang_gong: [{ type:"family", target:"jingandi", label:"皇兄（隱藏）", revealFlag:"donggong_truth_known" }],
+    wei_xiaozhou: [{ type:"ally", target:"jingandi", label:"帝側香主", reveal:"default" }, { type:"master", target:"chen_jinnan_x", label:"反朝師尊", revealFlag:"met_chen_jinnan" }, { type:"romance", target:"jianning_jun", label:"驕縱情緣", revealFlag:"jianning_love" }, { type:"romance", target:"shuang_er_x", label:"忠心女侍", revealFlag:"shuang_er_follow" }, { type:"sworn", target:"duo_long_x", label:"御前結拜", revealFlag:"met_duo_long" }, { type:"sworn", target:"suo_etu_x", label:"朝臣結拜", revealFlag:"met_suo_etu" }, { type:"ally", target:"mao_shiba_x", label:"帶路入京", revealFlag:"met_mao_shiba" }],
+    chen_jinnan_x: [{ type:"disciple", target:"wei_xiaozhou", label:"香主徒弟", revealFlag:"met_wei_xiaozhou" }, { type:"ally", target:"jiu_nan_x", label:"反朝舊識", revealFlag:"met_jiu_nan" }],
+    jianning_jun: [{ type:"romance", target:"wei_xiaozhou", label:"強情", revealFlag:"jianning_love" }, { type:"family", target:"jingandi", label:"皇親郡主", reveal:"default" }],
+    hai_dafu_x: [{ type:"rival", target:"dongchang_gong", label:"廠衛對立", reveal:"default" }, { type:"ally", target:"jingandi", label:"盲侍帝側", revealFlag:"met_hai_dafu" }],
+    ao_baiying: [{ type:"rival", target:"yulin_tongling", label:"兵權之爭", reveal:"default" }, { type:"rival", target:"da_jiangjun", label:"大將對峙", reveal:"default" }, { type:"ally", target:"wu_sangui_x", label:"藩鎮暗通", revealFlag:"fan_wang" }],
+    yulin_tongling: [{ type:"rival", target:"ao_baiying", label:"衛宮對權臣", revealFlag:"met_ao_baiying" }],
+    da_jiangjun: [{ type:"rival", target:"ao_baiying", label:"沙場對峙", revealFlag:"met_ao_baiying" }],
+    shuang_er_x: [{ type:"romance", target:"wei_xiaozhou", label:"忠侍", revealFlag:"met_wei_xiaozhou" }],
+    su_quan_x: [{ type:"romance", target:"hong_antong_x", label:"教主夫人", reveal:"default" }, { type:"rival", target:"hong_antong_x", label:"可奪教", revealFlag:"met_su_quan" }],
+    hong_antong_x: [{ type:"romance", target:"su_quan_x", label:"夫人", reveal:"default" }, { type:"enemy", target:"shi_lang_x", label:"海戰對手", revealFlag:"met_shi_lang" }],
+    jiu_nan_x: [{ type:"disciple", target:"a_ke_x", label:"師徒", reveal:"default" }, { type:"enemy", target:"jingandi", label:"刺駕", revealFlag:"jiunan_assassin" }, { type:"ally", target:"chen_jinnan_x", label:"前朝遺脈", revealFlag:"met_chen_jinnan" }],
+    a_ke_x: [{ type:"master", target:"jiu_nan_x", label:"神尼徒弟", reveal:"default" }, { type:"ally", target:"fang_yi_x", label:"刺客同路", revealFlag:"met_fang_yi" }],
+    mu_jianping_x: [{ type:"ally", target:"fang_yi_x", label:"沐府同行", reveal:"default" }, { type:"family", target:"fang_yi_x", label:"府中情誼", reveal:"default" }],
+    fang_yi_x: [{ type:"ally", target:"mu_jianping_x", label:"護郡主", reveal:"default" }, { type:"spy", target:"hong_antong_x", label:"島教細作", revealFlag:"met_hong_antong" }],
+    mao_dongzhu_x: [{ type:"spy", target:"hong_antong_x", label:"假太后細作", revealFlag:"fake_empress" }, { type:"ally", target:"shen_guifei", label:"後宮聯手", revealFlag:"fake_empress" }],
+    shen_guifei: [{ type:"ally", target:"mao_dongzhu_x", label:"聯「太后」", revealFlag:"fake_empress" }, { type:"spy", target:"mao_dongzhu_x", label:"互通聲氣", revealFlag:"fake_empress" }],
+    duo_long_x: [{ type:"sworn", target:"wei_xiaozhou", label:"結拜", revealFlag:"met_wei_xiaozhou" }, { type:"ally", target:"jingandi", label:"御前侍衛", reveal:"default" }],
+    suo_etu_x: [{ type:"sworn", target:"wei_xiaozhou", label:"結拜", revealFlag:"met_wei_xiaozhou" }, { type:"ally", target:"jingandi", label:"票擬忠臣", reveal:"default" }],
+    wu_sangui_x: [{ type:"ally", target:"ao_baiying", label:"藩鎮暗通", revealFlag:"met_ao_baiying" }, { type:"rival", target:"jingandi", label:"藩王野心", revealFlag:"fan_wang" }],
+    shi_lang_x: [{ type:"ally", target:"jingandi", label:"水師忠臣", reveal:"default" }, { type:"enemy", target:"hong_antong_x", label:"攻島", revealFlag:"met_hong_antong" }],
+    mao_shiba_x: [{ type:"sworn", target:"wei_xiaozhou", label:"帶路結義", revealFlag:"met_wei_xiaozhou" }, { type:"ally", target:"chen_jinnan_x", label:"青梧舊識", revealFlag:"met_chen_jinnan" }],
+  };
+
+  function getKnownRelations(npcId) {
+    const list = NPC_RELATIONS[npcId] || [];
+    return list.filter(function(e){
+      if (e.revealFlag) return !!flag(e.revealFlag);
+      return true; // reveal default
+    });
+  }
+  function relationTypeLabel(t) {
+    const M = { master:"師徒", disciple:"徒弟", romance:"情緣", sworn:"結義", rival:"對立", enemy:"仇敵", ally:"同盟", faction:"同門／派系", family:"親族", spy:"細作" };
+    return M[t] || t;
+  }
+  function showNpcRelationCard(npcId) {
+    const n = NPCS[npcId]; if (!n) return;
+    const rels = getKnownRelations(npcId);
+    let html = "<div class='rel-card'><h3>" + escapeHtml(n.name) + "</h3>";
+    html += "<p class='small'>" + escapeHtml(n.title || "") + (n.line ? " · " + (n.line === "court" ? "朝廷線" : "江湖線") : "") + "</p>";
+    html += "<p>" + escapeHtml(n.intro || "") + "</p>";
+    if (n.arcs) {
+      html += "<div class='rel-arcs'><div><b>主線</b>：" + escapeHtml(n.arcs.main || "？？？") + "</div>";
+      html += "<div><b>支線</b>：" + escapeHtml(n.arcs.side || "？？？") + "</div>";
+      const hid = n.arcs.hidden || "";
+      const showHid = !hid || flag("arc_reveal_" + npcId) || (rels.length >= 2);
+      html += "<div><b>隱藏</b>：" + (showHid ? escapeHtml(hid) : "？？？") + "</div></div>";
+    }
+    html += "<h4>已知人物關係</h4>";
+    if (!rels.length) html += "<p class='small'>尚未察知更多關係。</p>";
+    else {
+      html += "<ul class='rel-list'>";
+      rels.forEach(function(e){
+        const t = NPCS[e.target];
+        const tn = t ? t.name : e.target;
+        html += "<li><span class='rel-type'>" + escapeHtml(relationTypeLabel(e.type)) + "</span> → <button type='button' class='linkish' data-rel-npc='" + e.target + "'>" + escapeHtml(tn) + "</button> <span class='small'>" + escapeHtml(e.label) + "</span></li>";
+      });
+      html += "</ul>";
+    }
+    html += "<div class='btn-row'><button type='button' class='btn' id='rel-close'>關閉</button></div></div>";
+    openModal(html);
+    const c = document.getElementById("rel-close");
+    if (c) c.onclick = function(){ closeModal(); };
+    document.querySelectorAll("[data-rel-npc]").forEach(function(b){
+      b.onclick = function(){ showNpcRelationCard(b.getAttribute("data-rel-npc")); };
+    });
+  }
+
+
     if (!S.bonds || typeof S.bonds !== "object") S.bonds = {};
     if (!S.unlockDays || typeof S.unlockDays !== "object") S.unlockDays = {};
     if (typeof S.forgeBonus !== "number") S.forgeBonus = 0;
@@ -2599,6 +3408,7 @@ try { saveGameSilent(); } catch (e) {}
     if (!raw) {
       raw = localStorage.getItem(SAVE_KEY_OLD) || localStorage.getItem(SAVE_KEY_OLDER);
       try { if (!raw && typeof SAVE_KEY_OLDEST !== "undefined") raw = localStorage.getItem(SAVE_KEY_OLDEST); } catch (e) {}
+      try { if (!raw && typeof SAVE_KEY_V4 !== "undefined") raw = localStorage.getItem(SAVE_KEY_V4); } catch (e) {}
       try { if (!raw && typeof SAVE_KEY_V1 !== "undefined") raw = localStorage.getItem(SAVE_KEY_V1); } catch (e) {}
       try { if (!raw && typeof SAVE_KEY_V1B !== "undefined") raw = localStorage.getItem(SAVE_KEY_V1B); } catch (e) {}
       migrated = !!raw;
@@ -2673,7 +3483,8 @@ try { saveGameSilent(); } catch (e) {}
     "donggong_reconciled","donggong_sold_out","donggong_evidence_burned",
     "donggong_abandon_revenge","side_donggong","donggong_saved_once",
     "donggong_night_talk","donggong_name_hint","donggong_search_done","donggong_enemy_letter","donggong_shield_today",
-    "dating_unlocked"
+    "dating_unlocked",
+    "met_ye_qingshan", "met_lin_feng", "met_ning_shuying", "met_ye_xiaoyu", "met_lin_chen", "met_ren_yingluo", "met_feng_qingya", "met_qu_yangqin", "met_qiao_fengshan", "met_duan_muyu", "met_xu_zhuoyun", "met_zhang_wujiang", "met_zhao_minyan", "met_zhou_zhi_xue", "met_hong_qigong", "met_huang_yaoshi", "met_ouyang_fengdu", "met_xiao_longyin", "met_yang_guochen", "met_guo_jingyi", "met_huang_rongya", "met_dongfang_gubai", "met_zuo_lengying", "met_mu_gaofeng", "met_wei_xiaozhou", "met_chen_jinnan", "met_jianning", "met_hai_dafu", "met_ao_baiying", "met_shuang_er", "met_su_quan", "met_hong_antong", "met_jiu_nan", "met_a_ke", "met_mu_jianping", "met_fang_yi", "met_mao_dongzhu", "met_duo_long", "met_suo_etu", "met_wu_sangui", "met_shi_lang", "met_mao_shiba", "ye_exposed", "lin_ren_love", "lin_feng_sworn", "ye_xiaoyu_trust", "lin_chen_sworn", "disciple_feng", "qiao_sworn", "xuzhu_open", "zhao_min_reveal", "disciple_hongqi", "dongfang_reveal", "tomb_taboo", "border_sworn", "court_double", "qingwu_member", "jianning_love", "shuang_er_follow", "jiunan_assassin", "fang_yi_turned", "fake_empress", "fan_wang", "cangfeng_hypocrite_done", "side_tomb_taboo_done", "side_qiao_done", "side_court_double_done", "side_fake_empress_done", "side_jiunan_done", "side_fan_wang_done"
   ];
 
   function blankNpcMem() {
@@ -4572,7 +5383,14 @@ try { saveGameSilent(); } catch (e) {}
       side_xiake: { id: "side_xiake", title: "支線・俠客殘頁", step: 0, done: false },
       side_xuanyin: { id: "side_xuanyin", title: "支線・玄陰殘卷", step: 0, done: false },
       side_hanxue: { id: "side_hanxue", title: "支線・汗血尋蹤", step: 0, done: false },
-      side_donggong_shadow: { id: "side_donggong_shadow", title: "支線・督公影事", step: 0, done: false }
+      side_donggong_shadow: { id: "side_donggong_shadow", title: "支線・督公影事", step: 0, done: false },
+      side_cangfeng_hypocrite: { id: "side_cangfeng_hypocrite", title: "支線・蒼峰偽君子", step: 0, done: false },
+      side_tomb_taboo: { id: "side_tomb_taboo", title: "支線・古墓禁忌", step: 0, done: false },
+      side_qiao_identity: { id: "side_qiao_identity", title: "支線・喬峰山身世", step: 0, done: false },
+      side_court_double: { id: "side_court_double", title: "支線・韋小舟夾心", step: 0, done: false },
+      side_fake_empress: { id: "side_fake_empress", title: "支線・假太后", step: 0, done: false },
+      side_jiunan_assassin: { id: "side_jiunan_assassin", title: "支線・九難刺駕", step: 0, done: false },
+      side_fan_wang: { id: "side_fan_wang", title: "支線・藩王野心", step: 0, done: false }
     };
     if (!S.quests) S.quests = {};
     Object.keys(defs).forEach(k => {
@@ -5854,6 +6672,48 @@ try { saveGameSilent(); } catch (e) {}
       chixiaxian: { default: "赤霞仙子：「崖風烈，劍意更烈。」", ally: "「這一式，贈你。」", enemy: "劍出如霞。", immortal: "紅衣似遠似近。" },
       wuyinqinmo: { default: "無音琴魔：「聽不見的，才是殺機。」", ally: "「無音曲，護你一程。」", enemy: "琴弦無聲而殺。", mad: "他只對着虛空笑。" },
       gu_xiaoran: { default: "顧小然：「劍在人在。」", ally: "「去蒼峰論劍？」", rival: "「拔劍。」", enemy: "「讓開。」" },
+      ye_qingshan: { default: "葉青山：「蒼峰門下，以和為貴。」", ally: "「自己人。」", enemy: "「滾。」" },
+      lin_feng: { default: "林風：「喝酒嗎？」", ally: "「自己人。」", enemy: "「滾。」" },
+      ning_shuying: { default: "寧書影：「劍在，人在。」", ally: "「自己人。」", enemy: "「滾。」" },
+      ye_xiaoyu: { default: "葉小雨：「你是誰呀？」", ally: "「自己人。」", enemy: "「滾。」" },
+      lin_chen: { default: "林辰：「仇——還沒報。」", ally: "「自己人。」", enemy: "「滾。」" },
+      ren_yingluo: { default: "任盈蘿：「紅蓮裡，小心火。」", ally: "「自己人。」", enemy: "「滾。」" },
+      feng_qingya: { default: "風清崖：「……劍緣？」", ally: "「自己人。」", enemy: "「滾。」" },
+      qu_yangqin: { default: "曲陽琴：「可聽一曲？」", ally: "「自己人。」", enemy: "「滾。」" },
+      qiao_fengshan: { default: "喬峰山：「碗裡的酒，敬過義氣。」", ally: "「自己人。」", enemy: "「滾。」" },
+      duan_muyu: { default: "段沐雨：「南疆路遠，你要去哪？」", ally: "「自己人。」", enemy: "「滾。」" },
+      xu_zhuoyun: { default: "虛竹雲：（點頭，不語）", ally: "「自己人。」", enemy: "「滾。」" },
+      zhang_wujiang: { default: "張無疆：「要不要乾糧？」", ally: "「自己人。」", enemy: "「滾。」" },
+      zhao_minyan: { default: "趙敏嫣：「本……我只是過路的。」", ally: "「自己人。」", enemy: "「滾。」" },
+      zhou_zhi_xue: { default: "周芷雪：「……你好。」", ally: "「自己人。」", enemy: "「滾。」" },
+      hong_qigong_x: { default: "洪七影：「有飯沒？」", ally: "「自己人。」", enemy: "「滾。」" },
+      huang_yaoshi_x: { default: "黃藥石：「才學幾何？」", ally: "「自己人。」", enemy: "「滾。」" },
+      ouyang_fengdu: { default: "歐陽風毒：「血香……不錯。」", ally: "「自己人。」", enemy: "「滾。」" },
+      xiao_longyin: { default: "小龍吟：「墓中不宜久留。」", ally: "「自己人。」", enemy: "「滾。」" },
+      yang_guochen: { default: "楊過塵：「擋路？」", ally: "「自己人。」", enemy: "「滾。」" },
+      guo_jingyi: { default: "郭靖義：「為國為民。」", ally: "「自己人。」", enemy: "「滾。」" },
+      huang_rongya: { default: "黃蓉芽：「嘻，算到你了。」", ally: "「自己人。」", enemy: "「滾。」" },
+      dongfang_gubai: { default: "東方孤白：「日月……在我。」", ally: "「自己人。」", enemy: "「滾。」" },
+      zuo_lengying: { default: "左冷影：「五峰，當一。」", ally: "「自己人。」", enemy: "「滾。」" },
+      mu_gaofeng_x: { default: "木高風：「金爪借你一用？」", ally: "「自己人。」", enemy: "「滾。」" },
+      wei_xiaozhou: { default: "韋小舟：「宮裡消息，很貴。」", ally: "「自己人。」", enemy: "「滾。」" },
+      chen_jinnan_x: { default: "陳近南影：「反的是昏政。」", ally: "「自己人。」", enemy: "「滾。」" },
+      jianning_jun: { default: "建寧郡主：「本宮說了算！」", ally: "「自己人。」", enemy: "「滾。」" },
+      hai_dafu_x: { default: "海大富影：「……我聽得見。」", ally: "「自己人。」", enemy: "「滾。」" },
+      ao_baiying: { default: "鰲拜影：「跪下。」", ally: "「自己人。」", enemy: "「滾。」" },
+      shuang_er_x: { default: "雙兒影：「公子／姑娘萬福。」", ally: "「自己人。」", enemy: "「滾。」" },
+      su_quan_x: { default: "蘇荃影：「神龍令在此。」", ally: "「自己人。」", enemy: "「滾。」" },
+      hong_antong_x: { default: "洪安通影：「入教否？」", ally: "「自己人。」", enemy: "「滾。」" },
+      jiu_nan_x: { default: "九難影：「阿彌陀佛。」", ally: "「自己人。」", enemy: "「滾。」" },
+      a_ke_x: { default: "阿珂影：「……任務。」", ally: "「自己人。」", enemy: "「滾。」" },
+      mu_jianping_x: { default: "沐劍屏影：「姐姐呢？」", ally: "「自己人。」", enemy: "「滾。」" },
+      fang_yi_x: { default: "方怡影：「別多問。」", ally: "「自己人。」", enemy: "「滾。」" },
+      mao_dongzhu_x: { default: "「太后」：「罷了。」", ally: "「自己人。」", enemy: "「滾。」" },
+      duo_long_x: { default: "多隆影：「喝酒！」", ally: "「自己人。」", enemy: "「滾。」" },
+      suo_etu_x: { default: "索額圖影：「票擬擬好了。」", ally: "「自己人。」", enemy: "「滾。」" },
+      wu_sangui_x: { default: "吳三桂影：「藩鎮自有藩鎮的道理。」", ally: "「自己人。」", enemy: "「滾。」" },
+      shi_lang_x: { default: "施琅影：「潮起即戰。」", ally: "「自己人。」", enemy: "「滾。」" },
+      mao_shiba_x: { default: "茅十八影：「進京？跟我。」", ally: "「自己人。」", enemy: "「滾。」" },
       huang_linger: { default: "黃靈兒：「嘻，你誰呀？」", ally: "「要不要我幫你打聽？」", apprentice: "「師父——嘻。」" },
       sha_yuyan: { default: "沙語嫣：「沙裡，只認刀。」", ally: "「跟上，別迷路。」", muse: "「……看夠了？」" },
       powan_zhang: { default: "破碗長老：「碗響，飯來。」", ally: "「幫裡給你留碗粥。」", teacher: "「棒法要醜，才打得巧。」" },
@@ -5889,6 +6749,15 @@ try { saveGameSilent(); } catch (e) {}
   }
 
   async function talkNpc(npcId) {
+    try {
+      if (npcId && NPCS[npcId]) {
+        const mf = "met_" + npcId.replace(/_x$/, "").replace(/_shadow$/, "");
+        // common met_ flags used by relations
+        const MET_MAP = { ye_qingshan:"met_ye_qingshan", lin_feng:"met_lin_feng", ning_shuying:"met_ning_shuying", ye_xiaoyu:"met_ye_xiaoyu", lin_chen:"met_lin_chen", ren_yingluo:"met_ren_yingluo", feng_qingya:"met_feng_qingya", qu_yangqin:"met_qu_yangqin", qiao_fengshan:"met_qiao_fengshan", duan_muyu:"met_duan_muyu", xu_zhuoyun:"met_xu_zhuoyun", zhang_wujiang:"met_zhang_wujiang", zhao_minyan:"met_zhao_minyan", zhou_zhi_xue:"met_zhou_zhi_xue", hong_qigong_x:"met_hong_qigong", huang_yaoshi_x:"met_huang_yaoshi", ouyang_fengdu:"met_ouyang_fengdu", xiao_longyin:"met_xiao_longyin", yang_guochen:"met_yang_guochen", guo_jingyi:"met_guo_jingyi", huang_rongya:"met_huang_rongya", dongfang_gubai:"met_dongfang_gubai", zuo_lengying:"met_zuo_lengying", mu_gaofeng_x:"met_mu_gaofeng", wei_xiaozhou:"met_wei_xiaozhou", chen_jinnan_x:"met_chen_jinnan", jianning_jun:"met_jianning", hai_dafu_x:"met_hai_dafu", ao_baiying:"met_ao_baiying", shuang_er_x:"met_shuang_er", su_quan_x:"met_su_quan", hong_antong_x:"met_hong_antong", jiu_nan_x:"met_jiu_nan", a_ke_x:"met_a_ke", mu_jianping_x:"met_mu_jianping", fang_yi_x:"met_fang_yi", mao_dongzhu_x:"met_mao_dongzhu", duo_long_x:"met_duo_long", suo_etu_x:"met_suo_etu", wu_sangui_x:"met_wu_sangui", shi_lang_x:"met_shi_lang", mao_shiba_x:"met_mao_shiba" };
+        if (MET_MAP[npcId]) setFlag(MET_MAP[npcId], true);
+      }
+    } catch (e) {}
+
     if (isImprisoned() && npcId !== S.prison.by) {
       toast("關押中只能與看守交涉", true);
       npcId = S.prison.by;
@@ -6405,6 +7274,17 @@ try { saveGameSilent(); } catch (e) {}
         <div style="flex:1"><strong>${n.name}</strong> <span class="badge">${bondSummary(id)}</span>
         <div class="small">自第 ${b.sinceDay||"?"} 日 · 解鎖：${unlocks || "—"}</div></div></div>`;
     });
+    html += `<h3>人物關係</h3><p class="small">點選人物查看已知關係網與主／支／隱藏線。</p><div class="rel-grid">`;
+    const relIds = Object.keys(NPCS).filter(id => NPCS[id].major && (NPC_RELATIONS[id] || NPCS[id].arcs));
+    relIds.forEach(id => {
+      const n = NPCS[id];
+      const known = (typeof getKnownRelations === "function" ? getKnownRelations(id) : []).length;
+      const lineTag = n.line === "court" ? "朝廷" : (n.line === "jianghu" ? "江湖" : "");
+      html += `<button type="button" class="list-item fate-row rel-npc-btn" data-rel-open="${id}">${chibiHtml(id)}
+        <div style="flex:1;text-align:left"><strong>${escapeHtml(n.name)}</strong> ${lineTag?`<span class="badge">${lineTag}</span>`:""}
+        <div class="small">${escapeHtml(n.title||"")} · 已知關係 ${known}</div></div></button>`;
+    });
+    html += `</div>`;
     html += `<h3>人物命運</h3>`;
     Object.keys(NPCS).filter(id => NPCS[id].major).forEach(id => {
       const n = NPCS[id], f = S.fates[id];
@@ -6424,7 +7304,7 @@ try { saveGameSilent(); } catch (e) {}
     <div class="btn-row" style="margin-top:10px">
       <button class="btn primary" id="btn-ending-more">檢視江湖結局</button>
     </div>
-    <p class="small" style="margin-top:12px">地點 ${LOCATIONS.length} · 人物 ${Object.keys(NPCS).length} · 物品 ${Object.keys(ITEMS).length} · 承諾解鎖 ${listUnlocks().length} · 存檔 v6</p>
+    <p class="small" style="margin-top:12px">地點 ${LOCATIONS.length} · 人物 ${Object.keys(NPCS).length} · 物品 ${Object.keys(ITEMS).length} · 承諾解鎖 ${listUnlocks().length} · 存檔 v8</p>
     <p class="small">${escapeHtml(endingTendencyLine())}</p>
     <p class="small">API Key 只存本機。CORS／file:// 失敗則離線對白；NPC 記憶仍會寫入存檔。</p>`;
   }
@@ -6483,6 +7363,9 @@ try { saveGameSilent(); } catch (e) {}
     const bl = document.getElementById("btn-load"); if (bl) bl.onclick = () => { loadGame(); render(); };
     const br = document.getElementById("btn-reset"); if (br) br.onclick = resetGame;
     const bset = document.getElementById("btn-settings"); if (bset) bset.onclick = showSettings;
+    document.querySelectorAll("[data-rel-open]").forEach(function(b){
+      b.onclick = function(){ showNpcRelationCard(b.getAttribute("data-rel-open")); };
+    });
     const be = document.getElementById("btn-ending-view");
     if (be) be.onclick = () => {
       if (!canViewEndingOfficial() && !S.endingId) {
@@ -7358,6 +8241,153 @@ try { saveGameSilent(); } catch (e) {}
         }});
       }
     }
+
+    // ===== v9 homage side quests =====
+    if (locId === "chixia") {
+      if (S.quests.side_cangfeng_hypocrite && S.quests.side_cangfeng_hypocrite.step === 0) {
+        acts.push({ label: "【支線】打聽葉青山傳聞", fn: function(){
+          S.quests.side_cangfeng_hypocrite.step = 1; setFlag("met_ye_qingshan");
+          showStory("市井竊語：蒼峰掌門葉青山外表仁厚，門下卻屢有「意外」。林風被逐，寧書影沉默。");
+        }});
+      }
+      if (S.quests.side_cangfeng_hypocrite && S.quests.side_cangfeng_hypocrite.step === 1 && !S.quests.side_cangfeng_hypocrite.done) {
+        acts.push({ label: "【支線】蒐集偽君子鐵證", fn: function(){
+          startCombat("elite_bandit", function(){
+            S.quests.side_cangfeng_hypocrite.step = 2;
+            addItem("map_fragment", 1); setFlag("ye_exposed");
+            showStory("崖下石室搜得密信：葉青山與左冷影約期併吞。鐵證在手。");
+          });
+        }});
+      }
+      if (S.quests.side_cangfeng_hypocrite && S.quests.side_cangfeng_hypocrite.step === 2 && !S.quests.side_cangfeng_hypocrite.done) {
+        acts.push({ label: "【支線】當眾揭穿葉青山", fn: function(){
+          S.quests.side_cangfeng_hypocrite.done = true; S.quests.side_cangfeng_hypocrite.step = 3;
+          setFlag("cangfeng_hypocrite_done"); setFlag("ye_exposed");
+          setFate("ye_qingshan", "exposed"); S.renown += 8; S.honor += 3;
+          if (S.skills.indexOf("peak_intent") < 0) S.skills.push("peak_intent");
+          showStory("論劍台前密信宣讀。葉青山偽面撕破，倉皇退場。蒼峰劍意入你心中。（聲望＋俠義）");
+        }});
+      }
+    }
+    if (locId === "yewang" || locId === "wuyin") {
+      if (S.quests.side_tomb_taboo && S.quests.side_tomb_taboo.step === 0) {
+        acts.push({ label: "【支線】窺見墓中二人", fn: function(){
+          S.quests.side_tomb_taboo.step = 1; setFlag("met_xiao_longyin"); setFlag("met_yang_guochen"); setFlag("tomb_taboo");
+          showStory("墓影深處：白衣女子與黑衣棄徒對坐。空氣裡有超越師徒的沉默。");
+        }});
+      }
+      if (S.quests.side_tomb_taboo && S.quests.side_tomb_taboo.step === 1 && !S.quests.side_tomb_taboo.done) {
+        acts.push({ label: "【支線】助二人破禁制", fn: function(){
+          startCombat("tomb_shade", function(){
+            S.quests.side_tomb_taboo.done = true; S.quests.side_tomb_taboo.step = 2;
+            setFlag("side_tomb_taboo_done"); setFlag("tomb_ally");
+            if (S.skills.indexOf("soft_yin_palm") < 0) S.skills.push("soft_yin_palm");
+            S.renown += 5; addItem("tomb_seal", 1);
+            setFate("xiao_longyin", "muse"); setFate("yang_guochen", "ally");
+            showStory("禁制鬆動。小龍吟授柔掌半式，楊過塵點頭：「欠你一次。」");
+          });
+        }});
+      }
+    }
+    if (locId === "qingcheng") {
+      if (S.quests.side_qiao_identity && S.quests.side_qiao_identity.step === 0) {
+        acts.push({ label: "【支線】聽喬峰山身世謠", fn: function(){
+          S.quests.side_qiao_identity.step = 1; setFlag("met_qiao_fengshan");
+          showStory("破碗幫竊竊私語：前任幫主喬峰山——身上或流着邊關之血。洪七影只喝酒不開口。");
+        }});
+      }
+      if (S.quests.side_qiao_identity && S.quests.side_qiao_identity.step === 1 && !S.quests.side_qiao_identity.done) {
+        acts.push({ label: "【支線】為喬峰山作證／勸留", fn: function(){
+          S.quests.side_qiao_identity.done = true; S.quests.side_qiao_identity.step = 2;
+          setFlag("side_qiao_done"); setFlag("qiao_sworn");
+          setFate("qiao_fengshan", "ally"); S.renown += 6; S.honor += 4;
+          if (S.skills.indexOf("jiaohua_quan") < 0) S.skills.push("jiaohua_quan");
+          showStory("你當眾力證其義氣大於出身。喬峰山砸碗結義。叫花拳入門。");
+        }});
+      }
+    }
+    if (locId === "huanggong" || locId === "yanhui" || locId === "hougong") {
+      if (S.quests.side_court_double && S.quests.side_court_double.step === 0) {
+        acts.push({ label: "【支線】遇韋小舟拋媚眼", fn: function(){
+          S.quests.side_court_double.step = 1; setFlag("met_wei_xiaozhou"); setFlag("court_double");
+          showStory("小太監韋小舟：「宮裡危险，會裡也危险——你選邊站？還是……兩邊都站？」");
+        }});
+      }
+      if (S.quests.side_court_double && S.quests.side_court_double.step === 1 && !S.quests.side_court_double.done) {
+        acts.push({ label: "【支線】夾心走鋼絲（見雙方）", fn: function(){
+          setFlag("met_chen_jinnan"); setFlag("qingwu_member");
+          S.quests.side_court_double.step = 2;
+          showStory("你來回於帝側與青梧密舵。兩邊的令都握在手——也意味兩邊都能殺你。");
+        }});
+      }
+      if (S.quests.side_court_double && S.quests.side_court_double.step === 2 && !S.quests.side_court_double.done) {
+        acts.push({ label: "【支線】定策：兩邊留一線", fn: function(){
+          S.quests.side_court_double.done = true; S.quests.side_court_double.step = 3;
+          setFlag("side_court_double_done"); S.renown += 5; S.luck = Math.min(30, (S.luck||5)+2);
+          setFate("wei_xiaozhou", "ally");
+          showStory("韋小舟塞你兩塊腰牌：「活着比站邊重要。咱們——結拜？」福緣上升。");
+        }});
+      }
+    }
+    if (locId === "hougong" || locId === "neiting") {
+      if (S.quests.side_fake_empress && S.quests.side_fake_empress.step === 0) {
+        acts.push({ label: "【支線】慈寧「太后」神態有異", fn: function(){
+          S.quests.side_fake_empress.step = 1; setFlag("met_mao_dongzhu"); setFlag("fake_empress");
+          showStory("「太后」聲口微抖。沈貴妃眼神閃過一絲心照不宣。假——還是真？");
+        }});
+      }
+      if (S.quests.side_fake_empress && S.quests.side_fake_empress.step === 1 && !S.quests.side_fake_empress.done) {
+        acts.push({ label: "【支線】揭穿假太后毛東珠", fn: function(){
+          S.quests.side_fake_empress.done = true; S.quests.side_fake_empress.step = 2;
+          setFlag("side_fake_empress_done"); setFate("mao_dongzhu_x", "exposed");
+          S.renown += 7; S.honor += 2; adjustKarma && adjustKarma(3, "揭偽后");
+          showStory("鳳冠落地——毛東珠影的假面撕破。後宮震動，景安帝記你一功。");
+        }});
+      }
+    }
+    if (locId === "tiantai" || locId === "hougong" || locId === "qianqing") {
+      if (S.quests.side_jiunan_assassin && S.quests.side_jiunan_assassin.step === 0) {
+        acts.push({ label: "【支線】白衣神尼投來一顧", fn: function(){
+          S.quests.side_jiunan_assassin.step = 1; setFlag("met_jiu_nan"); setFlag("jiunan_assassin");
+          showStory("九難影：「前朝血未乾。你若近帝——便是劫數中人。」阿珂影袖中軟劍微響。");
+        }});
+      }
+      if (S.quests.side_jiunan_assassin && S.quests.side_jiunan_assassin.step === 1 && !S.quests.side_jiunan_assassin.done) {
+        acts.push({ label: "【支線】勸止／袒護刺駕", fn: function(){
+          S.quests.side_jiunan_assassin.done = true; S.quests.side_jiunan_assassin.step = 2;
+          setFlag("side_jiunan_done"); S.renown += 4;
+          if (S.honor >= 20) {
+            setFate("jiu_nan_x", "ally"); setFate("a_ke_x", "ally"); S.honor += 3;
+            showStory("你以俠義相勸。九難影收劍：「……今日，不造殺業。」阿珂影默默退下。");
+          } else {
+            setFate("jiu_nan_x", "enemy"); S.karma = (S.karma||0) - 2;
+            showStory("勸說失敗。刺駕陰影仍在——九難影視你為帝側鷹犬。");
+          }
+        }});
+      }
+    }
+    if (locId === "bianguan") {
+      if (S.quests.side_fan_wang && S.quests.side_fan_wang.step === 0) {
+        acts.push({ label: "【支線】平西王行營來使", fn: function(){
+          S.quests.side_fan_wang.step = 1; setFlag("met_wu_sangui"); setFlag("fan_wang");
+          showStory("吳三桂影來使：「藩王愿借兵——只要你在京中遞一句話。」野心如刀。");
+        }});
+      }
+      if (S.quests.side_fan_wang && S.quests.side_fan_wang.step === 1 && !S.quests.side_fan_wang.done) {
+        acts.push({ label: "【支線】拒藩／聯藩抉擇", fn: function(){
+          S.quests.side_fan_wang.done = true; S.quests.side_fan_wang.step = 2;
+          setFlag("side_fan_wang_done");
+          if ((S.honor||0) >= 15) {
+            setFate("wu_sangui_x", "enemy"); S.renown += 6; S.honor += 2;
+            showStory("你拒藩王密約，並暗報邊關。霍鎮北記你一功。");
+          } else {
+            setFate("wu_sangui_x", "ally"); S.renown += 3; addItem("iron_blade", 1);
+            showStory("你暫接虎符半枚。藩王線開啟——低頭飲鴆，也是一種活法。");
+          }
+        }});
+      }
+    }
+
     // palace deliberate actions (含紫禁城子地)
     const PALACE_NIGHT = { huanggong:1, neiting:1, hougong:1, yangxin:1, yuhuayuan:1, qianqing:1, taihedian:1, wumen:1 };
     if (PALACE_NIGHT[locId]) {
