@@ -75,3 +75,7 @@ npx serve .
 - 自測：`node scripts/autorun_v13_headless.js`
 - Pages：https://oceanson17.github.io/jianghu-xing/
 
+## 2026-10-18 · AI 劇情板／主線導演 v14
+- 修好【劇情板】按鈕無反應（`fn`／`run`）
+- AI 可推主線（`advance_main`）與 NPC 行程／委託／開口
+- Pages：https://oceanson17.github.io/jianghu-xing/
