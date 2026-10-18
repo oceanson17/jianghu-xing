@@ -3070,7 +3070,6 @@ window.__JH_ASSETS = {
   };
 
 
-  function ensureBonds() {
   const NPC_RELATIONS = {
     lin_feng: [{ type:"master", target:"ye_qingshan", label:"師徒（決裂）", reveal:"default" }, { type:"master", target:"feng_qingya", label:"隱師授劍", revealFlag:"met_feng_qingya" }, { type:"romance", target:"ren_yingluo", label:"情緣", revealFlag:"lin_ren_love" }, { type:"rival", target:"ye_qingshan", label:"師徒反目", revealFlag:"ye_exposed" }, { type:"romance", target:"ye_xiaoyu", label:"青梅舊情", reveal:"default" }],
     ye_qingshan: [{ type:"family", target:"ye_xiaoyu", label:"父女", reveal:"default" }, { type:"romance", target:"ning_shuying", label:"夫妻（貌合）", reveal:"default" }, { type:"rival", target:"lin_feng", label:"逐徒", revealFlag:"ye_exposed" }, { type:"ally", target:"zuo_lengying", label:"密約併吞", revealFlag:"ye_exposed" }],
@@ -3172,7 +3171,7 @@ window.__JH_ASSETS = {
     });
   }
 
-
+  function ensureBonds() {
     if (!S.bonds || typeof S.bonds !== "object") S.bonds = {};
     if (!S.unlockDays || typeof S.unlockDays !== "object") S.unlockDays = {};
     if (typeof S.forgeBonus !== "number") S.forgeBonus = 0;
@@ -3553,9 +3552,11 @@ try { saveGameSilent(); } catch (e) {}
     window.scrollTo(0, y);
   }
   function closeModal() {
-    document.getElementById("modal-bg").classList.remove("show");
+    const mb = document.getElementById("modal-bg");
+    if (mb) mb.classList.remove("show");
     unlockBodyForModal();
     document.documentElement.style.setProperty("--kb", "0px");
+    try { if (S) S.sceneOverride = null; } catch (e) {}
   }
   function openModal(html) {
     bindViewportKb();
@@ -7469,13 +7470,20 @@ try { saveGameSilent(); } catch (e) {}
       };
     });
   }
+  function dismissStoryModal() {
+    try { S.sceneOverride = null; } catch (e) {}
+    closeModal();
+    try { render(); } catch (e) { try { window._jhRender && window._jhRender(); } catch (e2) {} }
+  }
   function showStory(text, sceneKey) {
     if (sceneKey && ASSETS[sceneKey]) S.sceneOverride = sceneKey;
     const banner = (sceneKey && asset(sceneKey))
       ? `<div style="margin:0 0 10px;border-radius:8px;overflow:hidden;border:1px solid #3a2a1a"><img src="${asset(sceneKey)}" alt="" style="width:100%;max-height:180px;object-fit:cover;display:block" /></div>`
       : "";
     openModal(`<h3>江湖記事</h3>${banner}<div class="story-box">${escapeHtml(text)}</div>
-      <button class="btn primary" onclick="S.sceneOverride=null;closeModal();window._jhRender&&window._jhRender()">知道了</button>`);
+      <button type="button" class="btn primary" id="btn-story-ok">知道了</button>`);
+    const ok = document.getElementById("btn-story-ok");
+    if (ok) ok.onclick = function(){ dismissStoryModal(); };
     render();
   }
 
@@ -7930,7 +7938,8 @@ try { saveGameSilent(); } catch (e) {}
         <div class="small">自第 ${b.sinceDay||"?"} 日 · 解鎖：${unlocks || "—"}</div></div></div>`;
     });
     html += `<h3>人物關係</h3><p class="small">點選人物查看已知關係網與主／支／隱藏線。</p><div class="rel-grid">`;
-    const relIds = Object.keys(NPCS).filter(id => NPCS[id].major && (NPC_RELATIONS[id] || NPCS[id].arcs));
+    const relMap = (typeof NPC_RELATIONS === "object" && NPC_RELATIONS) ? NPC_RELATIONS : {};
+    const relIds = Object.keys(NPCS).filter(id => NPCS[id].major && (relMap[id] || NPCS[id].arcs));
     relIds.forEach(id => {
       const n = NPCS[id];
       const known = (typeof getKnownRelations === "function" ? getKnownRelations(id) : []).length;
@@ -7943,9 +7952,13 @@ try { saveGameSilent(); } catch (e) {}
     html += `<h3>人物命運</h3>`;
     Object.keys(NPCS).filter(id => NPCS[id].major).forEach(id => {
       const n = NPCS[id], f = S.fates[id];
+      const dest = (n.destinies && (n.destinies[f] || n.destinies.default)) || fateLabel(f);
+      let mem = "", bond = "";
+      try { mem = memoryHint(id); } catch (e) { mem = "—"; }
+      try { bond = bondSummary(id) || ""; } catch (e) { bond = ""; }
       html += `<div class="list-item fate-row">${chibiHtml(id)}
-        <div style="flex:1"><strong>${n.name}</strong> <span class="badge">${fateLabel(f)}</span>
-        <div class="small">${n.title} · ${n.destinies[f]||n.destinies.default} · 💬${memoryHint(id)}${bondSummary(id)?" · "+bondSummary(id):""}</div></div></div>`;
+        <div style="flex:1"><strong>${escapeHtml(n.name)}</strong> <span class="badge">${fateLabel(f)}</span>
+        <div class="small">${escapeHtml(n.title||"")} · ${escapeHtml(dest)} · 💬${escapeHtml(mem)}${bond?" · "+escapeHtml(bond):""}</div></div></div>`;
     });
     return html;
   }
@@ -7966,7 +7979,22 @@ try { saveGameSilent(); } catch (e) {}
 
   function bindHub() {
     document.querySelectorAll("[data-tab]").forEach(b => {
-      b.onclick = () => { ui.tab = b.getAttribute("data-tab"); render(); };
+      b.onclick = () => {
+        // clear stuck overlay if modal not actually shown (or leftover modal-open)
+        try {
+          const mb = document.getElementById("modal-bg");
+          if (mb && !mb.classList.contains("show") && document.body.classList.contains("modal-open")) {
+            unlockBodyForModal();
+          }
+        } catch (e) {}
+        ui.tab = b.getAttribute("data-tab");
+        try { render(); } catch (err) {
+          console.error("render tab failed", ui.tab, err);
+          toast("頁面暫未能開啟，已退回地圖", true);
+          ui.tab = "map";
+          try { render(); } catch (e2) {}
+        }
+      };
     });
     document.querySelectorAll("[data-go]").forEach(b => {
       b.onclick = () => {
@@ -8191,6 +8219,7 @@ try { saveGameSilent(); } catch (e) {}
   }
 
   window.closeModal = closeModal;
+  window.dismissStoryModal = dismissStoryModal;
   window._jhRender = render;
   // test hook (safe read-only helpers for tooling)
   window.__JH_DEBUG = {
@@ -10274,6 +10303,341 @@ try { saveGameSilent(); } catch (e) {}
     { id:"deal_refuse_safe", offer:"薄禮二十金", gold:20, demand:"只是打聽你口風——可拒", karma:0, heat:0, prestige:0, soft:true }
   ];
 
+
+  const PALACE_DUTY_EVENTS = {
+    yuhuayuan: [
+      { id:"yh_petal", title:"落花滿徑", text:"御花園石橋邊，一簇宮緞被風吹落泥中。旁有兩名宮女爭執是誰失責。",
+        choices:[
+          { label:"幫她們拾起，並隱瞞過失", effects:{ prestige:3, charm:1, karma:1, favorNpc:"hua_gongnu", favor:2 }, result:"宮女破涕為笑，塞你一袋桂花糖。「下次花廊有事，先找你。」" },
+          { label:"按宮規稟報掌事姑姑", effects:{ prestige:6, honor:1, heat:1 }, result:"掌事姑姑記你一功，卻冷了花廊人心。" },
+          { label:"趁亂拿走一枚遺落珠鈿", effects:{ gold:12, karma:-3, heat:4, prestige:1 }, result:"珠鈿入手。背後似有目光——宮熱微升。" }
+        ]},
+      { id:"yh_whisper", title:"花下私語", text:"太湖石後傳來低語：似是沈貴妃宮人談「今夜養心殿有密旨」。",
+        choices:[
+          { label:"悄然記下，轉身離開", effects:{ prestige:2, perception:1, flag:"heard_yangxin_edict" }, result:"你裝聾作啞。情報已入心——或許日後有用。" },
+          { label:"上前請安，自薦傳話", effects:{ prestige:5, favorNpc:"shen_guifei", favor:3, heat:2 }, result:"宮人打量你片刻，允你「若有差遣再叫」。貴妃好感微升。" },
+          { label:"故意咳嗽嚇走她們", effects:{ prestige:1, karma:1 }, result:"私語驟停。你換來片刻清靜，也少了一樁是非。" }
+        ]},
+      { id:"yh_emperor_stroll", title:"聖駕微服？", text:"廊角閃過一襲暗色常服，近侍小安在側。是景安帝私遊花廊？",
+        choices:[
+          { label:"跪安如儀，不多言", effects:{ prestige:4, emperorFavor:2 }, result:"帝略一頷首：「起來吧。」近侍替你記了一筆。" },
+          { label:"獻新開的白芍一枝", effects:{ prestige:6, emperorFavor:4, charm:1 }, result:"帝接花嗅之：「有心。」帝心大增。" },
+          { label:"假裝掃徑，偷偷跟蹤", effects:{ prestige:1, heat:6, karma:-1, perception:1 }, result:"近侍回頭冷瞥。你縮回——宮熱上升，險些獲罪。" }
+        ]},
+      { id:"yh_night_meet", title:"月下偶遇", text:"夜巡花廊，你遇見一名帶泪的宮女。她說被陷害，求你藏一封家書。",
+        choices:[
+          { label:"藏信並答應代投", effects:{ prestige:3, karma:2, heat:4, flag:"hid_gongnu_letter", favorNpc:"hua_gongnu", favor:4 }, result:"她跪下磕頭。你多了一條人命債，也多了一分牽絆。" },
+          { label:"勸她去掌事姑姑處自首", effects:{ prestige:4, honor:1 }, result:"她咬唇離去。也许不是最好，但是最稳。" },
+          { label:"恐吓她交出银钱", effects:{ gold:20, karma:-4, heat:3, prestige:1 }, result:"银两到手。她眼里的光熄了。" }
+        ]}
+    ],
+    yushan: [
+      { id:"ys_spill", title:"湯碗傾翻", text:"傳膳途中，你與人撞個正着，一碗參湯潑了半碗。",
+        choices:[
+          { label:"自己扛責，重做一碗", effects:{ prestige:5, honor:1, gold:-2, karma:1 }, result:"你賠了料錢，卻換來膳房一句：「這人靠譜。」" },
+          { label:"推給對方，反咬一口", effects:{ prestige:2, karma:-2, heat:2, favorNpc:"wei_xiaozhou", favor:-3 }, result:"對方眼神陰冷：「記下了。」" },
+          { label:"偷偷以清水充數送上", effects:{ prestige:3, gold:5, karma:-4, heat:5 }, result:"暫且過關。若被御醫驗出——後患無窮。" }
+        ]},
+      { id:"ys_leftover", title:"御膳餘味", text:"退膳後，尚有半碟酥點未動。規矩是倒入泔水。",
+        choices:[
+          { label:"按規矩倒掉", effects:{ prestige:3, honor:1 }, result:"老役點頭：「懂規矩，才能活得長。」" },
+          { label:"分給當值雜役", effects:{ prestige:4, karma:2, charm:1 }, result:"雜役眼熱：「有事殿裡招呼一聲。」" },
+          { label:"私藏售予外廷", effects:{ gold:18, karma:-3, heat:6, prestige:1 }, result:"銀兩入手。膳房籍冊多了一道暗痕。" }
+        ]},
+      { id:"ys_poison_fear", title:"試毒之責", text:"今日膳前缺試毒人。有人望向你。",
+        choices:[
+          { label:"挺身試毒", effects:{ prestige:10, honor:2, emperorFavor:2, karma:1 }, result:"無事。聖眷記你膽色。" },
+          { label:"薦他人頂替", effects:{ prestige:2, karma:-2 }, result:"那人臉色發白。你保住命，也丢了义。" },
+          { label:"借口腹痛躲开", effects:{ prestige:1 }, result:"你躲开了。膳房私下已给你贴了「怯」字。" }
+        ]}
+    ],
+    qianqing: [
+      { id:"qq_memo", title:"票擬錯字", text:"奏事處太監讓你謄票擬，原稿把「緩徵」寫成「緩懲」。",
+        choices:[
+          { label:"當場指出並改正", effects:{ prestige:8, wit:1, honor:1 }, result:"太監一驚：「好眼力。」威望大增。" },
+          { label:"假裝沒看見，照抄", effects:{ prestige:2, karma:-2, heat:3 }, result:"錯票入匣。日後若出事，筆跡有你一份。" },
+          { label:"私下改了卻不聲張", effects:{ prestige:5, wit:1 }, result:"你救了一局，卻無人知曉——只心安。" }
+        ]},
+      { id:"qq_bribe", title:"袖中銀票", text:"有外官塞你一疊銀票：「只求今兒奏摺往上排一排。」",
+        choices:[
+          { label:"拒收並稟報", effects:{ prestige:10, honor:2, karma:2, renown:1 }, result:"清名傳開。有人敬你，也有人恨你。" },
+          { label:"收下並幫忙插隊", effects:{ prestige:4, gold:40, karma:-5, heat:8 }, result:"銀票入袖。宮熱與惡名同步攀升。" },
+          { label:"收下銀票卻不辦事", effects:{ gold:40, karma:-4, heat:4, prestige:1 }, result:"你兩頭瞞。暫時賺了，信用卻在燒。" }
+        ]}
+    ],
+    yangxin: [
+      { id:"yx_candle", title:"燭淚將盡", text:"養心殿值夜，御案燭火將熄。近侍打盹，密諭匣未上鎖。",
+        choices:[
+          { label:"換燭，並替他鎖匣", effects:{ prestige:6, emperorFavor:2, karma:1 }, result:"近侍醒來：「多謝……我欠你一次。」" },
+          { label:"偷看密諭一行", effects:{ prestige:2, perception:1, heat:7, flag:"peeked_yangxin_box" }, result:"你瞥見「邊關」二字。心跳如鼓——宮熱驟升。" },
+          { label:"叫醒近侍，假裝無事", effects:{ prestige:3 }, result:"他擦擦口水。殿內恢復寂靜。" }
+        ]},
+      { id:"yx_favor_test", title:"帝問家常", text:"景安帝忽然問你：「外間可有流言？」",
+        choices:[
+          { label:"據實奏聞一兩則無礙傳聞", effects:{ prestige:6, emperorFavor:3, perception:1 }, result:"帝點頭：「還算明白。」" },
+          { label:"只說『皆頌聖德』", effects:{ prestige:3, emperorFavor:1 }, result:"帝淡淡一笑，似不甚信。" },
+          { label:"借机告发政敌", effects:{ prestige:5, emperorFavor:2, karma:-3, heat:5 }, result:"帝记下了名字。你也把自己绑上了战车。" }
+        ]}
+    ],
+    hougong: [
+      { id:"hg_tea", title:"璇璣奉茶", text:"沈貴妃要你奉茶。茶溫略燙——她似在試你定力。",
+        choices:[
+          { label:"跪穩，雙手平奉", effects:{ prestige:5, favorNpc:"shen_guifei", favor:4, charm:1 }, result:"她輕笑：「還算穩。」好感上升。" },
+          { label:"直言茶燙，請易一杯", effects:{ prestige:4, favorNpc:"shen_guifei", favor:2, honor:1 }, result:"她挑眉：「敢說話。有趣。」" },
+          { label:"手抖灑出半盞", effects:{ prestige:1, favorNpc:"shen_guifei", favor:-2, heat:2 }, result:"貴妃皺眉。你被罰跪半炷香。" }
+        ]},
+      { id:"hg_rival", title:"宮人構陷", text:"有宮女咬定你偷了娘娘的宮花。證據含糊，但人多勢眾。",
+        choices:[
+          { label:"請掌事姑姑當眾搜身自證", effects:{ prestige:6, honor:1, karma:1 }, result:"搜身無事。構陷者挨板子，你清名保住。" },
+          { label:"暗中塞錢給她封口", effects:{ gold:-15, prestige:2, karma:-2, heat:3 }, result:"她收了錢，卻可能再來敲詐。" },
+          { label:"反咬她私通外廷", effects:{ prestige:3, karma:-4, heat:6, favorNpc:"shen_guifei", favor:-1 }, result:"一場混戰。貴妃厭惡「鬧事的兩邊」。" }
+        ]}
+    ],
+    neiting: [
+      { id:"nt_rule", title:"宮規抽問", text:"掌事姑姑抽問宮規：夜禁、對牌、請安次序。",
+        choices:[
+          { label:"對答如流", effects:{ prestige:7, wit:1, honor:1 }, result:"姑姑罕有地點頭：「可造之材。」" },
+          { label:"支吾其詞，認罰抄規", effects:{ prestige:2, exp:2 }, result:"你抄規至燈盡。記牢了，也熬瘦了一圈。" },
+          { label:"耍滑，推說新人未教", effects:{ prestige:1, charm:1 }, result:"姑姑哼一聲：「明日複試。」暫且過關。" }
+        ]},
+      { id:"nt_pass", title:"对牌差错", text:"今夜对牌少了一枚。众人面面相觑。",
+        choices:[
+          { label:"组织重搜并上报", effects:{ prestige:6, perception:1 }, result:"牌在井边找到。你稳住了局面。" },
+          { label:"用旧牌充数混过", effects:{ prestige:2, karma:-2, heat:5 }, result:"一时无事。稽查若来，全班遭殃。" },
+          { label:"栽赃给宿怨之人", effects:{ prestige:3, karma:-4, heat:4 }, result:"对方被罚。你种下仇芽。" }
+        ]}
+    ],
+    wenyuan: [
+      { id:"wy_book", title:"錯簡重排", text:"文淵閣一冊舊檔頁次錯亂。編修要你重排。",
+        choices:[
+          { label:"徹夜校對，完璧歸架", effects:{ prestige:8, wit:1, focus:1, exp:6 }, result:"編修：「文官胚子。」威望大增。" },
+          { label:"草草了事", effects:{ prestige:2, karma:-1 }, result:"後日又被退回。顏面無光。" },
+          { label:"偷偷抄錄一頁秘聞", effects:{ prestige:3, perception:1, heat:4, flag:"copied_wenyuan_secret" }, result:"袖中多頁紙。知識是刀，也是禍。" }
+        ]}
+    ],
+    wuying: [
+      { id:"we_drill", title:"演武走神", text:"羽林教習點名你出列扎槍。旁人起鬨。",
+        choices:[
+          { label:"認真比劃，雖拙猶敬", effects:{ prestige:6, force:1, exp:5 }, result:"教習：「態度可嘉。」武官途多一筆。" },
+          { label:"假裝扭傷求免", effects:{ prestige:1, karma:-1 }, result:"有人竊笑。你躲過一場，也丟了狠勁。" },
+          { label:"挑戰教習一招", effects:{ prestige:4, force:1, heat:2 }, result:"教習一式震開你。他卻笑：「有種。記名。」" }
+        ]}
+    ],
+    neiwufu: [
+      { id:"nw_ledger", title:"庫冊微差", text:"盤庫時銀兩少了二兩。筆帖式眼神閃爍。",
+        choices:[
+          { label:"據實上報", effects:{ prestige:7, honor:2, karma:1 }, result:"筆帖式被記過。你成了「刺頭」，也成了清流。" },
+          { label:"幫他補帳瞒過", effects:{ gold:10, prestige:2, karma:-3, heat:5 }, result:"他塞你十金。「以後庫裡有缺，一起填。」" },
+          { label:"要脅分潤", effects:{ gold:25, prestige:1, karma:-5, heat:8 }, result:"你咬下一筆。廠衛的影子似乎更近了。" }
+        ]}
+    ],
+    taiyiyuan: [
+      { id:"ty_herb", title:"藥材調包", text:"有人要把普通參須混入御用野參匣。太醫剛離開。",
+        choices:[
+          { label:"阻止並告知太醫", effects:{ prestige:8, medicine:1, karma:2, honor:1 }, result:"太醫拱手：「救命之舉。」" },
+          { label:"視而不見", effects:{ prestige:1, karma:-2, heat:3 }, result:"你保住安靜，也賣了良心。" },
+          { label:"參與分贓", effects:{ gold:30, karma:-5, heat:7, prestige:2 }, result:"銀兩沉甸。若帝躬違和——血債有你一份。" }
+        ]}
+    ],
+    tianlao: [
+      { id:"tl_water", title:"給囚水喝", text:"欽犯唇焦，求一口水。獄卒說：「章程不許。」",
+        choices:[
+          { label:"偷偷餵水", effects:{ prestige:3, karma:3, honor:1, heat:3 }, result:"犯人沙啞道謝。你多了一條人情，也多了一分險。" },
+          { label:"堅守章程", effects:{ prestige:4 }, result:"獄卒：「識時務。」威望平穩。" },
+          { label:"嘲笑他，踢翻水碗", effects:{ prestige:2, karma:-4, heat:2 }, result:"囚犯目光如刀。惡名又刻一筆。" }
+        ]}
+    ],
+    wumen: [
+      { id:"wm_pass", title:"假牌闖關", text:"一人持牌要入，牌紋有細微差異。隊尾又不耐煩起哄。",
+        choices:[
+          { label:"扣人詳查", effects:{ prestige:8, perception:1, honor:1 }, result:"果然是假牌。校尉記功。" },
+          { label:"收錢放行", effects:{ gold:20, prestige:1, karma:-4, heat:6 }, result:"關口一時顺畅，籍冊卻埋了雷。" },
+          { label:"放行但暗中跟去報官", effects:{ prestige:6, perception:1, karma:1, heat:2 }, result:"你兩面做——既未當街撕破，又留了後手。" }
+        ]}
+    ],
+    dongchang: [
+      { id:"dc_file", title:"檔案借閱", text:"督公不在。案上有一份籍冊微開。",
+        choices:[
+          { label:"合上走人", effects:{ prestige:3, karma:1 }, result:"你壓住好奇。廠門深似海。" },
+          { label:"翻看兩頁記住關鍵名", effects:{ prestige:4, perception:1, heat:8, flag:"peeked_dongchang_roster" }, result:"名字如釘入腦。宮熱驟升。" },
+          { label:"抽走一頁藏袖", effects:{ prestige:2, heat:12, karma:-3, flag:"stole_dongchang_page" }, result:"袖中灼熱。東廠丟頁——追查只是迟早。" }
+        ]}
+    ],
+    taipusi: [
+      { id:"tp_horse", title:"御馬受驚", text:"刷馬時遠雷，御馬突然直立。",
+        choices:[
+          { label:"死死拉韁安撫", effects:{ prestige:7, force:1, luck:1 }, result:"馬漸穩。馬官：「好膽色。」" },
+          { label:"鬆手躲閃", effects:{ prestige:1 }, result:"馬跑出厩門，後果是罰銀與罰跪。" },
+          { label:"借機打聽馬政秘辛", effects:{ prestige:4, perception:1, flag:"taipusi_intel" }, result:"你問清了哪厩有汗血苗。" }
+        ]}
+    ],
+    shenwu: [
+      { id:"sw_gate", title:"後門人情", text:"神武門有人求你「通融一刻」出宮。",
+        choices:[
+          { label:"拒絕", effects:{ prestige:4, honor:1 }, result:"對方拂袖。你守住了規矩。" },
+          { label:"放行並登記假名", effects:{ gold:15, prestige:2, karma:-3, heat:5 }, result:"門開了一條縫。也給稽查留了縫。" },
+          { label:"放行但跟踪其去向", effects:{ prestige:5, perception:1, heat:2, flag:"shenwu_tail" }, result:"人情與情報都拿到了。" }
+        ]}
+    ],
+    siku: [
+      { id:"sk_typo", title:"四庫訛字", text:"校對至敏感卷——寫錯御名諱會掉腦袋。",
+        choices:[
+          { label:"慎之又慎，校出三訛", effects:{ prestige:9, wit:1, focus:1 }, result:"書吏：「此才可入翰苑。」" },
+          { label:"敷衍蓋章", effects:{ prestige:2, karma:-2, heat:4 }, result:"錯字入庫。定時炸彈已埋。" }
+        ]}
+    ],
+    bingzhang: [
+      { id:"bz_blade", title:"甲仗鬆扣", text:"一架御用環刀鬆扣，若上朝可能脫出傷人。",
+        choices:[
+          { label:"立即加固並上報", effects:{ prestige:8, def:1, honor:1, karma:1 }, result:"匠頭抹汗：「撿回一條命。」" },
+          { label:"装作未见", effects:{ prestige:1, karma:-3, heat:5 }, result:"你賭它不會出事——這賭盤很大。" }
+        ]}
+    ],
+    dianshi: [
+      { id:"ds_cheat", title:"夾帶嫌疑", text:"殿試廊上，一生員袖中似有紙。",
+        choices:[
+          { label:"當場揭發", effects:{ prestige:8, honor:1, renown:1 }, result:"夾帶屬實。場紀肅然，你得記名。" },
+          { label:"收錢放水", effects:{ gold:35, prestige:2, karma:-5, heat:6 }, result:"銀兩入手。科舉之公被你賣了一寸。" },
+          { label:"私下警告他丟棄", effects:{ prestige:5, karma:2, honor:1 }, result:"生員顫抖丟紙。你救了他，也守了底線。" }
+        ]}
+    ],
+    taihedian: [
+      { id:"th_court", title:"朝會雜役", text:"太和殿朝會前，有御史靴底將髒泥踩上金磚縫。",
+        choices:[
+          { label:"忍住重擦", effects:{ prestige:4, honor:1 }, result:"鴻臚寺記你「勤謹」。" },
+          { label:"輕聲提醒大人", effects:{ prestige:5, charm:1, karma:1 }, result:"御史一愣，竟道了聲謝。" },
+          { label:"故意把泥蹭回其靴", effects:{ prestige:2, karma:-2, heat:3 }, result:"解氣片刻，卻惹了一尊大神。" }
+        ]}
+    ],
+    huanggong: [
+      { id:"og_gate_duty", title:"外廷點卯", text:"外廷通事點名，有人未到。",
+        choices:[
+          { label:"如實稟報缺勤", effects:{ prestige:5, honor:1 }, result:"通事點頭。缺勤者罰銀，你無過。" },
+          { label:"代他應答混過", effects:{ prestige:2, karma:-1, favorNpc:"wei_xiaozhou", favor:2 }, result:"人情換來。韋小舟一系可能記得你。" },
+          { label:"頂了他的肥差", effects:{ prestige:6, gold:8, karma:-2 }, result:"你多拿一份賞銀——也多了個仇家。" }
+        ]}
+    ],
+    jingshen: [
+      { id:"js_scare", title:"淨身房陰影", text:"即便只是路過當差，氣味仍令人窒息。老役盯着你笑。",
+        choices:[
+          { label:"低頭幹活不搭理", effects:{ prestige:3 }, result:"你熬過半日。心裡多了一道疤。" },
+          { label:"詰問他為何如此看人", effects:{ prestige:2, karma:1, heat:2 }, result:"老役：「問得多，活得短。」" },
+          { label:"暗中記下水路方位", effects:{ prestige:2, perception:1, flag:"jingshen_escape_map" }, result:"你記下排水溝——但願永遠用不上。" }
+        ]}
+    ],
+    xingbu_prison: [
+      { id:"xp_record", title:"錄供兩難", text:"犯人哭求你少寫兩筆。刑部司獄在門外催。",
+        choices:[
+          { label:"據實錄完", effects:{ prestige:6, honor:1 }, result:"供狀入冊。你無愧，也無額外人情。" },
+          { label:"暗中放過關鍵一句", effects:{ prestige:3, karma:2, heat:4, honor:1 }, result:"你救了一点人命，把自己推向风口。" },
+          { label:"加碼羅織以邀功", effects:{ prestige:5, karma:-5, heat:6 }, result:"司獄賞你脸色。夜里却可能睡不着。" }
+        ]}
+    ],
+    yuhe_wharf: [
+      { id:"yw_boat", title:"御河夜船", text:"舟子暗示：今夜可送人出宫，价钱好谈。",
+        choices:[
+          { label:"严词拒绝并记下他", effects:{ prestige:5, honor:1, flag:"yuhe_smuggler_known" }, result:"舟子收起笑容。你多了一条线索。" },
+          { label:"付钱预留后路", effects:{ gold:-20, prestige:2, heat:3, flag:"yuhe_escape_ready" }, result:"退路隐约可见。银两少了，命宽了。" },
+          { label:"举报厂卫邀功", effects:{ prestige:8, karma:-1, heat:2, renown:1 }, result:"厂卫来人。舟子被捕——你也成了眼线。" }
+        ]}
+    ]
+  };
+
+  function applyDutyEffects(fx) {
+    if (!fx) return;
+    if (fx.prestige) bumpCourtPrestige(fx.prestige, "當差事件");
+    if (typeof fx.gold === "number") S.gold = Math.max(0, (S.gold || 0) + fx.gold);
+    if (fx.exp) S.exp = (S.exp || 0) + fx.exp;
+    if (fx.karma) {
+      if (typeof adjustKarma === "function") adjustKarma(fx.karma, "當差抉擇");
+      else S.karma = (S.karma || 0) + fx.karma;
+    }
+    if (fx.heat) {
+      if (typeof bumpPalaceHeat === "function") bumpPalaceHeat(fx.heat);
+      else S.palaceHeat = (S.palaceHeat || 0) + fx.heat;
+    }
+    if (fx.emperorFavor) {
+      if (typeof bumpEmperorFavor === "function") bumpEmperorFavor(fx.emperorFavor, "當差");
+      else S.emperorFavor = (S.emperorFavor || 0) + fx.emperorFavor;
+    }
+    if (fx.renown) S.renown = (S.renown || 0) + fx.renown;
+    ["force","agi","def","wit","luck","honor","charm","focus","medicine","perception"].forEach(function(k){
+      if (fx[k]) S[k] = Math.min(40, (S[k] || 0) + fx[k]);
+    });
+    if (fx.flag) setFlag(fx.flag);
+    if (fx.item) {
+      try { addItem(fx.item, 1); } catch (e) {
+        if (!S.inv) S.inv = {};
+        S.inv[fx.item] = (S.inv[fx.item] || 0) + 1;
+      }
+    }
+    if (fx.favorNpc && typeof fx.favor === "number") {
+      if (!S.datingAff) S.datingAff = {};
+      S.datingAff[fx.favorNpc] = (S.datingAff[fx.favorNpc] || 0) + fx.favor;
+      const nm = (NPCS[fx.favorNpc] && NPCS[fx.favorNpc].name) || fx.favorNpc;
+      if (fx.favor > 0) toast(nm + "好感＋" + fx.favor, true);
+      else if (fx.favor < 0) toast(nm + "好感" + fx.favor, true);
+    }
+  }
+  function pickDutyEvent(locId) {
+    const pool = (PALACE_DUTY_EVENTS[locId] || []).slice();
+    const generic = [
+      { id:"gen_errand", title:"雜役奔走", text:"你被支去傳話、提水、掃階。半日下來腰酸，卻聽見許多閒話。",
+        choices:[
+          { label:"勤謹做完，順便記牢人情", effects:{ prestige:4, exp:3, gold:2, perception:1 }, result:"威望微升。你把廊上誰與誰嘀咕都記住了。" },
+          { label:"躲懶摸魚", effects:{ prestige:1, exp:1 }, result:"你少受罪，也少露臉。" },
+          { label:"偷聽完去通報主子邀功", effects:{ prestige:5, heat:3, karma:-1 }, result:"主子賞了薄面，被說的人卻可能記恨。" }
+        ]},
+      { id:"gen_gift", title:"有人塞好處", text:"一個陌生內侍塞來一小包銀子：「以後多關照。」",
+        choices:[
+          { label:"拒收", effects:{ prestige:5, honor:1, karma:1 }, result:"對方訕訕離去。你清名又厚一分。" },
+          { label:"收下沉默", effects:{ gold:12, prestige:2, karma:-2, heat:3 }, result:"銀子沉甸甸。人情債同步入帳。" },
+          { label:"收下並追問來意", effects:{ gold:12, prestige:3, perception:1, heat:2 }, result:"他只說「到時自然知」。你多了一條線。" }
+        ]},
+      { id:"gen_quarrel", title:"廊下口角", text:"兩名當差值當眾對罵，圍觀者起鬨要你評理。",
+        choices:[
+          { label:"各打五十，勸和", effects:{ prestige:4, charm:1, karma:1 }, result:"雙方悻悻散去。你落得個和事佬名。" },
+          { label:"偏袒位高者", effects:{ prestige:3, karma:-1, heat:1 }, result:"位高者點頭。位低者把你记进了小本本。" },
+          { label:"暗中把兩邊都禀报闹事", effects:{ prestige:5, heat:2 }, result:"规矩赢了，人缘输了。" }
+        ]}
+    ];
+    const all = pool.concat(generic);
+    if (!S.dutyRecent) S.dutyRecent = [];
+    const fresh = all.filter(function(e){ return S.dutyRecent.indexOf(e.id) < 0; });
+    const use = fresh.length ? fresh : all;
+    const ev = use[Math.floor(Math.random() * use.length)];
+    S.dutyRecent = (S.dutyRecent || []).concat([ev.id]).slice(-10);
+    return ev;
+  }
+  function runPalaceDutyEvent(kindLabel) {
+    const locId = S.loc;
+    const loc = LOCATIONS.find(function(l){ return l.id === locId; });
+    const locName = (loc && loc.name) || (typeof eunuchHallName === "function" ? eunuchHallName() : locId);
+    const ev = pickDutyEvent(locId);
+    bumpCourtPrestige(2, kindLabel || "當差");
+    S.exp = (S.exp || 0) + 2;
+    S.gold = (S.gold || 0) + 1;
+    let html = "<h3>" + escapeHtml(kindLabel || "本殿當差") + "・" + escapeHtml(locName) + "</h3>";
+    html += '<div class="story-box"><strong>' + escapeHtml(ev.title) + "</strong><br/>" + escapeHtml(ev.text) + "</div>";
+    html += '<p class="small">選擇會影響威望、好感、善惡與宮熱。</p><div class="btn-row" style="flex-direction:column;gap:8px">';
+    ev.choices.forEach(function(c, idx){
+      html += '<button type="button" class="btn' + (idx === 0 ? " primary" : "") + '" data-duty-c="' + idx + '">' + escapeHtml(c.label) + "</button>";
+    });
+    html += "</div>";
+    openModal(html);
+    document.querySelectorAll("[data-duty-c]").forEach(function(btn){
+      btn.onclick = function(){
+        const i = parseInt(btn.getAttribute("data-duty-c"), 10);
+        const ch = ev.choices[i];
+        closeModal();
+        applyDutyEffects(ch.effects || {});
+        showStory("【" + ev.title + "】\n" + (ch.result || "") + "\n\n當差結算・" + courtRankLabel());
+        try { maybeOfferCourtDeal(); } catch (e) {}
+        try { saveGameSilent(); } catch (e) {}
+      };
+    });
+  }
+
   function ensureCourtCareer() {
     // do NOT call ensurePalaceState here (wrapped ensurePalaceState calls us)
     if (typeof S.emperorFavor !== "number") S.emperorFavor = 0;
@@ -10833,14 +11197,16 @@ try { saveGameSilent(); } catch (e) {}
     if (aq && aq.loc === locId) {
       acts.push({ label: "【仕途】交付朝廷差遣・" + aq.title, fn: function(){ completeCourtQuestAt(locId); render(); } });
     }
-    // assigned hall daily
-    if (flag("eunuch") && S.eunuchAssignedHall === locId) {
-      acts.push({ label: "【太監】本殿當差", fn: function(){
-        bumpCourtPrestige(4, "當差");
-        S.exp += 3; S.gold += 2;
-        showStory("你在" + eunuchHallName() + "當差半日。威望＋4・" + courtRankLabel());
-        maybeOfferCourtDeal();
-      }});
+    // assigned hall daily — branching random events
+    if (flag("eunuch") && (S.eunuchAssignedHall === locId || (PALACE_LOC_FEATURES[locId] && S.courtTrack === "eunuch"))) {
+      acts.push({ label: "【太監】本殿當差", fn: function(){ runPalaceDutyEvent("太監當差"); } });
+    }
+    if ((S.courtTrack === "maid" || S.palaceRole === "maid" || S.palaceRole === "lady" || S.palaceRole === "consort") && (locId === "hougong" || locId === "neiting" || locId === "yuhuayuan" || locId === "yangxin" || locId === "qianqing")) {
+      // replace flat 請安 if present later — also offer branching duty
+      acts.push({ label: "【宮女】本殿差事", fn: function(){ runPalaceDutyEvent("宮女差事"); } });
+    }
+    if ((S.courtTrack === "civil" || S.courtTrack === "military") && PALACE_LOC_FEATURES[locId]) {
+      acts.push({ label: "【當差】本殿公務", fn: function(){ runPalaceDutyEvent("本殿公務"); } });
     }
     // feature flavor + talk to loc npc name
     if (feat && locId !== "huanggong") {
@@ -11644,7 +12010,12 @@ try { saveGameSilent(); } catch (e) {}
       applyNpcMutation: applyNpcMutation,
       courtIdentityBlob: courtIdentityBlob,
       identityAwareGreeting: identityAwareGreeting,
-      COURT_QUESTS_EXTRA: COURT_QUESTS_EXTRA
+      COURT_QUESTS_EXTRA: COURT_QUESTS_EXTRA,
+      PALACE_DUTY_EVENTS: PALACE_DUTY_EVENTS,
+      runPalaceDutyEvent: runPalaceDutyEvent,
+      pickDutyEvent: pickDutyEvent,
+      applyDutyEffects: applyDutyEffects,
+      dismissStoryModal: dismissStoryModal
     });
   }
 
