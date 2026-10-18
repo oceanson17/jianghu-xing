@@ -10870,12 +10870,46 @@ try { saveGameSilent(); } catch (e) {}
     return acts;
   }
 
+  function isImperialSuperiorNpc(npcId) {
+    const fac = COURT_NPC_FACTION[npcId];
+    // 帝／后妃／假太后／郡主：對下人開口是「賜坐／免禮／冷眼」，不會反過來「見過女官」
+    return fac === "throne" || fac === "harem";
+  }
+
   function identityAwareGreeting(npcId) {
     const npc = NPCS[npcId];
     if (!npc) return "";
     const stance = identityStanceForNpc(npcId);
     const rank = typeof courtRankLabel === "function" ? courtRankLabel() : "";
     const name = npc.name;
+    if (isImperialSuperiorNpc(npcId)) {
+      const aff = (S.datingAff && S.datingAff[npcId]) || 0;
+      const fate = (S.fates && S.fates[npcId]) || "default";
+      // 依態度／好感選帝國口吻：冷眼／免禮／賜坐
+      let tone = "免禮";
+      if (stance === "scorn" || stance === "snub" || fate === "enemy" || aff < 15) tone = "冷眼";
+      else if (stance === "protect" || stance === "deference" || stance === "flattery" || stance === "fear" || aff >= 45 || fate === "ally" || fate === "muse" || fate === "married") tone = "賜坐";
+      else tone = "免禮";
+      const imperial = {
+        "冷眼": [
+          name + "抬眸冷冷掃你一眼，並不開口。",
+          name + "袖手旁觀，淡淡道：「下去。」",
+          name + "：「誰讓你上來的？退下。」"
+        ],
+        "免禮": [
+          name + "微微頷首：「免禮。有事便說。」",
+          name + "：「起來吧。別跪這了。」",
+          name + "揮了揮手：「免禮。說。」"
+        ],
+        "賜坐": [
+          name + "淡淡道：「賜坐。」目光在你臉上停了一息。",
+          name + "：「坐。近前來——有話問你。」",
+          name + "抬手：「賜坐。今兒不急着趕你。」"
+        ]
+      };
+      const arr = imperial[tone];
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
     const lines = {
       scorn: [
         name + "瞟你一眼，鼻腔裡哼一聲：「就你這——" + (flag("eunuch") ? "半個身子的貨" : "白身") + "，也配攔路？」",
