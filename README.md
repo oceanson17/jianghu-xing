@@ -79,3 +79,12 @@ npx serve .
 - 修好【劇情板】按鈕無反應（`fn`／`run`）
 - AI 可推主線（`advance_main`）與 NPC 行程／委託／開口
 - Pages：https://oceanson17.github.io/jianghu-xing/
+
+
+## 寫意上限・淨身／東廠官服／身體狀態 v15（2026-10-18）
+- 女角不可淨身／太監籍；男須淨身＋廠公驗身（寫意）後方可以太監籍入東廠
+- 廠差只改善惡／熱度／好感；拒絕→誤闖受罰（數值＋身體標籤）
+- 身體狀態影響戰鬥／差事／取悅（寫意・非成人）；東廠官服改 NPC 態度
+- **不做** 18禁／殘忍細描／情色 AI
+- 設計：`docs/tasteful-eunuch-dc-v15.md` · 自測：`node scripts/autorun_v15_headless.js`
+- Pages：https://oceanson17.github.io/jianghu-xing/

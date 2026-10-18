@@ -5149,6 +5149,8 @@ try { saveGameSilent(); } catch (e) {}
 
 
   function applyEunuchFate() {
+    if (typeof isFemale === "function" && isFemale()) { toast("女身不可入太監籍（寫意）", true); return; }
+    if (typeof isMale === "function" && !isMale()) { toast("淨身僅限男身", true); return; }
     setFlag("eunuch"); setFlag("sold_as_eunuch"); setFlag("palace_access"); setFlag("palace_entry"); setFlag("map_huanggong");
     S.palaceRole = "eunuch";
     S.force = Math.max(1, (S.force || 10) - 8);
@@ -5167,7 +5169,8 @@ try { saveGameSilent(); } catch (e) {}
   }
   function applyEunuchConsequences() { applyEunuchFate(); }
   function trySoldAsEunuchEvent(reason) {
-    if (!perceivedMale()) return false;
+    if (typeof isFemale === "function" && isFemale()) return false;
+    if (!isMale()) return false;
     if (flag("eunuch") || flag("sold_as_eunuch") || flag("escaped_enslavement")) return false;
     const st = effectiveStats();
     const difficulty = 30 + (alignmentTier() === "villain" ? 4 : 0) + (isImprisoned() ? 3 : 0);
@@ -8087,7 +8090,7 @@ try { saveGameSilent(); } catch (e) {}
     if (acts) {
       locationActions(S.loc).forEach(a => {
         const btn = document.createElement("button");
-        btn.className = "btn"; btn.textContent = a.label; btn.onclick = a.fn;
+        btn.className = "btn"; btn.textContent = a.label; btn.onclick = a.fn || a.run;
         acts.appendChild(btn);
       });
     }
@@ -11151,7 +11154,7 @@ try { saveGameSilent(); } catch (e) {}
       if (isFemale() || (typeof perceivedGender === "function" && perceivedGender() === "女")) {
         html += "<button class=\"btn\" id=\"cc-maid\">入宮女途</button>";
       }
-      if ((isMale() || (typeof perceivedMale === "function" && perceivedMale())) && !flag("eunuch")) {
+      if (isMale() && !flag("eunuch")) {
         html += "<button class=\"btn danger\" id=\"cc-eunuch\">往淨身房・太監途（寫意）</button>";
       }
       if (flag("eunuch")) html += "<button class=\"btn\" id=\"cc-eunuch2\">確認太監仕途</button>";
@@ -11209,10 +11212,10 @@ try { saveGameSilent(); } catch (e) {}
       else showStory("你已在太監籍。當值殿：" + eunuchHallName() + " · " + courtRankLabel());
       return;
     }
-    if (!(isMale() || (typeof perceivedMale === "function" && perceivedMale()))) {
-      return toast("淨身入籍僅限男身／男裝示人路徑（寫意）", true);
+    if (!isMale() || isFemale()) {
+      return toast("淨身入籍僅限男身（女扮男裝不可妄入；女角請走宮女途或喬裝入廠）", true);
     }
-    openModal("<h3>淨身房・寫意</h3><div class=\"story-box\">燈影森冷。老役啞聲道：「踏入此門，便入太監籍——氣力身法大損，再無回頭。你可想清楚？」<br>（無血腥細描；僅後果與仕途。）</div>" +
+    openModal("<h3>淨身房・寫意</h3><div class=\"story-box\">燈影森冷。老役啞聲道：「踏入此門，便入太監籍——氣力身法大損，再無回頭。你可想清楚？」<br>（無血腥細描；僅後果與仕途。女身不可入。）</div>" +
       "<div class=\"btn-row\"><button class=\"btn danger\" id=\"js-yes\">咬牙入籍</button><button class=\"btn ghost\" onclick=\"closeModal()\">後退</button></div>");
     document.getElementById("js-yes").onclick = function(){
       closeModal();
@@ -14803,7 +14806,7 @@ try { saveGameSilent(); } catch (e) {}
   // UI: AI plot panel entry on map "更多"
   function openAiPlotBoard() {
     ensureAiPlotState();
-    const branches = Object.keys(S.aiBranches || {}).map(function(k){ return S.aiBranches[k]; }).filter(Boolean);
+    const branches = Object.keys(S.aiBranches || {}).map(function(k){ return S.aiBranches[k]; }).filter(function(x){ return !!x; });
     let html = "<h3>劇情板・AI</h3>";
     html += "<p class=\"small\">自由度：" + escapeHtml(settings.plotAgency || "high") +
       " ・ " + (settings.deepseekKey ? "DeepSeek 已接入" : "離線導演") + "</p>";
@@ -14852,7 +14855,8 @@ try { saveGameSilent(); } catch (e) {}
       acts.push({
         id: "ai_plot_board",
         label: "【劇情板】AI 支線",
-        run: function(){ openAiPlotBoard(); }
+        fn: function(){ try { openAiPlotBoard(); } catch (err) { console.warn(err); toast("劇情板開啟失敗", true); } },
+        run: function(){ try { openAiPlotBoard(); } catch (err) { console.warn(err); toast("劇情板開啟失敗", true); } }
       });
       return acts;
     };
@@ -14958,6 +14962,1318 @@ try { saveGameSilent(); } catch (e) {}
   }
 
   // ========== END V13 ==========
+
+  // ========== V14: AI MAIN QUEST + NPC DIRECTOR + PLOT BOARD FIX ==========
+  // Homage only. AI worldActions MUST mutate real save. Fix 【劇情板】 button (fn vs run).
+
+  const AI_MAIN_FLAGS = [
+    "ai_main_nudge", "ai_main_hint", "ai_npc_agenda", "ai_npc_quest",
+    "heard_yaogu", "heard_meihua", "open_longmen", "west_road", "map_jianzhong",
+    "chixia_path", "ch2_started", "honglian_invite", "dao_invite", "lake_invite",
+    "ch3_started", "ch3_rumor", "ch3_ev_border", "ch3_ev_lotus", "ch3_ev_tomb",
+    "ch3_path_honor", "ch3_path_force", "ch3_path_wit", "ch3_finale"
+  ];
+  AI_MAIN_FLAGS.forEach(function(f){
+    if (typeof ALLOWED_FLAGS !== "undefined" && ALLOWED_FLAGS.indexOf(f) < 0) ALLOWED_FLAGS.push(f);
+  });
+
+  function currentMainQuestId() {
+    try { ensureQuests(); } catch (e) {}
+    if (!S.quests) return "main";
+    if (!S.quests.main || !S.quests.main.done) return "main";
+    if (!S.quests.main2 || !S.quests.main2.done) return "main2";
+    if (!S.quests.main3 || !S.quests.main3.done) return "main3";
+    return null;
+  }
+
+  function mainQuestSnapshot() {
+    try { ensureQuests(); } catch (e) {}
+    const id = currentMainQuestId();
+    if (!id || !S.quests[id]) return { id: null, title: "主線已盡", step: 0, done: true, hint: "可自由江湖或宮廷線。" };
+    const q = S.quests[id];
+    let hint = "";
+    try { hint = typeof storyText === "function" ? storyText() : ""; } catch (e2) { hint = questHint(q); }
+    return { id: id, title: q.title || id, step: q.step || 0, done: !!q.done, hint: trunc(String(hint), 120) };
+  }
+
+  function softMainFlagsForStep(qid, step) {
+    if (qid === "main") {
+      if (step >= 1) { setFlag("heard_yaogu"); setFlag("heard_meihua"); setFlag("open_longmen"); }
+      if (step >= 2) { setFlag("map_jianzhong"); setFlag("chixia_path"); }
+    } else if (qid === "main2") {
+      if (step >= 1) { setFlag("ch2_started"); setFlag("honglian_invite"); }
+      if (step >= 2) { setFlag("dao_invite"); setFlag("lake_invite"); }
+    } else if (qid === "main3") {
+      if (step >= 1) { setFlag("ch3_started"); setFlag("ch3_rumor"); }
+    }
+  }
+
+  const _applyWorldAiActionOrig_v14 = applyWorldAiAction;
+  applyWorldAiAction = function(npcId, action) {
+    if (!action || typeof action !== "object") return "";
+    const t = String(action.type || action.action || "").toLowerCase();
+    const level = typeof plotAgencyLevel === "function" ? plotAgencyLevel() : 2;
+    try {
+      if (t === "advance_main" || t === "main_step" || t === "push_main") {
+        ensureAiPlotState();
+        ensureQuests();
+        const qid = action.questId || currentMainQuestId();
+        if (!qid || !S.quests[qid] || S.quests[qid].done) return "（主線已盡）";
+        const q = S.quests[qid];
+        const maxStep = 3;
+        const cur = q.step || 0;
+        let next = cur;
+        if (typeof action.step === "number") {
+          next = Math.max(cur, Math.min(maxStep, Math.floor(action.step)));
+          // never jump more than +1 unless sandbox+force
+          if (next > cur + 1 && !(level >= 3 && action.force)) next = cur + 1;
+        } else {
+          next = Math.min(maxStep, cur + 1);
+        }
+        if (next === cur && !action.force) {
+          setFlag("ai_main_nudge");
+          S.aiMainHint = trunc(String(action.hint || action.text || "主線尚待契機。"), 100);
+          return "（主線提示・未推進）";
+        }
+        q.step = next;
+        softMainFlagsForStep(qid, next);
+        setFlag("ai_main_nudge");
+        if (action.done === true && level >= 3 && action.force) q.done = true;
+        const note = "（主線・" + (q.title || qid) + "→步驟" + next + "）";
+        logAiPlot(note);
+        return note;
+      }
+      if (t === "main_hint" || t === "quest_hint_main") {
+        ensureAiPlotState();
+        S.aiMainHint = trunc(String(action.hint || action.text || "有人暗示主線動向。"), 120);
+        setFlag("ai_main_hint");
+        const note = "（主線提示）";
+        logAiPlot(note);
+        return note;
+      }
+      if (t === "close_branch" || t === "finish_branch") {
+        ensureAiPlotState();
+        const bid = String(action.id || action.branchId || "");
+        if (bid && S.aiBranches && S.aiBranches[bid]) {
+          S.aiBranches[bid].done = true;
+          return "（支線了結・" + (S.aiBranches[bid].title || bid) + "）";
+        }
+        return "";
+      }
+      if (t === "npc_quest" || t === "give_quest") {
+        ensureAiPlotState();
+        ensureQuests();
+        const id = action.npcId || npcId;
+        const title = trunc(String(action.title || ((NPCS[id] && NPCS[id].name) || "某人") + "之託"), 20);
+        const hint = trunc(String(action.hint || "去辦一件事。"), 80);
+        const qid = String(action.questId || ("ai_nq_" + (id || "x") + "_" + S.day));
+        if (!S.quests[qid]) {
+          S.quests[qid] = { id: qid, title: title, hint: hint, step: 1, done: false, fromNpc: id || null, loc: action.loc || S.loc };
+        } else {
+          S.quests[qid].step = Math.max(1, S.quests[qid].step || 0);
+          S.quests[qid].hint = hint;
+        }
+        setFlag("ai_npc_quest");
+        const note = "（NPC任務・" + title + "）";
+        logAiPlot(note);
+        return note;
+      }
+      if (t === "npc_speak" || t === "npc_line") {
+        ensureAiPlotState();
+        const id = action.npcId || npcId;
+        const line = trunc(String(action.text || action.say || action.line || ""), 160);
+        if (!line) return "";
+        S.pendingNpcLine = { npcId: id || null, name: (id && NPCS[id] && NPCS[id].name) || "路人", text: line, day: S.day };
+        return "（有人開口）";
+      }
+      if (t === "npc_agenda" || t === "agenda") {
+        ensureAiPlotState();
+        if (!S.npcAgenda || typeof S.npcAgenda !== "object") S.npcAgenda = {};
+        const id = action.npcId || npcId;
+        if (!id || !NPCS[id]) return "";
+        S.npcAgenda[id] = {
+          day: S.day,
+          goal: trunc(String(action.goal || action.text || "在附近活動"), 60),
+          loc: action.to || action.loc || NPCS[id].loc,
+          mood: trunc(String(action.mood || ""), 20)
+        };
+        setFlag("ai_npc_agenda");
+        if (action.to && locExists(action.to)) {
+          if (!S.aiTempNpcLoc[id]) S.aiTempNpcLoc[id] = NPCS[id].loc;
+          NPCS[id].loc = action.to;
+        }
+        return "（" + NPCS[id].name + "行程・" + S.npcAgenda[id].goal + "）";
+      }
+    } catch (err) {
+      console.warn("v14 applyWorldAiAction", t, err);
+    }
+    return _applyWorldAiActionOrig_v14(npcId, action);
+  };
+
+  const _flushPendingAiUiOrig_v14 = flushPendingAiUi;
+  flushPendingAiUi = function() {
+    ensureAiPlotState();
+    if (S.pendingNpcLine) {
+      const pl = S.pendingNpcLine;
+      S.pendingNpcLine = null;
+      const head = pl.name ? ("【" + pl.name + "】") : "【路人】";
+      showStory(head + "\n「" + pl.text + "」");
+      return true;
+    }
+    return _flushPendingAiUiOrig_v14();
+  };
+
+  function enhanceDirectorPromptMain() {
+    const snap = mainQuestSnapshot();
+    return " 【主線】" + (snap.title || "") + " 步驟" + snap.step + "：" + (snap.hint || "") +
+      " 可輸出 worldActions：advance_main{questId,step?,hint?}（每回合最多+1步）、main_hint{hint}、npc_quest{npcId,title,hint}、npc_speak{npcId,text}、npc_agenda{npcId,goal,to}、move_npc、summon_here、open_branch、spawn_event。" +
+      " 你要推動主線與 NPC 行為，但不可一次完結章節（勿設 done，除非沙盤 force）。禁真實清帝名與金庸真名。";
+  }
+
+  const _worldDirectorPromptOrig_v14 = worldDirectorPrompt;
+  worldDirectorPrompt = function() {
+    return _worldDirectorPromptOrig_v14() + enhanceDirectorPromptMain();
+  };
+
+  // Enrich free-input director context with main quest
+  const _aiWorldDirectorOrig_v14 = aiWorldDirector;
+  aiWorldDirector = async function(mode, text) {
+    if (!settings.deepseekKey) {
+      const off = offlineWorldDirector(mode, text);
+      // offline main nudge
+      const snap = mainQuestSnapshot();
+      if (snap.id && !snap.done && plotAgencyLevel() >= 1) {
+        if (/主線|下一步|怎麼辦|線索|黑衣|殘印|夜王|傳聞|打聽/.test(text)) {
+          off.worldActions = (off.worldActions || []).concat([
+            { type: "main_hint", hint: snap.hint },
+            { type: "advance_main", questId: snap.id, hint: "你循傳聞推進了一寸。" }
+          ]);
+          off.say = (off.say || "") + "\n（主線隱隱有了動靜。）";
+        }
+      }
+      return off;
+    }
+    // inject main into user blob via wrapper: call original but patch after offline fallback path
+    // Re-implement light wrap: call deepseek with enriched prompt already in worldDirectorPrompt
+    const pack = await _aiWorldDirectorOrig_v14(mode, text);
+    return pack;
+  };
+
+  // Offline director: also nudge main + NPC agenda on keywords
+  const _offlineWorldDirectorOrig_v14 = offlineWorldDirector;
+  offlineWorldDirector = function(mode, text) {
+    const pack = _offlineWorldDirectorOrig_v14(mode, text);
+    const snap = mainQuestSnapshot();
+    const level = plotAgencyLevel();
+    const acts = pack.worldActions || [];
+    if (snap.id && !snap.done) {
+      if (/主線|下一步|殘印|黑衣人|劍冢|密室|夜王|分途/.test(text)) {
+        acts.push({ type: "main_hint", hint: snap.hint });
+        if (level >= 2) acts.push({ type: "advance_main", questId: snap.id });
+        pack.say = (pack.say || "") + "\n你把主線線索又理清了一點：「" + trunc(snap.hint, 40) + "」。";
+      }
+    }
+    if (/任務|委託|差事|幫我|求你/.test(text) && level >= 1) {
+      const present = typeof npcAtLocation === "function" ? npcAtLocation(S.loc) : [];
+      const nid = present[0] || null;
+      acts.push({ type: "npc_quest", npcId: nid, title: "臨時之託", hint: "在" + (S.loc || "此地") + "辦妥一件小事。" });
+      pack.say = (pack.say || "") + "\n有人把一樁小事託付給你。";
+    }
+    if (/行程|去哪|蹤跡|去向/.test(text) && level >= 2) {
+      const ids = Object.keys(NPCS || {}).filter(function(id){
+        const f = S.fates && S.fates[id];
+        return f && /ally|sworn|master|muse|married|teacher/.test(f);
+      }).slice(0, 3);
+      if (ids.length) {
+        const pick = ids[Math.floor(Math.random() * ids.length)];
+        acts.push({ type: "npc_agenda", npcId: pick, goal: "尋你而來", to: S.loc });
+        pack.say = (pack.say || "") + "\n有人說" + NPCS[pick].name + "近日正在找你。";
+      }
+    }
+    pack.worldActions = acts;
+    return pack;
+  };
+
+  // NPC talk: ask AI to emit worldActions for proactive behavior
+  const _aiNpcInteractOrig_v14 = typeof aiNpcInteract === "function" ? aiNpcInteract : null;
+  if (_aiNpcInteractOrig_v14) {
+    aiNpcInteract = async function(npcId, mode, playerText) {
+      const pack = await _aiNpcInteractOrig_v14(npcId, mode, playerText);
+      if (!pack) return pack;
+      // Soft offline proactive if no worldActions from AI
+      if ((!pack.worldActions || !pack.worldActions.length) && plotAgencyLevel() >= 2) {
+        const snap = mainQuestSnapshot();
+        const acts = [];
+        if (/主線|殘印|黑衣|線索|下一步|傳聞/.test(playerText || "") && snap.id && !snap.done) {
+          acts.push({ type: "main_hint", hint: snap.hint });
+          if (Math.random() < 0.45) acts.push({ type: "advance_main", questId: snap.id });
+          acts.push({ type: "npc_speak", npcId: npcId, text: "關於這條路……你該去查「" + trunc(snap.hint, 28) + "」。" });
+        }
+        if (/任務|幫|託|委託/.test(playerText || "") && Math.random() < 0.5) {
+          acts.push({ type: "npc_quest", npcId: npcId, title: (NPCS[npcId] ? NPCS[npcId].name : "對方") + "之託", hint: "替我辦一件在" + (S.loc || "此地") + "的小事。" });
+        }
+        if (acts.length) pack.worldActions = acts;
+      }
+      return pack;
+    };
+  }
+
+  // Expand NPC system prompt via deepseekChat nudge already exists; also wrap sanitize to keep worldActions from NPC JSON
+  // (sanitizeAiResult already wrapped in v13)
+
+  // Trigger proactive NPC tick on day / travel lightly
+  async function aiNpcDirectorTick(reason) {
+    ensureAiPlotSettings();
+    ensureAiPlotState();
+    if (!settings.proactiveNpc) return false;
+    if (plotAgencyLevel() < 1) return false;
+    if (S.npcDirDay === S.day && reason !== "force") return false;
+    const chance = reason === "day" ? 0.28 : reason === "travel" ? 0.12 : 0.08;
+    if (Math.random() > chance + (settings.deepseekKey ? 0.05 : 0)) return false;
+    S.npcDirDay = S.day;
+    const snap = mainQuestSnapshot();
+    const pool = Object.keys(NPCS || {}).filter(function(id){
+      const f = S.fates && S.fates[id];
+      if (f === "dead" || f === "vanished") return false;
+      return !!f && f !== "default" || Math.random() < 0.15;
+    });
+    if (!pool.length) return false;
+    const pick = pool[Math.floor(Math.random() * Math.min(8, pool.length))];
+    const acts = [];
+    if (plotAgencyLevel() >= 2 && Math.random() < 0.4) {
+      acts.push({ type: "npc_agenda", npcId: pick, goal: "在附近活動，或尋你", to: Math.random() < 0.5 ? S.loc : NPCS[pick].loc });
+    }
+    if (snap.id && !snap.done && Math.random() < 0.35) {
+      acts.push({ type: "main_hint", hint: snap.hint });
+      acts.push({ type: "npc_speak", npcId: pick, text: "聽說你在查「" + trunc(snap.hint, 24) + "」——小心點。" });
+    } else {
+      acts.push({ type: "npc_speak", npcId: pick, text: (NPCS[pick].name || "某人") + "在你耳邊留下一句話：「近況如何？」" });
+    }
+    if (Math.random() < 0.25) {
+      acts.push({ type: "npc_quest", npcId: pick, title: "路途之託", hint: "替" + NPCS[pick].name + "帶個口信或辦件小事。" });
+    }
+    const note = applyWorldMutation(pick, { worldActions: acts });
+    if (note) toast("江湖動向" + note, true);
+    try { saveGameSilent(); } catch (e) {}
+    setTimeout(function(){ try { flushPendingAiUi(); render(); } catch (e2) {} }, 120);
+    return true;
+  }
+
+  // Hook day advance / travel if available
+  if (typeof advanceDay === "function") {
+    const _advanceDayOrig_v14 = advanceDay;
+    advanceDay = function() {
+      const r = _advanceDayOrig_v14.apply(this, arguments);
+      setTimeout(function(){ try { aiNpcDirectorTick("day"); } catch (e) {} }, 500);
+      return r;
+    };
+  }
+  if (typeof travelToLocation === "function") {
+    const _travelOrig_v14 = travelToLocation;
+    travelToLocation = function(id) {
+      const r = _travelOrig_v14.apply(this, arguments);
+      setTimeout(function(){ try { aiNpcDirectorTick("travel"); } catch (e) {} }, 600);
+      return r;
+    };
+  }
+
+  // Harden location action click: fn || run (core renderer)
+  const _renderOrig_forActs = typeof render === "function" ? null : null;
+  // Patch at bind time by wrapping locationActions usage — monkeypatch create path via locationActions already uses fn.
+  // Also patch the inline renderer once by wrapping the function that builds loc-acts if we can find bindUI.
+  (function patchLocActClick() {
+    // Re-bind after render by wrapping render
+    if (typeof render !== "function") return;
+    const _render = render;
+    render = function() {
+      const out = _render.apply(this, arguments);
+      try {
+        const acts = document.getElementById("loc-acts");
+        if (acts && acts.children && acts.children.length) {
+          // Ensure any button without onclick gets repaired from data — skip; we fix at source.
+        }
+      } catch (e) {}
+      return out;
+    };
+  })();
+
+  // Replace openAiPlotBoard with richer board + safe try/catch + AI push main
+  openAiPlotBoard = function() {
+    try {
+      ensureAiPlotSettings();
+      ensureAiPlotState();
+      try { ensureQuests(); } catch (e0) {}
+      const branches = Object.keys(S.aiBranches || {}).map(function(k){ return S.aiBranches[k]; }).filter(Boolean);
+      const snap = mainQuestSnapshot();
+      let html = "<h3>劇情板・AI</h3>";
+      html += "<p class=\"small\">自由度：" + escapeHtml(settings.plotAgency || "high") +
+        " ・ " + (settings.deepseekKey ? "DeepSeek 已接入" : "離線導演") + "</p>";
+      html += "<div class=\"story-box\" style=\"margin-top:6px\"><b>主線</b>：" +
+        escapeHtml(snap.title || "—") + "（步驟 " + snap.step + "）<br/>" +
+        escapeHtml(snap.hint || "") +
+        (S.aiMainHint ? ("<br/><span class=\"small\">AI 提示：" + escapeHtml(S.aiMainHint) + "</span>") : "") +
+        "</div>";
+      if (S.locMood) html += "<p class=\"small\">此地氣氛：" + escapeHtml(S.locMood) + "</p>";
+      html += "<h4 style=\"margin-top:8px\">進行中支線</h4>";
+      if (!branches.length) html += "<p class=\"small\">暫無 AI 開出的支線。可用下方「請 AI 推演」或自由輸入。</p>";
+      else {
+        html += "<div class=\"btn-row\">";
+        branches.forEach(function(b){
+          html += "<button class=\"btn\" data-br=\"" + escapeHtml(b.id) + "\">" +
+            escapeHtml(b.title) + (b.done ? "（完）" : "") +
+            "<span class=\"sub\">" + escapeHtml(b.hint || "") + "</span></button>";
+        });
+        html += "</div>";
+      }
+      html += "<h4 style=\"margin-top:8px\">鉤子</h4>";
+      if (!(S.aiSideHooks || []).length) html += "<p class=\"small\">無</p>";
+      else {
+        html += "<ul class=\"small\">" + S.aiSideHooks.slice(-6).map(function(h){
+          return "<li>" + escapeHtml(h.title) + "・" + escapeHtml(h.hint) + "（" + escapeHtml(h.loc || "") + "）</li>";
+        }).join("") + "</ul>";
+      }
+      const ag = S.npcAgenda || {};
+      const agKeys = Object.keys(ag).slice(-4);
+      if (agKeys.length) {
+        html += "<h4 style=\"margin-top:8px\">NPC 行程</h4><ul class=\"small\">";
+        agKeys.forEach(function(id){
+          const a = ag[id];
+          html += "<li>" + escapeHtml((NPCS[id] && NPCS[id].name) || id) + "：" + escapeHtml(a.goal || "") + "</li>";
+        });
+        html += "</ul>";
+      }
+      if ((S.aiPlotLog || []).length) {
+        html += "<h4 style=\"margin-top:8px\">近況</h4><ul class=\"small\">" +
+          S.aiPlotLog.slice(-5).map(function(x){ return "<li>日" + x.day + "・" + escapeHtml(x.note) + "</li>"; }).join("") +
+          "</ul>";
+      }
+      html += "<div class=\"btn-row\" style=\"margin-top:10px\">" +
+        "<button class=\"btn primary\" id=\"ai-push-main\">請 AI 推演主線</button>" +
+        "<button class=\"btn\" id=\"ai-push-world\">請 AI 生事／挪人</button>" +
+        "<button class=\"btn\" id=\"ai-plot-settings\">AI 設定</button>" +
+        "<button class=\"btn ghost\" id=\"ai-plot-close\">關閉</button></div>";
+      openModal(html);
+      document.querySelectorAll("[data-br]").forEach(function(btn){
+        btn.onclick = function() {
+          const id = btn.getAttribute("data-br");
+          const b = S.aiBranches[id];
+          if (!b) return;
+          closeModal();
+          showStory("【" + b.title + "】\n" + b.hint + "\n（日" + b.day + "・" + (b.loc || "") + "）" +
+            (b.done ? "\n（已了結）" : "\n可在相關地點自由輸入推進。"));
+        };
+      });
+      const st = document.getElementById("ai-plot-settings");
+      if (st) st.onclick = function(){ try { showSettings(); } catch (e) { toast("設定開啟失敗", true); } };
+      const cl = document.getElementById("ai-plot-close");
+      if (cl) cl.onclick = function(){ closeModal(); };
+      const pm = document.getElementById("ai-push-main");
+      if (pm) pm.onclick = async function() {
+        pm.disabled = true; pm.textContent = "推演中…";
+        try {
+          const snap2 = mainQuestSnapshot();
+          const pack = await aiWorldDirector("say", "請根據目前主線狀態推進劇情，並讓相關 NPC 給出提示或委託。主線：" + (snap2.title || "") + " 步驟" + snap2.step + "。" + (snap2.hint || ""));
+          const note = applyWorldMutation(null, pack);
+          closeModal();
+          showStory((pack.say || "劇情有了新的動向。") + (note ? "\n" + note : ""));
+          try { saveGameSilent(); } catch (e1) {}
+          setTimeout(function(){ try { flushPendingAiUi(); render(); } catch (e2) {} }, 100);
+        } catch (err) {
+          console.warn(err);
+          toast("推演失敗，已用離線導演", true);
+          const off = offlineWorldDirector("say", "主線下一步");
+          const note = applyWorldMutation(null, off);
+          closeModal();
+          showStory((off.say || "") + (note ? "\n" + note : ""));
+        }
+      };
+      const pw = document.getElementById("ai-push-world");
+      if (pw) pw.onclick = async function() {
+        pw.disabled = true; pw.textContent = "生事中…";
+        try {
+          const pack = await aiWorldDirector("action", "在此地製造一件可選事件，並挪動一位相關 NPC 現身或給出行程。");
+          const note = applyWorldMutation(null, pack);
+          closeModal();
+          showStory((pack.say || "風雲變幻。") + (note ? "\n" + note : ""));
+          try { saveGameSilent(); } catch (e1) {}
+          setTimeout(function(){ try { flushPendingAiUi(); render(); } catch (e2) {} }, 100);
+        } catch (err) {
+          console.warn(err);
+          toast("生事失敗", true);
+          pw.disabled = false; pw.textContent = "請 AI 生事／挪人";
+        }
+      };
+    } catch (err) {
+      console.warn("openAiPlotBoard", err);
+      try {
+        openModal("<h3>劇情板</h3><p class=\"small\">開啟時出錯：" + escapeHtml(String(err && err.message || err)) +
+          "</p><div class=\"btn-row\"><button class=\"btn\" onclick=\"closeModal()\">關閉</button></div>");
+      } catch (e2) {
+        toast("劇情板開啟失敗", true);
+      }
+    }
+  };
+
+  // Ensure map button uses fn (re-wrap locationActions)
+  (function rewrapLocActs() {
+    const prev = locationActions;
+    locationActions = function(locId) {
+      const acts = (typeof prev === "function" ? prev(locId) : []) || [];
+      // dedupe ai_plot_board
+      const filtered = acts.filter(function(a){ return a && a.id !== "ai_plot_board" && a.label !== "【劇情板】AI 支線"; });
+      filtered.push({
+        id: "ai_plot_board",
+        label: "【劇情板】AI 支線",
+        fn: function(){ openAiPlotBoard(); },
+        run: function(){ openAiPlotBoard(); }
+      });
+      return filtered;
+    };
+  })();
+
+  // Core click safety: wrap render to bind fn||run
+  if (typeof render === "function") {
+    const __renderV14 = render;
+    render = function() {
+      const r = __renderV14.apply(this, arguments);
+      try {
+        const box = document.getElementById("loc-acts");
+        if (!box) return r;
+        // Rebind from locationActions to guarantee handlers
+        const list = locationActions(S.loc) || [];
+        if (box.childNodes.length === list.length) {
+          for (let i = 0; i < list.length; i++) {
+            const btn = box.childNodes[i];
+            const a = list[i];
+            if (btn && a && (a.fn || a.run)) {
+              btn.onclick = a.fn || a.run;
+            }
+          }
+        }
+      } catch (e) {}
+      return r;
+    };
+  }
+
+  // Autorun V14
+  window.__JH_AUTORUN_V14 = function() {
+    ensureAiPlotSettings();
+    ensureAiPlotState();
+    ensureQuests();
+    settings.plotAgency = "sandbox";
+    settings.proactiveNpc = true;
+    settings.deepseekKey = "";
+    saveSettings();
+
+    // Board opens without throw
+    let boardOk = false;
+    try {
+      openAiPlotBoard();
+      boardOk = !!(document.getElementById("modal-body") && /劇情板/.test(document.getElementById("modal-body").innerHTML || ""));
+      closeModal();
+    } catch (e) { boardOk = false; }
+
+    // locationActions has fn
+    const acts = locationActions(S.loc || "qingcheng") || [];
+    const boardAct = acts.filter(function(a){ return a && (a.id === "ai_plot_board" || /劇情板/.test(a.label || "")); })[0];
+    const fnOk = !!(boardAct && typeof (boardAct.fn || boardAct.run) === "function");
+
+    // main advance
+    S.quests.main.done = false;
+    S.quests.main.step = 0;
+    const n1 = applyWorldAiAction(null, { type: "advance_main", questId: "main" });
+    const stepOk = S.quests.main.step === 1 && /主線/.test(n1);
+    applyWorldAiAction(null, { type: "main_hint", hint: "去青城打聽黑衣人" });
+    const hintOk = !!(S.aiMainHint && flag("ai_main_hint"));
+
+    // npc quest / agenda / speak
+    const anyNpc = Object.keys(NPCS || {})[0];
+    applyWorldAiAction(anyNpc, { type: "npc_quest", npcId: anyNpc, title: "試任務", hint: "測試" });
+    applyWorldAiAction(anyNpc, { type: "npc_agenda", npcId: anyNpc, goal: "巡邏", to: S.loc });
+    applyWorldAiAction(anyNpc, { type: "npc_speak", npcId: anyNpc, text: "測試開口" });
+    const speakOk = !!(S.pendingNpcLine && S.pendingNpcLine.text);
+    flushPendingAiUi();
+
+    // offline director main keyword
+    const off = offlineWorldDirector("say", "主線下一步該怎麼辦");
+    const offNote = applyWorldMutation(null, off);
+    const offMainOk = S.quests.main.step >= 1 && (/主線|步驟|提示/.test(offNote + (off.say || "")) || S.aiMainHint);
+
+    const ok = !!(boardOk && fnOk && stepOk && hintOk && speakOk && offMainOk && typeof aiWorldDirector === "function");
+    return {
+      ok: ok,
+      boardOk: boardOk,
+      fnOk: fnOk,
+      stepOk: stepOk,
+      hintOk: hintOk,
+      speakOk: speakOk,
+      offMainOk: offMainOk,
+      mainStep: S.quests.main.step,
+      agency: settings.plotAgency
+    };
+  };
+
+  if (window.__JH_DEBUG) {
+    Object.assign(window.__JH_DEBUG, {
+      openAiPlotBoard: openAiPlotBoard,
+      currentMainQuestId: currentMainQuestId,
+      mainQuestSnapshot: mainQuestSnapshot,
+      aiNpcDirectorTick: aiNpcDirectorTick,
+      applyWorldAiAction: applyWorldAiAction
+    });
+  }
+
+  // ========== END V14 ==========
+// ========== V15: TASTEFUL EUNUCH/DC + BODY CONDITION (no gore / no erotic) ==========
+  // Homage only. 寫意上限：無殘忍細描、無成人行為、無18禁模式。
+  // Mutations MUST touch real save.
+
+  const BODY_TAG_DEFS = {
+    castrated: { label: "太監籍・身殘（寫意）", force: -2, agi: -1, charm: -2, focus: 1 },
+    injured_hands: { label: "手傷未癒", force: -1, charm: -1, dutyPenalty: 25 },
+    limp: { label: "足跛不爽", agi: -2, force: -1 },
+    bruised: { label: "體有瘀傷", force: -1, charm: -1, hpMax: -8 },
+    shaken: { label: "心神不寧", focus: -2, wit: -1 },
+    veiled_scar: { label: "舊痕隱痛", charm: -1, focus: 1 }
+  };
+
+  const DC_UNIFORM_ITEMS = {
+    dc_robe_1: { id: "dc_robe_1", name: "番子灰衣", type: "armor", rarity: "uncommon", def: 3, perception: 1, desc: "外勤番子常服。街巷見之側目。", price: 0, dcRankMin: 1 },
+    dc_robe_2: { id: "dc_robe_2", name: "小旗皂袍", type: "armor", rarity: "uncommon", def: 4, perception: 1, wit: 1, desc: "檔房小旗皂色官服。", price: 0, dcRankMin: 2 },
+    dc_robe_3: { id: "dc_robe_3", name: "百戶飛魚服（寫意）", type: "armor", rarity: "rare", def: 6, charm: 1, perception: 1, desc: "百戶級廠衛官服。吏民見之色變。", price: 0, dcRankMin: 3 },
+    dc_robe_4: { id: "dc_robe_4", name: "千戶繡春刀服", type: "armor", rarity: "rare", def: 8, force: 1, charm: 1, desc: "千戶級。低品官亦忌三分。", price: 0, dcRankMin: 4 },
+    dc_robe_5: { id: "dc_robe_5", name: "掌刑同知蟒衣（寫意）", type: "armor", rarity: "epic", def: 10, charm: 2, wit: 1, desc: "掌刑同知服。朝堂側目，街巷噤聲。", price: 0, dcRankMin: 5 }
+  };
+
+  // Register items if ITEMS exists
+  if (typeof ITEMS === "object" && ITEMS) {
+    Object.keys(DC_UNIFORM_ITEMS).forEach(function(k) {
+      if (!ITEMS[k]) ITEMS[k] = DC_UNIFORM_ITEMS[k];
+    });
+  }
+
+  function ensureBodyState() {
+    if (!S.bodyTags || typeof S.bodyTags !== "object") S.bodyTags = {};
+    if (!S.bodyTagUntil || typeof S.bodyTagUntil !== "object") S.bodyTagUntil = {};
+    // expire
+    const day = S.day || 1;
+    Object.keys(S.bodyTagUntil).forEach(function(t) {
+      if (S.bodyTagUntil[t] && day > S.bodyTagUntil[t]) {
+        delete S.bodyTags[t];
+        delete S.bodyTagUntil[t];
+      }
+    });
+    if (flag("eunuch")) S.bodyTags.castrated = true;
+  }
+
+  function hasBodyTag(tag) {
+    ensureBodyState();
+    return !!S.bodyTags[tag];
+  }
+
+  function addBodyTag(tag, days) {
+    ensureBodyState();
+    if (!BODY_TAG_DEFS[tag] && tag !== "castrated") return;
+    S.bodyTags[tag] = true;
+    if (typeof days === "number" && days > 0) S.bodyTagUntil[tag] = (S.day || 1) + days;
+    else delete S.bodyTagUntil[tag];
+  }
+
+  function clearBodyTag(tag) {
+    ensureBodyState();
+    delete S.bodyTags[tag];
+    delete S.bodyTagUntil[tag];
+  }
+
+  function bodyTagLabelLine() {
+    ensureBodyState();
+    const keys = Object.keys(S.bodyTags).filter(function(k){ return S.bodyTags[k]; });
+    if (!keys.length) return "";
+    return keys.map(function(k){ return (BODY_TAG_DEFS[k] && BODY_TAG_DEFS[k].label) || k; }).join("／");
+  }
+
+  function applyBodyModsToStats(st) {
+    ensureBodyState();
+    const out = Object.assign({}, st);
+    Object.keys(S.bodyTags).forEach(function(tag) {
+      if (!S.bodyTags[tag]) return;
+      const d = BODY_TAG_DEFS[tag];
+      if (!d) return;
+      ["force","agi","charm","focus","wit"].forEach(function(k) {
+        if (typeof d[k] === "number") out[k] = Math.max(0, (out[k] || 0) + d[k]);
+      });
+      if (typeof d.hpMax === "number") out.hpMax = Math.max(30, (out.hpMax || 100) + d.hpMax);
+    });
+    return out;
+  }
+
+  function bodyDutySuccessChance(base) {
+    ensureBodyState();
+    let p = base;
+    if (hasBodyTag("injured_hands")) p -= 0.25;
+    if (hasBodyTag("limp")) p -= 0.1;
+    if (hasBodyTag("bruised")) p -= 0.08;
+    if (hasBodyTag("shaken")) p -= 0.12;
+    return Math.max(0.05, Math.min(0.95, p));
+  }
+
+  /** 女身不可淨身／太監籍；僅男身可入。女扮男裝可喬裝入廠，但不經太監籍。 */
+  function canEnterEunuchTrack() {
+    return typeof isMale === "function" && isMale() && !isFemale();
+  }
+
+  function sanitizeAbsurdFemaleEunuch() {
+    if (!(typeof isFemale === "function" && isFemale())) return false;
+    let changed = false;
+    if (flag("eunuch") || flag("sold_as_eunuch")) {
+      if (S.flags) {
+        S.flags.eunuch = false;
+        S.flags.sold_as_eunuch = false;
+      }
+      changed = true;
+    }
+    if (S.courtTrack === "eunuch") {
+      S.courtTrack = "none";
+      S.courtGrade = 0;
+      changed = true;
+    }
+    if (S.palaceRole === "eunuch") {
+      S.palaceRole = null;
+      changed = true;
+    }
+    if (S.bodyTags && S.bodyTags.castrated) {
+      clearBodyTag("castrated");
+      changed = true;
+    }
+    if (changed) {
+      setFlag("absurd_eunuch_cleared");
+      toast("女身不可為太監籍——舊檔異常已矯正（寫意）", true);
+    }
+    return changed;
+  }
+
+  // ---- wrap gender-gated eunuch entry ----
+  const __applyEunuchFateV15 = typeof applyEunuchFate === "function" ? applyEunuchFate : null;
+  applyEunuchFate = function() {
+    if (!canEnterEunuchTrack()) {
+      toast("女身不可入太監籍／淨身（寫意）", true);
+      return;
+    }
+    if (__applyEunuchFateV15) __applyEunuchFateV15();
+    else {
+      setFlag("eunuch"); setFlag("sold_as_eunuch"); setFlag("palace_access"); setFlag("palace_entry"); setFlag("map_huanggong");
+      S.palaceRole = "eunuch";
+      S.force = Math.max(1, (S.force || 10) - 8);
+      S.agi = Math.max(1, (S.agi || 8) - 4);
+      S.bone = Math.max(1, (S.bone || 5) - 3);
+      S.hpMax = Math.max(40, (S.hpMax || 100) - 20);
+      S.hp = Math.min(S.hp, S.hpMax);
+      if (typeof adjustKarma === "function") adjustKarma(-15, "淨身入宮");
+    }
+    addBodyTag("castrated");
+    addBodyTag("bruised", 5);
+    addBodyTag("shaken", 3);
+    if (typeof saveGameSilent === "function") saveGameSilent();
+  };
+
+  const __startCourtTrackV15 = typeof startCourtTrack === "function" ? startCourtTrack : null;
+  if (__startCourtTrackV15) {
+    startCourtTrack = function(track, opts) {
+      if (track === "eunuch" && !canEnterEunuchTrack()) {
+        return toast("女身不可入太監途。請走宮女途，或喬裝後走東廠騙過督公（不經淨身）。", true);
+      }
+      return __startCourtTrackV15(track, opts || {});
+    };
+  }
+
+  const __voluntaryJingshenV15 = typeof voluntaryJingshenEunuch === "function" ? voluntaryJingshenEunuch : null;
+  voluntaryJingshenEunuch = function() {
+    sanitizeAbsurdFemaleEunuch();
+    if (!canEnterEunuchTrack()) {
+      if (typeof isFemale === "function" && isFemale()) {
+        return openModal("<h3>淨身房・拒</h3><div class=\"story-box\">老役打量你片刻，冷笑一聲：「女身妄稱入籍？滾出去。」<br>（女角不可淨身／太監籍。若要入東廠，可女扮男裝於廠衛司「喬裝騙過督公」——仍不經太監籍。）</div><div class=\"btn-row\"><button class=\"btn ghost\" onclick=\"closeModal()\">退下</button></div>");
+      }
+      return toast("淨身入籍僅限男身（寫意）", true);
+    }
+    if (flag("eunuch")) {
+      if (typeof ensureCourtCareer === "function") ensureCourtCareer();
+      if (S.courtTrack !== "eunuch" && typeof startCourtTrack === "function") startCourtTrack("eunuch");
+      else if (typeof showStory === "function") showStory("你已在太監籍。" + (typeof eunuchHallName === "function" ? ("當值殿：" + eunuchHallName()) : ""));
+      return;
+    }
+    openModal("<h3>淨身房・寫意</h3><div class=\"story-box\">燈影森冷。老役啞聲道：「踏入此門，便入太監籍——氣力身法大損，再無回頭。你可想清楚？」<br>（無血腥細描；僅後果與仕途。女身不可入。）</div>" +
+      "<div class=\"btn-row\"><button class=\"btn danger\" id=\"js-yes-v15\">咬牙入籍</button><button class=\"btn ghost\" onclick=\"closeModal()\">後退</button></div>");
+    const btn = document.getElementById("js-yes-v15");
+    if (btn) btn.onclick = function() {
+      closeModal();
+      if (typeof startCourtTrack === "function") startCourtTrack("eunuch");
+    };
+  };
+
+  // Career panel: only show 淨身 for biological male
+  const __openCourtCareerPanelV15 = typeof openCourtCareerPanel === "function" ? openCourtCareerPanel : null;
+  if (__openCourtCareerPanelV15) {
+    openCourtCareerPanel = function() {
+      // temporarily patch isMale perception for button — do full rebuild lightly
+      __openCourtCareerPanelV15();
+      // After open, if female, remove eunuch button if present
+      if (typeof isFemale === "function" && isFemale()) {
+        const el = document.getElementById("cc-eunuch");
+        if (el && el.parentNode) el.parentNode.removeChild(el);
+        const el2 = document.getElementById("cc-eunuch2");
+        if (el2 && el2.parentNode && !flag("eunuch")) el2.parentNode.removeChild(el2);
+      }
+    };
+  }
+
+  // sold-as-eunuch: male only
+  const __trySoldAsEunuchV15 = typeof trySoldAsEunuchEvent === "function" ? trySoldAsEunuchEvent : null;
+  if (__trySoldAsEunuchV15) {
+    trySoldAsEunuchEvent = function(reason) {
+      if (!canEnterEunuchTrack()) return false;
+      return __trySoldAsEunuchV15(reason);
+    };
+  }
+
+  // effectiveStats body mods
+  const __effectiveStatsV15 = effectiveStats;
+  effectiveStats = function() {
+    let st = __effectiveStatsV15();
+    st = applyBodyModsToStats(st);
+    // wearing high dc robe slight charm from authority (already on item)
+    return st;
+  };
+
+  // ---- Dongchang: 驗身 + grim duty (abstract) + refuse punishment ----
+  function ensureDcUniformState() {
+    if (typeof S.dcUniformRank !== "number") S.dcUniformRank = 0;
+    if (typeof S.dcGrimDone === "undefined") S.dcGrimDone = false;
+    if (typeof S.dcInspectPassed === "undefined") S.dcInspectPassed = false;
+  }
+
+  function grantDcUniformForRank(rank) {
+    ensureDcUniformState();
+    const r = Math.max(1, Math.min(5, rank || S.dcRank || 1));
+    const id = "dc_robe_" + r;
+    if (ITEMS[id] && !hasItem(id)) addItem(id, 1);
+    // auto-equip if no better armor or previous dc robe
+    const cur = S.equip && S.equip.armor;
+    if (!cur || String(cur).indexOf("dc_robe_") === 0) {
+      S.equip = S.equip || {};
+      S.equip.armor = id;
+    }
+    S.dcUniformRank = r;
+    setFlag("dc_uniform_" + r);
+  }
+
+  function wearingDcUniform() {
+    ensureDcUniformState();
+    const arm = S.equip && S.equip.armor;
+    if (arm && String(arm).indexOf("dc_robe_") === 0) return parseInt(String(arm).replace("dc_robe_", ""), 10) || 0;
+    return S.dcJoined ? (S.dcUniformRank || S.dcRank || 0) : 0;
+  }
+
+  /** 廠公驗身：寫意 pass/fail，無細節 */
+  function runChanggongInspect() {
+    ensureBodyState();
+    // Must be male + eunuch flag + castrated tag for eunuch path
+    if (!canEnterEunuchTrack()) return { ok: false, say: "督公淡淡一瞥：「女身？滾。」" };
+    if (!flag("eunuch") && !hasBodyTag("castrated")) {
+      return { ok: false, say: "督公合上籍冊：「未入太監籍，休說入廠。」（請先往淨身房寫意入籍。）" };
+    }
+    // Abstract check: eunuch + body tag almost always pass; slight fail if identity_exposed weirdness
+    const favorDg = (S.datingAff && S.datingAff.dongchang_gong) || 0;
+    const pass = hasBodyTag("castrated") || flag("eunuch") || favorDg >= 40;
+    S.dcInspectPassed = pass;
+    if (pass) {
+      return { ok: true, say: "督公令人驗籍／驗身（寫意）——過了。「身子已廢，正好入檔。」" };
+    }
+    return { ok: false, say: "驗身未過（寫意）。督公揮袖：「假貨。給我打出去。」" };
+  }
+
+  function applyDcRefuseDutyPunishment() {
+    // 誤闖東廠受罰 — abstract stat hits only
+    S.hp = Math.max(1, (S.hp || 50) - 22);
+    S.focus = Math.max(1, (S.focus || 5) - 2);
+    S.charm = Math.max(0, (S.charm || 5) - 1);
+    addBodyTag("bruised", 4);
+    addBodyTag("injured_hands", 3);
+    addBodyTag("shaken", 2);
+    if (typeof bumpPalaceHeat === "function") bumpPalaceHeat(10);
+    if (typeof bumpDcHeat === "function") bumpDcHeat(8);
+    else S.dcHeat = (S.dcHeat || 0) + 8;
+    if (typeof adjustKarma === "function") adjustKarma(-2, "誤闖東廠受罰");
+    setFlag("dc_refuse_punished");
+    if (typeof saveGameSilent === "function") saveGameSilent();
+  }
+
+  function applyDcGrimDutyAbstract(kind) {
+    // Abstract outcomes only — NEVER describe cruelty
+    ensureDcUniformState();
+    let note = "";
+    if (kind === "ledger") {
+      if (typeof bumpDcPrestige === "function") bumpDcPrestige(6, "抄冊");
+      if (typeof adjustKarma === "function") adjustKarma(-6, "廠差・黑冊");
+      S.perception = Math.min(28, (S.perception || 5) + 1);
+      note = "你抄完一疊黑冊。廠功微升，心裡沉了一截。（寫意）";
+    } else if (kind === "watch") {
+      if (typeof bumpDcPrestige === "function") bumpDcPrestige(4, "值夜");
+      S.exp = (S.exp || 0) + 5;
+      note = "值夜盯梢到天明。無功無過，算過了門檻。";
+    } else if (kind === "harsh") {
+      if (S.dcGrimDone) {
+        note = "這類差事你已做過一次。督公另派了雜務。";
+        if (typeof bumpDcPrestige === "function") bumpDcPrestige(2, "雜務");
+      } else {
+        S.dcGrimDone = true;
+        // karma -50 max once
+        if (typeof adjustKarma === "function") adjustKarma(-50, "廠差・不堪令（寫意）");
+        else S.karma = (S.karma || 0) - 50;
+        if (typeof bumpDcHeat === "function") bumpDcHeat(10);
+        else S.dcHeat = (S.dcHeat || 0) + 10;
+        if (typeof bumpPalaceHeat === "function") bumpPalaceHeat(6);
+        const aff = S.datingAff = S.datingAff || {};
+        aff.dongchang_gong = (aff.dongchang_gong || 0) + 5;
+        addBodyTag("shaken", 5);
+        addBodyTag("veiled_scar");
+        note = "你奉令做完一件不堪差事（細節略）。善惡大跌，督公多看你一眼。";
+      }
+    } else {
+      note = "差事含糊帶過。";
+    }
+    if (typeof saveGameSilent === "function") saveGameSilent();
+    return note;
+  }
+
+  function openDcGrimDutyChoices(afterJoinSay) {
+    let html = "<h3>督公差遣（寫意）</h3><div class=\"story-box\">" + (afterJoinSay || "驗身已過。") +
+      "<br><br>督公丟下一紙令：「先做一件——或滾。」<br>（選項只改數值／旗標；無殘忍細描、無成人內容。）</div><div class=\"btn-row\" style=\"flex-wrap:wrap;gap:6px\">";
+    html += "<button class=\"btn\" id=\"dc-duty-ledger\">抄黑冊（善惡微損）</button>";
+    html += "<button class=\"btn\" id=\"dc-duty-watch\">值夜盯梢</button>";
+    html += "<button class=\"btn danger\" id=\"dc-duty-harsh\">接下不堪差事（善惡−50・一次）</button>";
+    html += "<button class=\"btn ghost\" id=\"dc-duty-refuse\">拒絕（視為誤闖・受罰寫意）</button></div>";
+    openModal(html);
+    const bind = function(id, fn){ const el = document.getElementById(id); if (el) el.onclick = fn; };
+    bind("dc-duty-ledger", function(){ closeModal(); const n = applyDcGrimDutyAbstract("ledger"); finishDcJoinAfterDuty(n); });
+    bind("dc-duty-watch", function(){ closeModal(); const n = applyDcGrimDutyAbstract("watch"); finishDcJoinAfterDuty(n); });
+    bind("dc-duty-harsh", function(){ closeModal(); const n = applyDcGrimDutyAbstract("harsh"); finishDcJoinAfterDuty(n); });
+    bind("dc-duty-refuse", function(){
+      closeModal();
+      applyDcRefuseDutyPunishment();
+      // strip provisional join if any
+      if (S.dcJoined && !flag("dc_join_locked")) {
+        S.dcJoined = false;
+        S.dcRank = 0;
+        if (S.palaceRole === "dongchang") S.palaceRole = flag("eunuch") ? "eunuch" : null;
+      }
+      showStory("你不肯接令。督公冷冷道：「既不肯做事，便當誤闖。」\n（寫意受罰：氣血／定力／魅力受損，手傷・瘀傷。）\n未入廠籍。");
+      render();
+    });
+  }
+
+  function finishDcJoinAfterDuty(dutyNote) {
+    setFlag("dc_join_locked");
+    grantDcUniformForRank(S.dcRank || 1);
+    showStory((dutyNote || "") + "\n\n你正式入冊・【" + ((typeof DC_RANK_DEFS !== "undefined" && DC_RANK_DEFS[S.dcRank]) ? DC_RANK_DEFS[S.dcRank].name : "廠衛") + "】。\n東廠官服已入手並穿上——街巷與朝堂之人，眼神會變。");
+    if (typeof saveGameSilent === "function") saveGameSilent();
+    render();
+  }
+
+  function completeDongchangJoinCore(path, say) {
+    ensureDongchangState();
+    ensureDcUniformState();
+    S.dcJoined = true;
+    S.dcRank = Math.max(1, S.dcRank || 1);
+    S.dcJoinPath = path;
+    setFlag("dongchang_invite");
+    setFlag("palace_access");
+    setFlag("map_huanggong");
+    setFlag("map_dongchang");
+    if (typeof setPalaceRole === "function") setPalaceRole("dongchang");
+    if (typeof setFate === "function") {
+      const prev = S.fates && S.fates.dongchang_gong;
+      setFate("dongchang_gong", prev === "enemy" ? "ally" : (prev || "ally"));
+    }
+    if (typeof adjustKarma === "function") adjustKarma(path === "disguise" ? -3 : -2, "入東廠廠衛");
+    if (!hasItem("revenge_blade")) addItem("revenge_blade", 1);
+    if (!hasItem("dongchang_token")) addItem("dongchang_token", 1);
+    if (typeof bumpDcPrestige === "function") bumpDcPrestige(5, "入冊");
+    if (typeof saveGameSilent === "function") saveGameSilent();
+    return say;
+  }
+
+  // Replace attemptDongchangJoin
+  attemptDongchangJoin = function(pathHint) {
+    ensureDongchangState();
+    ensureDcUniformState();
+    sanitizeAbsurdFemaleEunuch();
+    if (S.dcJoined && S.dcRank >= 1 && flag("dc_join_locked")) {
+      return showStory("你已在廠衛編制：" + (typeof dcRankLabel === "function" ? dcRankLabel() : ("rank" + S.dcRank)));
+    }
+    const eunuchOk = !!(flag("eunuch") || hasBodyTag("castrated")) && canEnterEunuchTrack();
+    const inviteOk = !!(flag("dongchang_invite") || hasItem("dongchang_token") || (S.karma || 0) <= -28);
+    const disguiseNan = !!(typeof isFemale === "function" && isFemale() && S.disguise === "nan");
+    const disguiseNv = !!(S.disguise === "nv");
+    const wantDisguise = pathHint === "disguise" || disguiseNan || disguiseNv;
+
+    let path = pathHint || null;
+    let pass = false;
+    let say = "";
+    const favorDg = (S.datingAff && S.datingAff.dongchang_gong) || 0;
+    const st = typeof effectiveStats === "function" ? effectiveStats() : { wit: S.wit || 5, charm: S.charm || 5, perception: S.perception || 5 };
+    const roll = Math.floor(Math.random() * 20) + 1;
+
+    if (pathHint === "eunuch") {
+      if (!canEnterEunuchTrack()) {
+        return showStory("督公：「女身休來獻醜。要進廠，先把面孔騙過我——且不走太監籍。」");
+      }
+      if (!eunuchOk) {
+        return showStory("督公合冊：「未淨身入籍，休提廠衛太監途。先去淨身房（寫意）。」");
+      }
+      const insp = runChanggongInspect();
+      if (!insp.ok) {
+        if (typeof bumpDcHeat === "function") bumpDcHeat(5);
+        if (typeof bumpPalaceHeat === "function") bumpPalaceHeat(6);
+        showStory(insp.say);
+        if (typeof saveGameSilent === "function") saveGameSilent();
+        return;
+      }
+      path = "eunuch";
+      pass = true;
+      say = insp.say;
+      // provisional join then duty choices
+      completeDongchangJoinCore(path, say);
+      openDcGrimDutyChoices(say);
+      return;
+    }
+
+    if (pathHint === "invite" && inviteOk) {
+      path = hasItem("dongchang_token") ? "invite" : "karma";
+      pass = true;
+      say = "督公收了帖：「惡名在冊。刀，給你一把。」";
+      // males with eunuch still get optional inspect soft
+      if (eunuchOk && !S.dcInspectPassed) {
+        const insp2 = runChanggongInspect();
+        if (insp2.ok) say += "\n" + insp2.say;
+      }
+      completeDongchangJoinCore(path, say);
+      if (eunuchOk) openDcGrimDutyChoices(say);
+      else {
+        grantDcUniformForRank(S.dcRank || 1);
+        setFlag("dc_join_locked");
+        showStory(say + "\n\n你成了廠衛・官服入手。");
+        render();
+      }
+      return;
+    }
+
+    if (wantDisguise || pathHint === "disguise") {
+      path = "disguise";
+      const check = (st.charm || 0) + (st.wit || 0) + Math.floor((st.perception || 0) * 0.5) + roll;
+      const dcAware = (typeof npcProfile === "function" ? (npcProfile("dongchang_gong").awareness || 88) : 88);
+      pass = check + 10 >= dcAware - 15 || favorDg >= 50;
+      S.dcDisguiseOk = pass;
+      if (!pass) {
+        say = "督公抬眼：「裝得不像。」（寫意：識破，宮熱上升。）";
+        if (typeof bumpDcHeat === "function") bumpDcHeat(8);
+        if (typeof bumpPalaceHeat === "function") bumpPalaceHeat(12);
+        if (typeof adjustKarma === "function") adjustKarma(-1, "喬裝敗露");
+        showStory(say);
+        if (typeof saveGameSilent === "function") saveGameSilent();
+        return;
+      }
+      say = disguiseNan
+        ? "你女扮男裝入衙。督公未拆穿：「黑衣給他。名字，寫進番子冊。」（女身不經淨身／太監籍。）"
+        : "你喬裝改容混入。督公：「演得不錯。留下來。」";
+      completeDongchangJoinCore(path, say);
+      grantDcUniformForRank(S.dcRank || 1);
+      setFlag("dc_join_locked");
+      showStory(say + "\n\n廠衛編制已定・官服入手。");
+      render();
+      return;
+    }
+
+    if (inviteOk) {
+      return attemptDongchangJoin("invite");
+    }
+    if (eunuchOk) {
+      return attemptDongchangJoin("eunuch");
+    }
+    return showStory("督公：「太監籍（男・已淨身）、東廠帖，或把面孔騙過我。否則滾。」");
+  };
+
+  // Enhance openDongchangDesk labels
+  const __openDongchangDeskV15 = typeof openDongchangDesk === "function" ? openDongchangDesk : null;
+  openDongchangDesk = function() {
+    ensureDongchangState();
+    ensureDcUniformState();
+    sanitizeAbsurdFemaleEunuch();
+    if (typeof applyNpcPowerPass === "function") applyNpcPowerPass();
+    let html = "<h3>東廠・廠衛司</h3><div class=\"story-box\">" + (typeof dcRankLabel === "function" ? dcRankLabel() : "") +
+      "<br>官服階：" + (wearingDcUniform() || 0) + "　身體：" + (bodyTagLabelLine() || "無恙") +
+      "<br>下屬：" + ((S.dcSubs && S.dcSubs.length) ? S.dcSubs.map(function(id){ return (NPCS[id]||{}).name || id; }).join("、") : "無") +
+      "<br>（男入廠・太監途須淨身＋驗身寫意；女僅可喬裝。差事無殘忍細描。）</div><div class=\"btn-row\" style=\"flex-wrap:wrap;gap:6px\">";
+    if (!S.dcJoined || !flag("dc_join_locked")) {
+      if (canEnterEunuchTrack()) html += "<button class=\"btn primary\" id=\"dc-join-e\">以太監籍求入廠（驗身）</button>";
+      html += "<button class=\"btn\" id=\"dc-join-d\">喬裝騙過督公</button>";
+      html += "<button class=\"btn\" id=\"dc-join-i\">憑東廠帖／惡名報到</button>";
+    } else {
+      html += "<button class=\"btn primary\" id=\"dc-drill\">練檔／巡衙（＋廠功）</button>";
+      html += "<button class=\"btn\" id=\"dc-sub\">指派下屬辦事</button>";
+      html += "<button class=\"btn\" id=\"dc-book\">翻黑冊</button>";
+      html += "<button class=\"btn\" id=\"dc-robe\">換／領廠衛官服</button>";
+      if (S.pendingTrial) html += "<button class=\"btn danger\" id=\"dc-trial\">【急】御前廷審</button>";
+    }
+    html += "<button class=\"btn ghost\" onclick=\"closeModal()\">關閉</button></div>";
+    openModal(html);
+    const je = document.getElementById("dc-join-e");
+    if (je) je.onclick = function(){ closeModal(); attemptDongchangJoin("eunuch"); };
+    const jd = document.getElementById("dc-join-d");
+    if (jd) jd.onclick = function(){ closeModal(); attemptDongchangJoin("disguise"); };
+    const ji = document.getElementById("dc-join-i");
+    if (ji) ji.onclick = function(){ closeModal(); attemptDongchangJoin("invite"); };
+    const drill = document.getElementById("dc-drill");
+    if (drill) drill.onclick = function(){
+      closeModal();
+      const ok = Math.random() < bodyDutySuccessChance(0.75);
+      if (ok) {
+        if (typeof bumpDcPrestige === "function") bumpDcPrestige(3, "練檔");
+        S.exp = (S.exp || 0) + 4;
+        showStory("練檔完畢。廠功微升。");
+      } else {
+        addBodyTag("injured_hands", 2);
+        showStory("抄寫過勞，手傷隱隱作痛。（身體狀態・手傷）");
+      }
+      render();
+    };
+    const sub = document.getElementById("dc-sub");
+    if (sub) sub.onclick = function(){ closeModal(); if (typeof openDcAssignSub === "function") openDcAssignSub(); };
+    const book = document.getElementById("dc-book");
+    if (book) book.onclick = function(){
+      const keys = Object.keys(S.dcArrests || {});
+      let t = keys.length ? keys.map(function(id){
+        const a = S.dcArrests[id];
+        return (NPCS[id]||{}).name + "・" + ((typeof DC_TREATMENTS !== "undefined" && DC_TREATMENTS[a.treatment]) ? DC_TREATMENTS[a.treatment].label : a.treatment) + "・D" + a.day;
+      }).join("<br>") : "黑冊暫空。";
+      openModal("<h3>黑冊</h3><div class=\"story-box\">" + t + "</div><div class=\"btn-row\"><button class=\"btn ghost\" onclick=\"closeModal()\">關閉</button></div>");
+    };
+    const robe = document.getElementById("dc-robe");
+    if (robe) robe.onclick = function(){
+      closeModal();
+      grantDcUniformForRank(S.dcRank || 1);
+      showStory("你穿上本階廠衛官服。路人與官員的目光，已不一樣。");
+      render();
+    };
+    const tr = document.getElementById("dc-trial");
+    if (tr) tr.onclick = function(){ closeModal(); if (typeof openEmperorTrial === "function") openEmperorTrial(); };
+  };
+
+  // On dc rank up, grant better robe
+  const __bumpDcPrestigeV15 = typeof bumpDcPrestige === "function" ? bumpDcPrestige : null;
+  if (__bumpDcPrestigeV15) {
+    bumpDcPrestige = function(n, why) {
+      const before = S.dcRank || 0;
+      __bumpDcPrestigeV15(n, why);
+      if ((S.dcRank || 0) > before) grantDcUniformForRank(S.dcRank);
+    };
+  }
+
+  // ---- Identity stance: 東廠官服 ----
+  const __identityStanceForNpcV15 = typeof identityStanceForNpc === "function" ? identityStanceForNpc : null;
+  if (__identityStanceForNpcV15) {
+    identityStanceForNpc = function(npcId) {
+      let stance = __identityStanceForNpcV15(npcId);
+      const uni = wearingDcUniform();
+      const fac = (typeof COURT_NPC_FACTION !== "undefined" && COURT_NPC_FACTION[npcId]) || "jianghu";
+      if (uni >= 4) {
+        if (fac === "civilian" || fac === "jianghu" || fac === "civil" || fac === "military") {
+          if (stance === "scorn" || stance === "snub" || stance === "neutral") stance = "fear";
+        }
+      } else if (uni >= 3) {
+        if (fac === "civilian" || fac === "jianghu") {
+          if (stance === "scorn" || stance === "snub") stance = "fear";
+          else if (stance === "neutral") stance = "flattery";
+        } else if (fac === "civil" && stance === "scorn") stance = "snub";
+      } else if (uni >= 1 && uni <= 2) {
+        // low rank factory: many scorn eunuch-path; robe alone → snub from civil
+        if ((flag("eunuch") || S.courtTrack === "eunuch") && (fac === "civil" || fac === "military") && stance === "neutral") stance = "snub";
+      }
+      // low eunuch without uniform still scorn — unchanged
+      return stance;
+    };
+  }
+
+  // ---- Abstract consort 取悅（無成人內容）----
+  function tryConsortAmuseAbstract(npcId) {
+    const id = npcId || S.serveTargetId || "shen_guifei";
+    const npc = NPCS[id];
+    if (!npc) return toast("無人可侍", true);
+    ensureBodyState();
+    const st = effectiveStats();
+    let chance = 0.55 + (st.charm || 0) * 0.03 + ((S.datingAff && S.datingAff[id]) || 0) * 0.005;
+    chance = bodyDutySuccessChance(chance);
+    if (hasBodyTag("injured_hands")) {
+      // fail path emphasized
+      if (Math.random() > chance * 0.5) {
+        if (typeof bumpPalaceHeat === "function") bumpPalaceHeat(8);
+        S.datingAff = S.datingAff || {};
+        S.datingAff[id] = (S.datingAff[id] || 0) - 6;
+        addBodyTag("bruised", 2);
+        showStory((npc.name || "貴人") + "眉心微蹙：「手腳這般笨拙……退下。」\n（取悅失敗・寫意：手傷影響差事；宮熱上升、好感下降。無成人描寫。）");
+        if (typeof saveGameSilent === "function") saveGameSilent();
+        return false;
+      }
+    }
+    if (Math.random() < chance) {
+      S.datingAff = S.datingAff || {};
+      S.datingAff[id] = (S.datingAff[id] || 0) + 4;
+      if (typeof bumpCourtPrestige === "function") bumpCourtPrestige(2, "侍奉得體");
+      showStory("你於殿中侍奉得體（寫意：奉茶整衣、言語合宜）。" + (npc.name || "") + "神色略霽。\n（好感＋・無成人內容）");
+      if (typeof saveGameSilent === "function") saveGameSilent();
+      return true;
+    }
+    if (typeof bumpPalaceHeat === "function") bumpPalaceHeat(3);
+    showStory("貴人興致缺缺，揮你退下。（取悅未成・寫意）");
+    return false;
+  }
+
+  // Hook serve / palace actions
+  const __appendCourtCareerActionsV15 = typeof appendCourtCareerActions === "function" ? appendCourtCareerActions : null;
+  if (__appendCourtCareerActionsV15) {
+    appendCourtCareerActions = function(acts, locId) {
+      __appendCourtCareerActionsV15(acts, locId);
+      if ((locId === "hougong" || locId === "yangxin" || locId === "neiting") && (S.serveTargetId || flag("eunuch") || S.courtTrack === "maid")) {
+        acts.push({ label: "【侍奉】取悅貴人（寫意・非成人）", fn: function(){ tryConsortAmuseAbstract(S.serveTargetId); } });
+      }
+      if (locId === "jingshen") {
+        // ensure action still points to wrapped voluntary
+        const idx = acts.findIndex(function(a){ return /淨身/.test(a.label || ""); });
+        if (idx >= 0) acts[idx].fn = function(){ voluntaryJingshenEunuch(); };
+      }
+    };
+  }
+
+  // migrate + sanitize on load
+  const __migrateSaveV15 = typeof migrateSave === "function" ? migrateSave : null;
+  if (__migrateSaveV15) {
+    // wrap after migrate via ensure on render — use load hook
+  }
+  const __ensureDongchangStateV15 = typeof ensureDongchangState === "function" ? ensureDongchangState : null;
+  if (__ensureDongchangStateV15) {
+    ensureDongchangState = function() {
+      __ensureDongchangStateV15();
+      ensureBodyState();
+      ensureDcUniformState();
+      sanitizeAbsurdFemaleEunuch();
+      if (flag("eunuch") && !hasBodyTag("castrated") && canEnterEunuchTrack()) addBodyTag("castrated");
+    };
+  }
+
+  // Character sheet hint — wrap render snippet via palaceRoleLabel
+  const __palaceRoleLabelV15 = typeof palaceRoleLabel === "function" ? palaceRoleLabel : null;
+  if (__palaceRoleLabelV15) {
+    palaceRoleLabel = function() {
+      let base = __palaceRoleLabelV15();
+      const body = bodyTagLabelLine();
+      const uni = wearingDcUniform();
+      if (uni) base += "／廠服" + uni + "階";
+      if (body) base += "／" + body.split("／")[0];
+      return base;
+    };
+  }
+
+  // Explicit: no adult mode flag ever
+  if (S && S.flags) {
+    S.flags.adult_mode = false;
+    S.flags.erotic_ai = false;
+  }
+  function isAdultModeEnabled() { return false; }
+
+  // Headless self-test
+  window.__JH_V15_SELFTEST = function() {
+    const snap = {
+      gender: S.gender, disguise: S.disguise, eunuch: flag("eunuch"),
+      dc: S.dcJoined, rank: S.dcRank, body: Object.assign({}, S.bodyTags || {})
+    };
+    // female cannot eunuch
+    const g0 = S.gender;
+    S.gender = "女"; S.disguise = "nan";
+    let blocked = false;
+    try {
+      voluntaryJingshenEunuch();
+      blocked = true; // modal opened only if male — if female, modal 拒
+    } catch (e) { blocked = true; }
+    const femaleBlocked = !canEnterEunuchTrack();
+    sanitizeAbsurdFemaleEunuch();
+    S.gender = "男"; S.disguise = null;
+    if (!flag("eunuch")) {
+      applyEunuchFate();
+    }
+    const maleOk = flag("eunuch") && hasBodyTag("castrated");
+    const insp = runChanggongInspect();
+    // grim once
+    S.dcGrimDone = false;
+    const k0 = S.karma || 0;
+    applyDcGrimDutyAbstract("harsh");
+    const karmaHit = (S.karma || 0) <= k0 - 45;
+    applyDcRefuseDutyPunishment();
+    const hasHand = hasBodyTag("injured_hands");
+    // restore soft
+    S.gender = g0;
+    grantDcUniformForRank(3);
+    const uni = wearingDcUniform() >= 3;
+    const adultOff = isAdultModeEnabled() === false;
+    return {
+      ok: femaleBlocked && maleOk && insp.ok && karmaHit && hasHand && uni && adultOff,
+      femaleBlocked: femaleBlocked, maleOk: maleOk, insp: insp.ok,
+      karmaHit: karmaHit, hasHand: hasHand, uni: uni, adultOff: adultOff, snap: snap
+    };
+  };
+
+  if (window.__JH_DEBUG) {
+    Object.assign(window.__JH_DEBUG, {
+      canEnterEunuchTrack: canEnterEunuchTrack,
+      hasBodyTag: hasBodyTag,
+      addBodyTag: addBodyTag,
+      tryConsortAmuseAbstract: tryConsortAmuseAbstract,
+      runChanggongInspect: runChanggongInspect,
+      wearingDcUniform: wearingDcUniform,
+      grantDcUniformForRank: grantDcUniformForRank,
+      v15self: window.__JH_V15_SELFTEST
+    });
+  }
+
+  // one-shot sanitize present session
+  try { sanitizeAbsurdFemaleEunuch(); ensureBodyState(); } catch (e) {}
+
+
+  // dcRank boosts perceived power
+  const __courtPowerScoreV15 = typeof courtPowerScore === "function" ? courtPowerScore : null;
+  if (__courtPowerScoreV15) {
+    courtPowerScore = function() {
+      let p = __courtPowerScoreV15();
+      if (S.dcJoined && (S.dcRank || 0) >= 1) p += Math.min(28, (S.dcRank || 0) * 5);
+      if (typeof wearingDcUniform === "function" && wearingDcUniform() >= 3) p += 6;
+      return Math.max(0, Math.min(100, p));
+    };
+  }
+
+  // civilian line fear under factory uniform
+  const __identityStanceCivV15 = identityStanceForNpc;
+  identityStanceForNpc = function(npcId) {
+    let stance = __identityStanceCivV15(npcId);
+    const n = NPCS[npcId];
+    const uni = wearingDcUniform();
+    if (n && n.line === "civilian" && uni >= 2) {
+      if (uni >= 4) stance = "fear";
+      else if (stance === "scorn" || stance === "snub" || stance === "neutral") stance = uni >= 3 ? "fear" : "flattery";
+    }
+    return stance;
+  };
+
+  // ========== END V15 ==========
+
+
 
 
 
