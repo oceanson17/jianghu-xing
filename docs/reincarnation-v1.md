@@ -11,6 +11,8 @@
 | 讀檔 | `S.pendingRebirth` 存在 → `openRebirthUI` |
 
 ## 出身（BIRTH_BACKGROUNDS）
+**v12**：首世僅 `firstLife` 平民；精英出身見投胎後。詳 `birth-complexity-v12.md`。
+
 皇子、公主、官員子弟、商戶、乞丐、江湖孤兒、邊軍、宮女種子、內侍種子、綠林草莽。  
 各含：性別偏向、起始地、金錢、屬性 mods、flags、仕途 track／品級種子、起始物、短敘事。
 
