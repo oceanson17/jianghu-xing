@@ -1,0 +1,160 @@
+{
+  "pins": {
+    "hub": {
+      "x": 48,
+      "y": 48,
+      "label": "山間營地"
+    },
+    "qingcheng": {
+      "x": 52,
+      "y": 54,
+      "label": "青城鎮"
+    },
+    "cangyun": {
+      "x": 46,
+      "y": 42,
+      "label": "蒼雲寺"
+    },
+    "heishui": {
+      "x": 40,
+      "y": 52,
+      "label": "黑水寨"
+    },
+    "jingji": {
+      "x": 58,
+      "y": 34,
+      "label": "京畿客棧"
+    },
+    "luohe": {
+      "x": 55,
+      "y": 50,
+      "label": "洛河渡"
+    },
+    "yaogu": {
+      "x": 50,
+      "y": 40,
+      "label": "藥谷"
+    },
+    "jianzhong": {
+      "x": 43,
+      "y": 46,
+      "label": "劍冢"
+    },
+    "longmen": {
+      "x": 50,
+      "y": 50,
+      "label": "龍門鎮"
+    },
+    "leifeng": {
+      "x": 60,
+      "y": 40,
+      "label": "雷峰哨"
+    },
+    "tiantai": {
+      "x": 47,
+      "y": 36,
+      "label": "天台觀"
+    },
+    "bianguan": {
+      "x": 34,
+      "y": 28,
+      "label": "邊關"
+    },
+    "shamo": {
+      "x": 22,
+      "y": 44,
+      "label": "黃沙驛"
+    },
+    "chixia": {
+      "x": 30,
+      "y": 50,
+      "label": "赤霞崖"
+    },
+    "gulan": {
+      "x": 16,
+      "y": 38,
+      "label": "古蘭商會"
+    },
+    "baixue": {
+      "x": 48,
+      "y": 16,
+      "label": "白雪莊"
+    },
+    "xueyuan": {
+      "x": 40,
+      "y": 12,
+      "label": "雪原關"
+    },
+    "meihua": {
+      "x": 64,
+      "y": 62,
+      "label": "梅花塢"
+    },
+    "qingzhu": {
+      "x": 58,
+      "y": 68,
+      "label": "青竹林"
+    },
+    "shuiyun": {
+      "x": 66,
+      "y": 56,
+      "label": "水雲居"
+    },
+    "yanhui": {
+      "x": 80,
+      "y": 58,
+      "label": "煙灰港"
+    },
+    "mishi": {
+      "x": 38,
+      "y": 58,
+      "label": "密室遺跡"
+    },
+    "wuyin": {
+      "x": 36,
+      "y": 64,
+      "label": "無音谷"
+    },
+    "honglian": {
+      "x": 28,
+      "y": 66,
+      "label": "紅蓮教壇"
+    },
+    "yewang": {
+      "x": 24,
+      "y": 56,
+      "label": "夜王墓"
+    },
+    "huanggong": {
+      "x": 59,
+      "y": 26,
+      "label": "青梧宮"
+    },
+    "neiting": {
+      "x": 61,
+      "y": 24,
+      "label": "內廷花廊"
+    },
+    "dongchang": {
+      "x": 56,
+      "y": 28,
+      "label": "東廠衙署"
+    },
+    "yulin": {
+      "x": 55,
+      "y": 30,
+      "label": "羽林營"
+    },
+    "hougong": {
+      "x": 60,
+      "y": 22,
+      "label": "璇璣殿"
+    },
+    "renyazi_alley": {
+      "x": 57,
+      "y": 36,
+      "label": "人牙暗巷"
+    }
+  },
+  "note": "percent coords relative to worldmap.jpg; palace inner subs not pinned"
+}

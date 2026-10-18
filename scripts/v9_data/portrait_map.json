@@ -1,0 +1,1246 @@
+{
+  "mapped": {
+    "a_ke_x": {
+      "r": 0,
+      "c": 0,
+      "file": "assets/chars/a_ke_x.png",
+      "sheet3_alt": "assets/chars/a_ke_x_c.png"
+    },
+    "ao_baiying": {
+      "r": 0,
+      "c": 1,
+      "file": "assets/chars/ao_baiying.png",
+      "sheet3_alt": "assets/chars/ao_baiying_c.png"
+    },
+    "baizhi": {
+      "r": 0,
+      "c": 2,
+      "file": "assets/chars/baizhi.png"
+    },
+    "boatman": {
+      "r": 0,
+      "c": 3,
+      "file": "assets/chars/boatman.png"
+    },
+    "chen_jinnan_x": {
+      "r": 0,
+      "c": 4,
+      "file": "assets/chars/chen_jinnan_x.png",
+      "sheet3_alt": "assets/chars/chen_jinnan_x_c.png"
+    },
+    "chixiaxian": {
+      "r": 0,
+      "c": 5,
+      "file": "assets/chars/chixiaxian.png"
+    },
+    "da_jiangjun": {
+      "r": 0,
+      "c": 6,
+      "file": "assets/chars/da_jiangjun.png"
+    },
+    "daoxuan": {
+      "r": 0,
+      "c": 7,
+      "file": "assets/chars/daoxuan.png",
+      "sheet3_alt": "assets/chars/daoxuan_c.png"
+    },
+    "dongchang_gong": {
+      "r": 1,
+      "c": 0,
+      "file": "assets/chars/dongchang_gong.png"
+    },
+    "dongfang_gubai": {
+      "r": 1,
+      "c": 1,
+      "file": "assets/chars/dongfang_gubai.png",
+      "sheet3_alt": "assets/chars/dongfang_gubai_c.png"
+    },
+    "duan_muyu": {
+      "r": 1,
+      "c": 2,
+      "file": "assets/chars/duan_muyu.png",
+      "sheet3_alt": "assets/chars/duan_muyu_c.png"
+    },
+    "duo_long_x": {
+      "r": 1,
+      "c": 3,
+      "file": "assets/chars/duo_long_x.png"
+    },
+    "fang_yi_x": {
+      "r": 1,
+      "c": 4,
+      "file": "assets/chars/fang_yi_x.png"
+    },
+    "feng_qingya": {
+      "r": 1,
+      "c": 5,
+      "file": "assets/chars/feng_qingya.png",
+      "sheet3_alt": "assets/chars/feng_qingya_c.png"
+    },
+    "gongnv_head": {
+      "r": 1,
+      "c": 6,
+      "file": "assets/chars/gongnv_head.png"
+    },
+    "gu_xiaoran": {
+      "r": 1,
+      "c": 7,
+      "file": "assets/chars/gu_xiaoran.png"
+    },
+    "gudengpo": {
+      "r": 2,
+      "c": 0,
+      "file": "assets/chars/gudengpo.png"
+    },
+    "guo_jingyi": {
+      "r": 2,
+      "c": 1,
+      "file": "assets/chars/guo_jingyi.png",
+      "sheet3_alt": "assets/chars/guo_jingyi_c.png"
+    },
+    "guqinghan": {
+      "r": 2,
+      "c": 2,
+      "file": "assets/chars/guqinghan.png"
+    },
+    "hai_dafu_x": {
+      "r": 2,
+      "c": 3,
+      "file": "assets/chars/hai_dafu_x.png"
+    },
+    "hai_kuang": {
+      "r": 2,
+      "c": 4,
+      "file": "assets/chars/hai_kuang.png"
+    },
+    "hanya": {
+      "r": 2,
+      "c": 5,
+      "file": "assets/chars/hanya.png"
+    },
+    "heifeng": {
+      "r": 2,
+      "c": 6,
+      "file": "assets/chars/heifeng.png"
+    },
+    "hong_antong_x": {
+      "r": 2,
+      "c": 7,
+      "file": "assets/chars/hong_antong_x.png",
+      "sheet3_alt": "assets/chars/hong_antong_x_c.png"
+    },
+    "hong_qigong_x": {
+      "r": 3,
+      "c": 0,
+      "file": "assets/chars/hong_qigong_x.png",
+      "sheet3_alt": "assets/chars/hong_qigong_x_c.png"
+    },
+    "honglianzhu": {
+      "r": 3,
+      "c": 1,
+      "file": "assets/chars/honglianzhu.png"
+    },
+    "huang_linger": {
+      "r": 3,
+      "c": 2,
+      "file": "assets/chars/huang_linger.png"
+    },
+    "huang_rongya": {
+      "r": 3,
+      "c": 3,
+      "file": "assets/chars/huang_rongya.png",
+      "sheet3_alt": "assets/chars/huang_rongya_c.png"
+    },
+    "huang_yaoshi_x": {
+      "r": 3,
+      "c": 4,
+      "file": "assets/chars/huang_yaoshi_x.png",
+      "sheet3_alt": "assets/chars/huang_yaoshi_x_c.png"
+    },
+    "jianning_jun": {
+      "r": 3,
+      "c": 5,
+      "file": "assets/chars/jianning_jun.png",
+      "sheet3_alt": "assets/chars/jianning_jun_c.png"
+    },
+    "jingandi": {
+      "r": 3,
+      "c": 6,
+      "file": "assets/chars/jingandi.png",
+      "sheet3_alt": "assets/chars/jingandi_c.png"
+    },
+    "jiu_nan_x": {
+      "r": 3,
+      "c": 7,
+      "file": "assets/chars/jiu_nan_x.png"
+    },
+    "lan_keeper": {
+      "r": 4,
+      "c": 0,
+      "file": "assets/chars/lan_keeper.png"
+    },
+    "leiwanshan": {
+      "r": 4,
+      "c": 1,
+      "file": "assets/chars/leiwanshan.png"
+    },
+    "lin_chen": {
+      "r": 4,
+      "c": 2,
+      "file": "assets/chars/lin_chen.png",
+      "sheet3_alt": "assets/chars/lin_chen_c.png"
+    },
+    "lin_feng": {
+      "r": 4,
+      "c": 3,
+      "file": "assets/chars/lin_feng.png",
+      "sheet3_alt": "assets/chars/lin_feng_c.png"
+    },
+    "linqing": {
+      "r": 4,
+      "c": 4,
+      "file": "assets/chars/linqing.png"
+    },
+    "liu_zhaoyi": {
+      "r": 4,
+      "c": 5,
+      "file": "assets/chars/liu_zhaoyi.png"
+    },
+    "mao_dongzhu_x": {
+      "r": 4,
+      "c": 6,
+      "file": "assets/chars/mao_dongzhu_x.png"
+    },
+    "mao_shiba_x": {
+      "r": 4,
+      "c": 7,
+      "file": "assets/chars/mao_shiba_x.png"
+    },
+    "masteryun": {
+      "r": 5,
+      "c": 0,
+      "file": "assets/chars/masteryun.png"
+    },
+    "meifuren": {
+      "r": 5,
+      "c": 1,
+      "file": "assets/chars/meifuren.png",
+      "sheet3_alt": "assets/chars/meifuren_c.png"
+    },
+    "mu_gaofeng_x": {
+      "r": 5,
+      "c": 2,
+      "file": "assets/chars/mu_gaofeng_x.png"
+    },
+    "mu_jianping_x": {
+      "r": 5,
+      "c": 3,
+      "file": "assets/chars/mu_jianping_x.png"
+    },
+    "mu_youlan": {
+      "r": 5,
+      "c": 4,
+      "file": "assets/chars/mu_youlan.png"
+    },
+    "murong": {
+      "r": 5,
+      "c": 5,
+      "file": "assets/chars/murong.png",
+      "sheet3_alt": "assets/chars/murong_c.png"
+    },
+    "ning_shuying": {
+      "r": 5,
+      "c": 6,
+      "file": "assets/chars/ning_shuying.png"
+    },
+    "ouyang_fengdu": {
+      "r": 5,
+      "c": 7,
+      "file": "assets/chars/ouyang_fengdu.png",
+      "sheet3_alt": "assets/chars/ouyang_fengdu_c.png"
+    },
+    "powan_zhang": {
+      "r": 6,
+      "c": 0,
+      "file": "assets/chars/powan_zhang.png"
+    },
+    "qiao_fengshan": {
+      "r": 6,
+      "c": 1,
+      "file": "assets/chars/qiao_fengshan.png",
+      "sheet3_alt": "assets/chars/qiao_fengshan_c.png"
+    },
+    "qu_yangqin": {
+      "r": 6,
+      "c": 2,
+      "file": "assets/chars/qu_yangqin.png"
+    },
+    "ren_yingluo": {
+      "r": 6,
+      "c": 3,
+      "file": "assets/chars/ren_yingluo.png",
+      "sheet3_alt": "assets/chars/ren_yingluo_c.png"
+    },
+    "renyazi": {
+      "r": 6,
+      "c": 4,
+      "file": "assets/chars/renyazi.png"
+    },
+    "sha_yuyan": {
+      "r": 6,
+      "c": 5,
+      "file": "assets/chars/sha_yuyan.png",
+      "sheet3_alt": "assets/chars/sha_yuyan_c.png"
+    },
+    "shawuhen": {
+      "r": 6,
+      "c": 6,
+      "file": "assets/chars/shawuhen.png"
+    },
+    "shen_guifei": {
+      "r": 6,
+      "c": 7,
+      "file": "assets/chars/shen_guifei.png",
+      "note": "remapped 2026-10-18 from sheet3_r08c05 (female consort); was beast/lion mis-slice"
+    },
+    "shenguhong": {
+      "r": 7,
+      "c": 0,
+      "file": "assets/chars/shenguhong.png"
+    },
+    "shi_lang_x": {
+      "r": 7,
+      "c": 1,
+      "file": "assets/chars/shi_lang_x.png"
+    },
+    "shuang_er_x": {
+      "r": 7,
+      "c": 2,
+      "file": "assets/chars/shuang_er_x.png",
+      "sheet3_alt": "assets/chars/shuang_er_x_c.png"
+    },
+    "shuiyunzi": {
+      "r": 7,
+      "c": 3,
+      "file": "assets/chars/shuiyunzi.png"
+    },
+    "su_quan_x": {
+      "r": 7,
+      "c": 4,
+      "file": "assets/chars/su_quan_x.png"
+    },
+    "suning": {
+      "r": 7,
+      "c": 5,
+      "file": "assets/chars/suning.png"
+    },
+    "suo_etu_x": {
+      "r": 7,
+      "c": 6,
+      "file": "assets/chars/suo_etu_x.png"
+    },
+    "tiesuanpan": {
+      "r": 7,
+      "c": 7,
+      "file": "assets/chars/tiesuanpan.png"
+    },
+    "tongxiaoliu": {
+      "r": 8,
+      "c": 0,
+      "file": "assets/chars/tongxiaoliu.png"
+    },
+    "wei_xiaozhou": {
+      "r": 8,
+      "c": 1,
+      "file": "assets/chars/wei_xiaozhou.png",
+      "sheet3_alt": "assets/chars/wei_xiaozhou_c.png"
+    },
+    "wu_sangui_x": {
+      "r": 8,
+      "c": 2,
+      "file": "assets/chars/wu_sangui_x.png"
+    },
+    "wuyinqinmo": {
+      "r": 8,
+      "c": 3,
+      "file": "assets/chars/wuyinqinmo.png"
+    },
+    "xiao_longyin": {
+      "r": 8,
+      "c": 4,
+      "file": "assets/chars/xiao_longyin.png",
+      "sheet3_alt": "assets/chars/xiao_longyin_c.png"
+    },
+    "xu_zhuoyun": {
+      "r": 8,
+      "c": 5,
+      "file": "assets/chars/xu_zhuoyun.png",
+      "sheet3_alt": "assets/chars/xu_zhuoyun_c.png"
+    },
+    "yang_guochen": {
+      "r": 8,
+      "c": 6,
+      "file": "assets/chars/yang_guochen.png",
+      "sheet3_alt": "assets/chars/yang_guochen_c.png"
+    },
+    "ye_qingshan": {
+      "r": 8,
+      "c": 7,
+      "file": "assets/chars/ye_qingshan.png",
+      "sheet3_alt": "assets/chars/ye_qingshan_c.png"
+    },
+    "ye_xiaoyu": {
+      "r": 9,
+      "c": 0,
+      "file": "assets/chars/ye_xiaoyu.png"
+    },
+    "yechen": {
+      "r": 9,
+      "c": 1,
+      "file": "assets/chars/yechen.png"
+    },
+    "yulin_tongling": {
+      "r": 9,
+      "c": 2,
+      "file": "assets/chars/yulin_tongling.png"
+    },
+    "zhang_wujiang": {
+      "r": 9,
+      "c": 3,
+      "file": "assets/chars/zhang_wujiang.png",
+      "sheet3_alt": "assets/chars/zhang_wujiang_c.png"
+    },
+    "zhao_minyan": {
+      "r": 9,
+      "c": 4,
+      "file": "assets/chars/zhao_minyan.png",
+      "sheet3_alt": "assets/chars/zhao_minyan_c.png"
+    },
+    "zhaotie": {
+      "r": 9,
+      "c": 5,
+      "file": "assets/chars/zhaotie.png"
+    },
+    "zhou_zhi_xue": {
+      "r": 9,
+      "c": 6,
+      "file": "assets/chars/zhou_zhi_xue.png",
+      "sheet3_alt": "assets/chars/zhou_zhi_xue_c.png"
+    },
+    "zuo_lengying": {
+      "r": 9,
+      "c": 7,
+      "file": "assets/chars/zuo_lengying.png"
+    }
+  },
+  "beasts": {
+    "beast_baihe": {
+      "name": "雪羽白鶴",
+      "kind": "companion",
+      "file": "assets/chars/beast_baihe.png",
+      "r": 10,
+      "c": 0
+    },
+    "beast_cangying": {
+      "name": "玄穹蒼鷹",
+      "kind": "companion",
+      "file": "assets/chars/beast_cangying.png",
+      "r": 10,
+      "c": 1
+    },
+    "beast_jinchi": {
+      "name": "金翅雲鵬",
+      "kind": "mount",
+      "file": "assets/chars/beast_jinchi.png",
+      "r": 10,
+      "c": 2
+    },
+    "beast_shengui": {
+      "name": "玄甲神龜",
+      "kind": "companion",
+      "file": "assets/chars/beast_shengui.png",
+      "r": 10,
+      "c": 3
+    },
+    "beast_qinglong": {
+      "name": "蒼穹青龍",
+      "kind": "mount",
+      "file": "assets/chars/beast_qinglong.png",
+      "r": 10,
+      "c": 4
+    },
+    "beast_zhuque": {
+      "name": "丹霞朱雀",
+      "kind": "mount",
+      "file": "assets/chars/beast_zhuque.png",
+      "r": 10,
+      "c": 5
+    },
+    "beast_xuanwu": {
+      "name": "玄冥玄武",
+      "kind": "companion",
+      "file": "assets/chars/beast_xuanwu.png",
+      "r": 10,
+      "c": 6
+    },
+    "beast_baihu": {
+      "name": "霜紋白虎",
+      "kind": "mount",
+      "file": "assets/chars/beast_baihu.png",
+      "r": 10,
+      "c": 7
+    },
+    "beast_bailang": {
+      "name": "北原白狼",
+      "kind": "enemy",
+      "file": "assets/chars/beast_bailang.png",
+      "r": 11,
+      "c": 0
+    },
+    "beast_heixiong": {
+      "name": "蒼山黑熊",
+      "kind": "enemy",
+      "file": "assets/chars/beast_heixiong.png",
+      "r": 11,
+      "c": 1
+    },
+    "beast_lingshe": {
+      "name": "碧鳞靈蛇",
+      "kind": "enemy",
+      "file": "assets/chars/beast_lingshe.png",
+      "r": 11,
+      "c": 2
+    },
+    "beast_qilin": {
+      "name": "瑞光麒麟",
+      "kind": "mount",
+      "file": "assets/chars/beast_qilin.png",
+      "r": 11,
+      "c": 3
+    },
+    "beast_huofeng": {
+      "name": "赤焰鳳凰",
+      "kind": "mount",
+      "file": "assets/chars/beast_huofeng.png",
+      "r": 11,
+      "c": 4
+    },
+    "beast_yinhu": {
+      "name": "玄霜銀狐",
+      "kind": "companion",
+      "file": "assets/chars/beast_yinhu.png",
+      "r": 11,
+      "c": 5
+    },
+    "beast_xueyuan": {
+      "name": "雪獄魔猿",
+      "kind": "enemy",
+      "file": "assets/chars/beast_xueyuan.png",
+      "r": 11,
+      "c": 6
+    },
+    "beast_jianli": {
+      "name": "青冥劍鯉",
+      "kind": "companion",
+      "file": "assets/chars/beast_jianli.png",
+      "r": 11,
+      "c": 7
+    },
+    "beast_moniu": {
+      "name": "混世魔牛",
+      "kind": "enemy",
+      "file": "assets/chars/beast_moniu.png",
+      "r": 12,
+      "c": 0
+    },
+    "beast_jujiu": {
+      "name": "大漠巨鷲",
+      "kind": "enemy",
+      "file": "assets/chars/beast_jujiu.png",
+      "r": 12,
+      "c": 1
+    },
+    "beast_leishou": {
+      "name": "雷紋異獸",
+      "kind": "enemy",
+      "file": "assets/chars/beast_leishou.png",
+      "r": 12,
+      "c": 2
+    },
+    "beast_xuebao": {
+      "name": "天山雪豹",
+      "kind": "enemy",
+      "file": "assets/chars/beast_xuebao.png",
+      "r": 12,
+      "c": 3
+    },
+    "beast_xuanyu": {
+      "name": "玄羽神鵰",
+      "kind": "companion",
+      "file": "assets/chars/beast_xuanyu.png",
+      "r": 12,
+      "c": 4
+    }
+  },
+  "atlas": {
+    "a_ke_x": {
+      "r": 0,
+      "c": 0
+    },
+    "ao_baiying": {
+      "r": 0,
+      "c": 1
+    },
+    "baizhi": {
+      "r": 0,
+      "c": 2
+    },
+    "boatman": {
+      "r": 0,
+      "c": 3
+    },
+    "chen_jinnan_x": {
+      "r": 0,
+      "c": 4
+    },
+    "chixiaxian": {
+      "r": 0,
+      "c": 5
+    },
+    "da_jiangjun": {
+      "r": 0,
+      "c": 6
+    },
+    "daoxuan": {
+      "r": 0,
+      "c": 7
+    },
+    "dongchang_gong": {
+      "r": 1,
+      "c": 0
+    },
+    "dongfang_gubai": {
+      "r": 1,
+      "c": 1
+    },
+    "duan_muyu": {
+      "r": 1,
+      "c": 2
+    },
+    "duo_long_x": {
+      "r": 1,
+      "c": 3
+    },
+    "fang_yi_x": {
+      "r": 1,
+      "c": 4
+    },
+    "feng_qingya": {
+      "r": 1,
+      "c": 5
+    },
+    "gongnv_head": {
+      "r": 1,
+      "c": 6
+    },
+    "gu_xiaoran": {
+      "r": 1,
+      "c": 7
+    },
+    "gudengpo": {
+      "r": 2,
+      "c": 0
+    },
+    "guo_jingyi": {
+      "r": 2,
+      "c": 1
+    },
+    "guqinghan": {
+      "r": 2,
+      "c": 2
+    },
+    "hai_dafu_x": {
+      "r": 2,
+      "c": 3
+    },
+    "hai_kuang": {
+      "r": 2,
+      "c": 4
+    },
+    "hanya": {
+      "r": 2,
+      "c": 5
+    },
+    "heifeng": {
+      "r": 2,
+      "c": 6
+    },
+    "hong_antong_x": {
+      "r": 2,
+      "c": 7
+    },
+    "hong_qigong_x": {
+      "r": 3,
+      "c": 0
+    },
+    "honglianzhu": {
+      "r": 3,
+      "c": 1
+    },
+    "huang_linger": {
+      "r": 3,
+      "c": 2
+    },
+    "huang_rongya": {
+      "r": 3,
+      "c": 3
+    },
+    "huang_yaoshi_x": {
+      "r": 3,
+      "c": 4
+    },
+    "jianning_jun": {
+      "r": 3,
+      "c": 5
+    },
+    "jingandi": {
+      "r": 3,
+      "c": 6
+    },
+    "jiu_nan_x": {
+      "r": 3,
+      "c": 7
+    },
+    "lan_keeper": {
+      "r": 4,
+      "c": 0
+    },
+    "leiwanshan": {
+      "r": 4,
+      "c": 1
+    },
+    "lin_chen": {
+      "r": 4,
+      "c": 2
+    },
+    "lin_feng": {
+      "r": 4,
+      "c": 3
+    },
+    "linqing": {
+      "r": 4,
+      "c": 4
+    },
+    "liu_zhaoyi": {
+      "r": 4,
+      "c": 5
+    },
+    "mao_dongzhu_x": {
+      "r": 4,
+      "c": 6
+    },
+    "mao_shiba_x": {
+      "r": 4,
+      "c": 7
+    },
+    "masteryun": {
+      "r": 5,
+      "c": 0
+    },
+    "meifuren": {
+      "r": 5,
+      "c": 1
+    },
+    "mu_gaofeng_x": {
+      "r": 5,
+      "c": 2
+    },
+    "mu_jianping_x": {
+      "r": 5,
+      "c": 3
+    },
+    "mu_youlan": {
+      "r": 5,
+      "c": 4
+    },
+    "murong": {
+      "r": 5,
+      "c": 5
+    },
+    "ning_shuying": {
+      "r": 5,
+      "c": 6
+    },
+    "ouyang_fengdu": {
+      "r": 5,
+      "c": 7
+    },
+    "powan_zhang": {
+      "r": 6,
+      "c": 0
+    },
+    "qiao_fengshan": {
+      "r": 6,
+      "c": 1
+    },
+    "qu_yangqin": {
+      "r": 6,
+      "c": 2
+    },
+    "ren_yingluo": {
+      "r": 6,
+      "c": 3
+    },
+    "renyazi": {
+      "r": 6,
+      "c": 4
+    },
+    "sha_yuyan": {
+      "r": 6,
+      "c": 5
+    },
+    "shawuhen": {
+      "r": 6,
+      "c": 6
+    },
+    "shen_guifei": {
+      "r": 6,
+      "c": 7
+    },
+    "shenguhong": {
+      "r": 7,
+      "c": 0
+    },
+    "shi_lang_x": {
+      "r": 7,
+      "c": 1
+    },
+    "shuang_er_x": {
+      "r": 7,
+      "c": 2
+    },
+    "shuiyunzi": {
+      "r": 7,
+      "c": 3
+    },
+    "su_quan_x": {
+      "r": 7,
+      "c": 4
+    },
+    "suning": {
+      "r": 7,
+      "c": 5
+    },
+    "suo_etu_x": {
+      "r": 7,
+      "c": 6
+    },
+    "tiesuanpan": {
+      "r": 7,
+      "c": 7
+    },
+    "tongxiaoliu": {
+      "r": 8,
+      "c": 0
+    },
+    "wei_xiaozhou": {
+      "r": 8,
+      "c": 1
+    },
+    "wu_sangui_x": {
+      "r": 8,
+      "c": 2
+    },
+    "wuyinqinmo": {
+      "r": 8,
+      "c": 3
+    },
+    "xiao_longyin": {
+      "r": 8,
+      "c": 4
+    },
+    "xu_zhuoyun": {
+      "r": 8,
+      "c": 5
+    },
+    "yang_guochen": {
+      "r": 8,
+      "c": 6
+    },
+    "ye_qingshan": {
+      "r": 8,
+      "c": 7
+    },
+    "ye_xiaoyu": {
+      "r": 9,
+      "c": 0
+    },
+    "yechen": {
+      "r": 9,
+      "c": 1
+    },
+    "yulin_tongling": {
+      "r": 9,
+      "c": 2
+    },
+    "zhang_wujiang": {
+      "r": 9,
+      "c": 3
+    },
+    "zhao_minyan": {
+      "r": 9,
+      "c": 4
+    },
+    "zhaotie": {
+      "r": 9,
+      "c": 5
+    },
+    "zhou_zhi_xue": {
+      "r": 9,
+      "c": 6
+    },
+    "zuo_lengying": {
+      "r": 9,
+      "c": 7
+    },
+    "beast_baihe": {
+      "r": 10,
+      "c": 0
+    },
+    "beast_cangying": {
+      "r": 10,
+      "c": 1
+    },
+    "beast_jinchi": {
+      "r": 10,
+      "c": 2
+    },
+    "beast_shengui": {
+      "r": 10,
+      "c": 3
+    },
+    "beast_qinglong": {
+      "r": 10,
+      "c": 4
+    },
+    "beast_zhuque": {
+      "r": 10,
+      "c": 5
+    },
+    "beast_xuanwu": {
+      "r": 10,
+      "c": 6
+    },
+    "beast_baihu": {
+      "r": 10,
+      "c": 7
+    },
+    "beast_bailang": {
+      "r": 11,
+      "c": 0
+    },
+    "beast_heixiong": {
+      "r": 11,
+      "c": 1
+    },
+    "beast_lingshe": {
+      "r": 11,
+      "c": 2
+    },
+    "beast_qilin": {
+      "r": 11,
+      "c": 3
+    },
+    "beast_huofeng": {
+      "r": 11,
+      "c": 4
+    },
+    "beast_yinhu": {
+      "r": 11,
+      "c": 5
+    },
+    "beast_xueyuan": {
+      "r": 11,
+      "c": 6
+    },
+    "beast_jianli": {
+      "r": 11,
+      "c": 7
+    },
+    "beast_moniu": {
+      "r": 12,
+      "c": 0
+    },
+    "beast_jujiu": {
+      "r": 12,
+      "c": 1
+    },
+    "beast_leishou": {
+      "r": 12,
+      "c": 2
+    },
+    "beast_xuebao": {
+      "r": 12,
+      "c": 3
+    },
+    "beast_xuanyu": {
+      "r": 12,
+      "c": 4
+    }
+  },
+  "atlas_cols": 8,
+  "atlas_cell": [
+    96,
+    120
+  ],
+  "sheet2": {
+    "total_slices": 120,
+    "b_variants": [
+      {
+        "id": "shawuhen",
+        "r": 0,
+        "c": 1,
+        "file": "assets/chars/shawuhen_b.png"
+      },
+      {
+        "id": "yechen",
+        "r": 0,
+        "c": 2,
+        "file": "assets/chars/yechen_b.png"
+      },
+      {
+        "id": "ouyang_fengdu",
+        "r": 8,
+        "c": 1,
+        "file": "assets/chars/ouyang_fengdu_b.png"
+      },
+      {
+        "id": "huang_yaoshi_x",
+        "r": 8,
+        "c": 2,
+        "file": "assets/chars/huang_yaoshi_x_b.png"
+      },
+      {
+        "id": "duo_long_x",
+        "r": 7,
+        "c": 0,
+        "file": "assets/chars/duo_long_x_b.png"
+      },
+      {
+        "id": "qu_yangqin",
+        "r": 11,
+        "c": 4,
+        "file": "assets/chars/qu_yangqin_b.png"
+      }
+    ],
+    "raw_prefix": "assets/chars/sheet2_r",
+    "all_b_files": [
+      "a_ke_x_b.png",
+      "ao_baiying_b.png",
+      "boatman_b.png",
+      "chixiaxian_b.png",
+      "companion_diao_b.png",
+      "dongfang_gubai_b.png",
+      "duo_long_x_b.png",
+      "fang_yi_x_b.png",
+      "feng_qingya_b.png",
+      "gongnv_head_b.png",
+      "hai_dafu_x_b.png",
+      "hai_kuang_b.png",
+      "heifeng_b.png",
+      "honglianzhu_b.png",
+      "huang_linger_b.png",
+      "huang_rongya_b.png",
+      "huang_yaoshi_x_b.png",
+      "lan_keeper_b.png",
+      "mao_dongzhu_x_b.png",
+      "meifuren_b.png",
+      "mu_youlan_b.png",
+      "ouyang_fengdu_b.png",
+      "qu_yangqin_b.png",
+      "ren_yingluo_b.png",
+      "renyazi_b.png",
+      "sha_yuyan_b.png",
+      "shawuhen_b.png",
+      "shenguhong_b.png",
+      "shi_lang_x_b.png",
+      "shuang_er_x_b.png",
+      "shuiyunzi_b.png",
+      "su_quan_x_b.png",
+      "suning_b.png",
+      "suo_etu_x_b.png",
+      "tiesuanpan_b.png",
+      "wu_sangui_x_b.png",
+      "xiao_longyin_b.png",
+      "xu_zhuoyun_b.png",
+      "yang_guochen_b.png",
+      "yechen_b.png",
+      "zhang_wujiang_b.png",
+      "zhaotie_b.png"
+    ]
+  },
+  "sheet3": {
+    "total_slices": 60,
+    "mapped_count": 31,
+    "atlas_updated": [
+      "guo_jingyi",
+      "huang_rongya",
+      "hong_qigong_x",
+      "huang_yaoshi_x",
+      "ouyang_fengdu",
+      "yang_guochen",
+      "xiao_longyin",
+      "meifuren",
+      "lin_feng",
+      "ren_yingluo",
+      "dongfang_gubai",
+      "ye_qingshan",
+      "lin_chen",
+      "feng_qingya",
+      "zhang_wujiang",
+      "zhao_minyan",
+      "zhou_zhi_xue",
+      "daoxuan",
+      "qiao_fengshan",
+      "duan_muyu",
+      "xu_zhuoyun",
+      "sha_yuyan",
+      "murong",
+      "wei_xiaozhou",
+      "jingandi",
+      "shuang_er_x",
+      "jianning_jun",
+      "a_ke_x",
+      "chen_jinnan_x",
+      "ao_baiying",
+      "hong_antong_x"
+    ],
+    "raw_prefix": "assets/chars/sheet3_r",
+    "c_variants": [
+      {
+        "id": "guo_jingyi",
+        "file": "assets/chars/guo_jingyi_c.png"
+      },
+      {
+        "id": "huang_rongya",
+        "file": "assets/chars/huang_rongya_c.png"
+      },
+      {
+        "id": "hong_qigong_x",
+        "file": "assets/chars/hong_qigong_x_c.png"
+      },
+      {
+        "id": "huang_yaoshi_x",
+        "file": "assets/chars/huang_yaoshi_x_c.png"
+      },
+      {
+        "id": "ouyang_fengdu",
+        "file": "assets/chars/ouyang_fengdu_c.png"
+      },
+      {
+        "id": "yang_guochen",
+        "file": "assets/chars/yang_guochen_c.png"
+      },
+      {
+        "id": "xiao_longyin",
+        "file": "assets/chars/xiao_longyin_c.png"
+      },
+      {
+        "id": "meifuren",
+        "file": "assets/chars/meifuren_c.png"
+      },
+      {
+        "id": "lin_feng",
+        "file": "assets/chars/lin_feng_c.png"
+      },
+      {
+        "id": "ren_yingluo",
+        "file": "assets/chars/ren_yingluo_c.png"
+      },
+      {
+        "id": "dongfang_gubai",
+        "file": "assets/chars/dongfang_gubai_c.png"
+      },
+      {
+        "id": "ye_qingshan",
+        "file": "assets/chars/ye_qingshan_c.png"
+      },
+      {
+        "id": "lin_chen",
+        "file": "assets/chars/lin_chen_c.png"
+      },
+      {
+        "id": "feng_qingya",
+        "file": "assets/chars/feng_qingya_c.png"
+      },
+      {
+        "id": "zhang_wujiang",
+        "file": "assets/chars/zhang_wujiang_c.png"
+      },
+      {
+        "id": "zhao_minyan",
+        "file": "assets/chars/zhao_minyan_c.png"
+      },
+      {
+        "id": "zhou_zhi_xue",
+        "file": "assets/chars/zhou_zhi_xue_c.png"
+      },
+      {
+        "id": "daoxuan",
+        "file": "assets/chars/daoxuan_c.png"
+      },
+      {
+        "id": "qiao_fengshan",
+        "file": "assets/chars/qiao_fengshan_c.png"
+      },
+      {
+        "id": "duan_muyu",
+        "file": "assets/chars/duan_muyu_c.png"
+      },
+      {
+        "id": "xu_zhuoyun",
+        "file": "assets/chars/xu_zhuoyun_c.png"
+      },
+      {
+        "id": "sha_yuyan",
+        "file": "assets/chars/sha_yuyan_c.png"
+      },
+      {
+        "id": "murong",
+        "file": "assets/chars/murong_c.png"
+      },
+      {
+        "id": "wei_xiaozhou",
+        "file": "assets/chars/wei_xiaozhou_c.png"
+      },
+      {
+        "id": "jingandi",
+        "file": "assets/chars/jingandi_c.png"
+      },
+      {
+        "id": "shuang_er_x",
+        "file": "assets/chars/shuang_er_x_c.png"
+      },
+      {
+        "id": "jianning_jun",
+        "file": "assets/chars/jianning_jun_c.png"
+      },
+      {
+        "id": "a_ke_x",
+        "file": "assets/chars/a_ke_x_c.png"
+      },
+      {
+        "id": "chen_jinnan_x",
+        "file": "assets/chars/chen_jinnan_x_c.png"
+      },
+      {
+        "id": "ao_baiying",
+        "file": "assets/chars/ao_baiying_c.png"
+      },
+      {
+        "id": "hong_antong_x",
+        "file": "assets/chars/hong_antong_x_c.png"
+      }
+    ]
+  }
+}

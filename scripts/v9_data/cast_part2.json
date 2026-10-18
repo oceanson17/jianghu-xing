@@ -1,0 +1,885 @@
+[
+  {
+    "id": "wei_xiaozhou",
+    "name": "韋小舟",
+    "title": "尚膳監小太監",
+    "loc": "huanggong",
+    "line": "court",
+    "intro": "眉眼靈動，說話滴水不漏。",
+    "arcs": {
+      "main": "主線：雙面混混——帝側香主夾心。",
+      "side": "支線：夾心於景安帝與青梧會。",
+      "hidden": "隱藏：可同時握多枚香主令／情緣。"
+    },
+    "destinies": {
+      "ally": "宮裡罩你。",
+      "dead": "暴斃宮牆。",
+      "enemy": "密摺參你。",
+      "sworn": "結拜兄弟。",
+      "muse": "情絲亂纏。",
+      "promoted": "升尚膳監掌印。",
+      "default": "尚膳監跑腿。"
+    },
+    "profile": {
+      "personality": "cunning",
+      "label": "雙面香主",
+      "martial": 35,
+      "awareness": 88,
+      "desc": "雙面香主",
+      "onDetect": "flee",
+      "onOpenAttack": "flee",
+      "onSteal": "trap",
+      "prisonPlace": "huanggong",
+      "prisonName": "靜室",
+      "paroleDays": 1
+    },
+    "offer": {
+      "role": "sworn",
+      "fate": "ally",
+      "keywords": "結拜|香主|同盟|幫我|小舟",
+      "reject": "韋小舟擠眼：「還沒到火候。」",
+      "accept": "他塞你一塊腰牌：「從今日起——有難找小舟。」",
+      "flags": [
+        "met_wei_xiaozhou",
+        "court_double"
+      ],
+      "skill": null
+    },
+    "chibi": {
+      "r": 1,
+      "c": 3
+    }
+  },
+  {
+    "id": "chen_jinnan_x",
+    "name": "陳近南影",
+    "title": "青梧會總舵",
+    "loc": "yanhui",
+    "line": "court",
+    "intro": "青衫儒巾，目光如炬。",
+    "arcs": {
+      "main": "主線：反朝師尊。",
+      "side": "支線：收韋小舟／玩家入會。",
+      "hidden": "隱藏：與九難影有舊。"
+    },
+    "destinies": {
+      "ally": "授你會中密信。",
+      "dead": "殉於國事。",
+      "enemy": "會令追殺。",
+      "teacher": "收你為徒。",
+      "default": "坐鎮煙港密舵。"
+    },
+    "profile": {
+      "personality": "lawful",
+      "label": "反朝師尊",
+      "martial": 86,
+      "awareness": 90,
+      "desc": "反朝師尊",
+      "onDetect": "capture",
+      "onOpenAttack": "duel",
+      "onSteal": "trap",
+      "prisonPlace": "yanhui",
+      "prisonName": "密舵暗室",
+      "paroleDays": 2
+    },
+    "offer": {
+      "role": "disciple",
+      "fate": "teacher",
+      "keywords": "拜師|入會|青梧|反清|總舵",
+      "reject": "陳近南影：「心未定，不可入會。」",
+      "accept": "他授你一枚香主令：「記住——反的是昏政，不是百姓。」",
+      "flags": [
+        "met_chen_jinnan",
+        "qingwu_member"
+      ],
+      "skill": "xiake_strike"
+    },
+    "chibi": {
+      "r": 2,
+      "c": 0
+    }
+  },
+  {
+    "id": "jianning_jun",
+    "name": "建寧郡主",
+    "title": "青梧郡主",
+    "loc": "hougong",
+    "line": "court",
+    "intro": "驕縱明豔，叱聲如鈴。",
+    "arcs": {
+      "main": "主線：驕縱情緣。",
+      "side": "支線：強娶／綁架式告白。",
+      "hidden": "隱藏：可助或亂宮變。"
+    },
+    "destinies": {
+      "ally": "准你入璇璣。",
+      "dead": "暴卒。",
+      "enemy": "杖斃你。",
+      "married": "強冊為駙。",
+      "muse": "情絲霸道。",
+      "default": "後宮撒潑。"
+    },
+    "profile": {
+      "personality": "proud",
+      "label": "驕縱郡主",
+      "martial": 25,
+      "awareness": 50,
+      "desc": "驕縱郡主",
+      "onDetect": "capture",
+      "onOpenAttack": "flee",
+      "onSteal": "rebuke",
+      "prisonPlace": "hougong",
+      "prisonName": "冷宮",
+      "paroleDays": 0
+    },
+    "offer": {
+      "role": "spouse",
+      "fate": "married",
+      "keywords": "定情|嫁|娶|郡主|駙馬",
+      "reject": "建寧郡主跺腳：「本宮還沒答應！」",
+      "accept": "她扔出一方手帕：「從今日起你是本宮的人！」",
+      "flags": [
+        "met_jianning",
+        "jianning_love"
+      ],
+      "skill": null
+    },
+    "chibi": {
+      "r": 1,
+      "c": 1
+    }
+  },
+  {
+    "id": "hai_dafu_x",
+    "name": "海大富影",
+    "title": "慎刑司總管",
+    "loc": "dongchang",
+    "line": "court",
+    "intro": "雙眼矇布，耳極聰。",
+    "arcs": {
+      "main": "主線：盲眼權監。",
+      "side": "支線：可鬥東廠督公。",
+      "hidden": "隱藏：身懷化骨綿掌。"
+    },
+    "destinies": {
+      "ally": "廠外另開一路。",
+      "dead": "慎刑司倒斃。",
+      "enemy": "點你死穴。",
+      "teacher": "授綿掌。",
+      "default": "坐鎮慎刑司。"
+    },
+    "profile": {
+      "personality": "ruthless",
+      "label": "盲眼權監",
+      "martial": 88,
+      "awareness": 95,
+      "desc": "盲眼權監",
+      "onDetect": "capture",
+      "onOpenAttack": "attack",
+      "onSteal": "trap",
+      "prisonPlace": "dongchang",
+      "prisonName": "慎刑司黑牢",
+      "paroleDays": 0
+    },
+    "offer": {
+      "role": "ally",
+      "fate": "ally",
+      "keywords": "同盟|綿掌|慎刑|太監|海公",
+      "reject": "海大富影冷笑：「聽不見。」",
+      "accept": "他點你肩穴：「記住這條命——欠我的。」",
+      "flags": [
+        "met_hai_dafu"
+      ],
+      "skill": "soft_yin_palm"
+    },
+    "chibi": {
+      "r": 3,
+      "c": 0
+    }
+  },
+  {
+    "id": "ao_baiying",
+    "name": "鰲拜影",
+    "title": "攝政大將",
+    "loc": "yulin",
+    "line": "court",
+    "intro": "金甲熊腰，殺氣騰騰。",
+    "arcs": {
+      "main": "主線：權臣可擒。",
+      "side": "支線：羽林兵變／擒鰲。",
+      "hidden": "隱藏：與吳三桂影暗通。"
+    },
+    "destinies": {
+      "ally": "暫借兵符。",
+      "dead": "囚於天牢。",
+      "enemy": "滿門抄斬令。",
+      "rival": "沙場再見。",
+      "default": "坐鎮羽林。"
+    },
+    "profile": {
+      "personality": "ruthless",
+      "label": "權臣可擒",
+      "martial": 93,
+      "awareness": 70,
+      "desc": "權臣可擒",
+      "onDetect": "attack",
+      "onOpenAttack": "attack",
+      "onSteal": "attack",
+      "prisonPlace": "yulin",
+      "prisonName": "軍獄",
+      "paroleDays": 0
+    },
+    "offer": {
+      "role": "rival",
+      "fate": "enemy",
+      "keywords": "兵符|挑戰|擒拿|攝政|大將",
+      "reject": "鰲拜影狂笑：「乳臭未乾。」",
+      "accept": "他拔刀：「有種——羽林見。」",
+      "flags": [
+        "met_ao_baiying"
+      ],
+      "skill": null
+    },
+    "chibi": {
+      "r": 3,
+      "c": 2
+    }
+  },
+  {
+    "id": "shuang_er_x",
+    "name": "雙兒影",
+    "title": "莊府丫鬟",
+    "loc": "jingji",
+    "line": "court",
+    "intro": "挽髻圍裙，眼神極忠。",
+    "arcs": {
+      "main": "主線：忠心女侍。",
+      "side": "支線：可隨侍玩家。",
+      "hidden": "隱藏：莊府血案倖存。"
+    },
+    "destinies": {
+      "ally": "貼身照料。",
+      "dead": "為主殉。",
+      "enemy": "絕望遠走。",
+      "apprentice": "跟你江湖。",
+      "muse": "默默情深。",
+      "default": "京畿等候。"
+    },
+    "profile": {
+      "personality": "timid",
+      "label": "忠心女侍",
+      "martial": 20,
+      "awareness": 45,
+      "desc": "忠心女侍",
+      "onDetect": "flee",
+      "onOpenAttack": "flee",
+      "onSteal": "flee",
+      "prisonPlace": "jingji",
+      "prisonName": "靜室",
+      "paroleDays": 0
+    },
+    "offer": {
+      "role": "apprentice",
+      "fate": "apprentice",
+      "keywords": "跟隨|丫鬟|雙兒|照顧|忠心",
+      "reject": "雙兒影搖頭：「主尚未允。」",
+      "accept": "她福身：「奴婢……願跟著你。」",
+      "flags": [
+        "met_shuang_er",
+        "shuang_er_follow"
+      ],
+      "skill": null
+    },
+    "chibi": {
+      "r": 1,
+      "c": 0
+    }
+  },
+  {
+    "id": "su_quan_x",
+    "name": "蘇荃影",
+    "title": "神龍教夫人",
+    "loc": "yanhui",
+    "line": "court",
+    "intro": "白衣勝雪，持劍而立。",
+    "arcs": {
+      "main": "主線：島教夫人。",
+      "side": "支線：可反洪安通影。",
+      "hidden": "隱藏：教主夫人可奪教。"
+    },
+    "destinies": {
+      "ally": "島上護你。",
+      "dead": "葬身島礁。",
+      "enemy": "神龍令追杀。",
+      "muse": "情絲暗結。",
+      "convert": "引你入教。",
+      "default": "坐鎮神龍分舵。"
+    },
+    "profile": {
+      "personality": "proud",
+      "label": "島教夫人",
+      "martial": 78,
+      "awareness": 80,
+      "desc": "島教夫人",
+      "onDetect": "duel",
+      "onOpenAttack": "duel",
+      "onSteal": "trap",
+      "prisonPlace": "yanhui",
+      "prisonName": "靜室",
+      "paroleDays": 1
+    },
+    "offer": {
+      "role": "muse",
+      "fate": "muse",
+      "keywords": "定情|神龍|夫人|入教|蘇荃",
+      "reject": "蘇荃影：「教規不容。」",
+      "accept": "她低聲：「若你助我……或可改寫島上命運。」",
+      "flags": [
+        "met_su_quan"
+      ],
+      "skill": null
+    },
+    "chibi": {
+      "r": 1,
+      "c": 1
+    }
+  },
+  {
+    "id": "hong_antong_x",
+    "name": "洪安通影",
+    "title": "神龍島教主",
+    "loc": "yanhui",
+    "line": "court",
+    "intro": "蟒袍冠帶，目露凶光。",
+    "arcs": {
+      "main": "主線：島教教主。",
+      "side": "支線：海戰／入教考驗。",
+      "hidden": "隱藏：可被蘇荃影取而代之。"
+    },
+    "destinies": {
+      "ally": "封你島上客卿。",
+      "dead": "教主之位崩。",
+      "enemy": "神龍令必殺。",
+      "convert": "強收你入教。",
+      "default": "端坐神龍壇。"
+    },
+    "profile": {
+      "personality": "ruthless",
+      "label": "島教教主",
+      "martial": 85,
+      "awareness": 75,
+      "desc": "島教教主",
+      "onDetect": "attack",
+      "onOpenAttack": "attack",
+      "onSteal": "trap",
+      "prisonPlace": "yanhui",
+      "prisonName": "靜室",
+      "paroleDays": 0
+    },
+    "offer": {
+      "role": "convert",
+      "fate": "convert",
+      "keywords": "入教|神龍|教主|同盟",
+      "reject": "洪安通影：「還未配。」",
+      "accept": "他擲下神龍令：「既入教——終身為奴為榮。」",
+      "flags": [
+        "met_hong_antong"
+      ],
+      "skill": null
+    },
+    "chibi": {
+      "r": 0,
+      "c": 3
+    }
+  },
+  {
+    "id": "jiu_nan_x",
+    "name": "九難影",
+    "title": "白衣神尼",
+    "loc": "tiantai",
+    "line": "court",
+    "intro": "白衣勝雪，眉目悲憫。",
+    "arcs": {
+      "main": "主線：前朝公主隱修。",
+      "side": "支線：授阿珂影武功。",
+      "hidden": "隱藏：刺駕——可刺景安帝。"
+    },
+    "destinies": {
+      "ally": "授你禪劍。",
+      "dead": "圓寂。",
+      "enemy": "刺駕敗露。",
+      "teacher": "收你入門。",
+      "hermit": "閉關。",
+      "default": "天台觀旁靜室。"
+    },
+    "profile": {
+      "personality": "merciful",
+      "label": "前朝神尼",
+      "martial": 94,
+      "awareness": 92,
+      "desc": "前朝神尼",
+      "onDetect": "capture",
+      "onOpenAttack": "rebuke",
+      "onSteal": "trap",
+      "prisonPlace": "tiantai",
+      "prisonName": "觀中靜室",
+      "paroleDays": 3
+    },
+    "offer": {
+      "role": "disciple",
+      "fate": "teacher",
+      "keywords": "拜師|神尼|刺駕|白衣|公主",
+      "reject": "九難影合十：「殺業未消，不可授。」",
+      "accept": "她輕歎：「既執意——便授你一式。莫造殺業。」",
+      "flags": [
+        "met_jiu_nan",
+        "jiunan_disciple"
+      ],
+      "skill": "zen_breath"
+    },
+    "chibi": {
+      "r": 3,
+      "c": 3
+    }
+  },
+  {
+    "id": "a_ke_x",
+    "name": "阿珂影",
+    "title": "神尼徒弟",
+    "loc": "qingcheng",
+    "line": "court",
+    "intro": "絕色明豔，袖藏軟劍。",
+    "arcs": {
+      "main": "主線：美貌刺客。",
+      "side": "支線：行刺任務可改。",
+      "hidden": "隱藏：身世與前朝有關。"
+    },
+    "destinies": {
+      "ally": "暗中護你。",
+      "dead": "刺駕殉。",
+      "enemy": "軟劍封喉。",
+      "muse": "情關亂刺。",
+      "apprentice": "改投你門。",
+      "default": "青城徘徊。"
+    },
+    "profile": {
+      "personality": "cunning",
+      "label": "美貌刺客",
+      "martial": 70,
+      "awareness": 78,
+      "desc": "美貌刺客",
+      "onDetect": "attack",
+      "onOpenAttack": "attack",
+      "onSteal": "trap",
+      "prisonPlace": "qingcheng",
+      "prisonName": "靜室",
+      "paroleDays": 1
+    },
+    "offer": {
+      "role": "muse",
+      "fate": "muse",
+      "keywords": "定情|刺客|阿珂|軟劍|別刺",
+      "reject": "阿珂影別過臉：「任務在身。」",
+      "accept": "她收劍：「……今日，不算。」",
+      "flags": [
+        "met_a_ke"
+      ],
+      "skill": null
+    },
+    "chibi": {
+      "r": 1,
+      "c": 0
+    }
+  },
+  {
+    "id": "mu_jianping_x",
+    "name": "沐劍屏影",
+    "title": "沐府郡主",
+    "loc": "neiting",
+    "line": "court",
+    "intro": "稚氣未脫，腰懸短劍。",
+    "arcs": {
+      "main": "主線：入宮隱身分。",
+      "side": "支線：與方怡影同行。",
+      "hidden": "隱藏：沐府反朝血脈。"
+    },
+    "destinies": {
+      "ally": "認你作哥哥／姐姐。",
+      "dead": "宮變身殞。",
+      "enemy": "被逮問斬。",
+      "muse": "孩童情深。",
+      "default": "內廷花廊。"
+    },
+    "profile": {
+      "personality": "timid",
+      "label": "沐府郡主",
+      "martial": 28,
+      "awareness": 40,
+      "desc": "沐府郡主",
+      "onDetect": "flee",
+      "onOpenAttack": "flee",
+      "onSteal": "flee",
+      "prisonPlace": "neiting",
+      "prisonName": "罰跪廊",
+      "paroleDays": 0
+    },
+    "offer": {
+      "role": "ally",
+      "fate": "ally",
+      "keywords": "幫助|郡主|沐府|保護|姐姐",
+      "reject": "沐劍屏影：「姑姑不准。」",
+      "accept": "她拉你袖：「那你要保護我哦。」",
+      "flags": [
+        "met_mu_jianping"
+      ],
+      "skill": null
+    },
+    "chibi": {
+      "r": 1,
+      "c": 0
+    }
+  },
+  {
+    "id": "fang_yi_x",
+    "name": "方怡影",
+    "title": "沐府刺客",
+    "loc": "neiting",
+    "line": "court",
+    "intro": "青衣蒙面，目露猶豫。",
+    "arcs": {
+      "main": "主線：入宮行刺。",
+      "side": "支線：可被策反。",
+      "hidden": "隱藏：與神龍教有關。"
+    },
+    "destinies": {
+      "ally": "放棄行刺。",
+      "dead": "刺駕失敗。",
+      "enemy": "必欲殺駕。",
+      "muse": "情關亂心。",
+      "default": "潛伏內廷。"
+    },
+    "profile": {
+      "personality": "cunning",
+      "label": "入宮刺客",
+      "martial": 62,
+      "awareness": 70,
+      "desc": "入宮刺客",
+      "onDetect": "attack",
+      "onOpenAttack": "attack",
+      "onSteal": "trap",
+      "prisonPlace": "neiting",
+      "prisonName": "靜室",
+      "paroleDays": 1
+    },
+    "offer": {
+      "role": "ally",
+      "fate": "ally",
+      "keywords": "策反|別刺|同盟|方怡|沐府",
+      "reject": "方怡影：「命令難違。」",
+      "accept": "她卸下面罩：「若你保沐府……我便收手。」",
+      "flags": [
+        "met_fang_yi",
+        "fang_yi_turned"
+      ],
+      "skill": null
+    },
+    "chibi": {
+      "r": 1,
+      "c": 1
+    }
+  },
+  {
+    "id": "mao_dongzhu_x",
+    "name": "毛東珠影",
+    "title": "「太后」",
+    "loc": "hougong",
+    "line": "court",
+    "intro": "鳳冠霞帔，聲口似真。",
+    "arcs": {
+      "main": "主線：假太后。",
+      "side": "支線：揭穿／助其竊國。",
+      "hidden": "隱藏：實為神龍教细作。"
+    },
+    "destinies": {
+      "ally": "後宮罩你。",
+      "dead": "假面撕破賜死。",
+      "enemy": "懿旨拿你。",
+      "exposed": "假太后之醜傳遍。",
+      "default": "端居慈寧。"
+    },
+    "profile": {
+      "personality": "cunning",
+      "label": "假太后",
+      "martial": 55,
+      "awareness": 85,
+      "desc": "假太后",
+      "onDetect": "capture",
+      "onOpenAttack": "flee",
+      "onSteal": "trap",
+      "prisonPlace": "hougong",
+      "prisonName": "冷宮",
+      "paroleDays": 0
+    },
+    "offer": {
+      "role": "ally",
+      "fate": "ally",
+      "keywords": "太后|懿旨|同盟|慈寧",
+      "reject": "「太后」：「大膽。」",
+      "accept": "她低聲：「既識破……便一榮俱榮。」",
+      "flags": [
+        "met_mao_dongzhu",
+        "fake_empress"
+      ],
+      "skill": null
+    },
+    "chibi": {
+      "r": 1,
+      "c": 1
+    }
+  },
+  {
+    "id": "duo_long_x",
+    "name": "多隆影",
+    "title": "御前侍衛",
+    "loc": "yulin",
+    "line": "court",
+    "intro": "豪邁大笑，臂膀如猿。",
+    "arcs": {
+      "main": "主線：帝側玩伴。",
+      "side": "支線：可助擒鰲拜影。",
+      "hidden": "隱藏：對韋小舟極義氣。"
+    },
+    "destinies": {
+      "ally": "御前罩你。",
+      "dead": "殉於宮牆。",
+      "enemy": "拒你於營。",
+      "sworn": "結拜。",
+      "default": "巡營不輟。"
+    },
+    "profile": {
+      "personality": "lawful",
+      "label": "御前玩伴",
+      "martial": 75,
+      "awareness": 60,
+      "desc": "御前玩伴",
+      "onDetect": "capture",
+      "onOpenAttack": "duel",
+      "onSteal": "trap",
+      "prisonPlace": "yulin",
+      "prisonName": "營中禁閉",
+      "paroleDays": 2
+    },
+    "offer": {
+      "role": "sworn",
+      "fate": "ally",
+      "keywords": "結拜|兄弟|侍衛|多隆|玩伴",
+      "reject": "多隆影撓頭：「皇上還沒點頭。」",
+      "accept": "他砸胸：「好兄弟！喝酒！」",
+      "flags": [
+        "met_duo_long"
+      ],
+      "skill": null
+    },
+    "chibi": {
+      "r": 3,
+      "c": 2
+    }
+  },
+  {
+    "id": "suo_etu_x",
+    "name": "索額圖影",
+    "title": "大學士",
+    "loc": "qianqing",
+    "line": "court",
+    "intro": "朝服端正，城府極深。",
+    "arcs": {
+      "main": "主線：朝臣結拜。",
+      "side": "支線：政爭／票擬。",
+      "hidden": "隱藏：可聯或賣韋小舟。"
+    },
+    "destinies": {
+      "ally": "票擬助你。",
+      "dead": "賜帛。",
+      "enemy": "密摺參死。",
+      "sworn": "結拜。",
+      "default": "乾清宮當值。"
+    },
+    "profile": {
+      "personality": "cunning",
+      "label": "朝臣結拜",
+      "martial": 20,
+      "awareness": 88,
+      "desc": "朝臣結拜",
+      "onDetect": "capture",
+      "onOpenAttack": "flee",
+      "onSteal": "trap",
+      "prisonPlace": "qianqing",
+      "prisonName": "天牢",
+      "paroleDays": 0
+    },
+    "offer": {
+      "role": "sworn",
+      "fate": "ally",
+      "keywords": "結拜|大學士|票擬|同盟|朝臣",
+      "reject": "索額圖影：「朝局未穩。」",
+      "accept": "他拱手：「既結拜——朝中有我一份力。」",
+      "flags": [
+        "met_suo_etu"
+      ],
+      "skill": null
+    },
+    "chibi": {
+      "r": 3,
+      "c": 3
+    }
+  },
+  {
+    "id": "wu_sangui_x",
+    "name": "吳三桂影",
+    "title": "平西王",
+    "loc": "bianguan",
+    "line": "court",
+    "intro": "王袍披風，野心寫在眼底。",
+    "arcs": {
+      "main": "主線：藩王野心。",
+      "side": "支線：聯清或反清。",
+      "hidden": "隱藏：可自立為帝線。"
+    },
+    "destinies": {
+      "ally": "兵馬相助。",
+      "dead": "藩王安在。",
+      "enemy": "稱兵。",
+      "rival": "分庭抗禮。",
+      "promoted": "加封。",
+      "default": "坐鎮邊關王府行營。"
+    },
+    "profile": {
+      "personality": "ruthless",
+      "label": "藩王野心",
+      "martial": 80,
+      "awareness": 82,
+      "desc": "藩王野心",
+      "onDetect": "attack",
+      "onOpenAttack": "attack",
+      "onSteal": "trap",
+      "prisonPlace": "bianguan",
+      "prisonName": "軍獄",
+      "paroleDays": 0
+    },
+    "offer": {
+      "role": "ally",
+      "fate": "ally",
+      "keywords": "藩王|同盟|兵馬|平西|獨立",
+      "reject": "吳三桂影冷笑：「你還不夠看。」",
+      "accept": "他擲下一枚虎符：「暫借你三成兵馬——別讓我後悔。」",
+      "flags": [
+        "met_wu_sangui",
+        "fan_wang"
+      ],
+      "skill": null
+    },
+    "chibi": {
+      "r": 3,
+      "c": 2
+    }
+  },
+  {
+    "id": "shi_lang_x",
+    "name": "施琅影",
+    "title": "水師提督",
+    "loc": "yanhui",
+    "line": "court",
+    "intro": "戎裝佩刀，海風滿面。",
+    "arcs": {
+      "main": "主線：海戰支線。",
+      "side": "支線：平台／攻島。",
+      "hidden": "隱藏：可聯或鎮神龍島。"
+    },
+    "destinies": {
+      "ally": "水師相助。",
+      "dead": "葬身怒濤。",
+      "enemy": "海上封殺。",
+      "promoted": "加太子太保虛銜。",
+      "default": "煙港水營。"
+    },
+    "profile": {
+      "personality": "lawful",
+      "label": "水師提督",
+      "martial": 78,
+      "awareness": 75,
+      "desc": "水師提督",
+      "onDetect": "capture",
+      "onOpenAttack": "duel",
+      "onSteal": "trap",
+      "prisonPlace": "yanhui",
+      "prisonName": "水營禁閉",
+      "paroleDays": 2
+    },
+    "offer": {
+      "role": "ally",
+      "fate": "ally",
+      "keywords": "水師|海戰|提督|同盟|戰船",
+      "reject": "施琅影：「潮未至。」",
+      "accept": "他拍船舷：「准你一艦隊——海戰聽調。」",
+      "flags": [
+        "met_shi_lang",
+        "sea_pass"
+      ],
+      "skill": null
+    },
+    "chibi": {
+      "r": 2,
+      "c": 3
+    }
+  },
+  {
+    "id": "mao_shiba_x",
+    "name": "茅十八影",
+    "title": "江洋大盜",
+    "loc": "luohe",
+    "line": "court",
+    "intro": "刀疤橫臉，義氣卻真。",
+    "arcs": {
+      "main": "主線：帶路入京。",
+      "side": "支線：可劫囚車救你。",
+      "hidden": "隱藏：與青梧會有舊。"
+    },
+    "destinies": {
+      "ally": "帶你入京。",
+      "dead": "斬於市。",
+      "enemy": "黑道追殺。",
+      "sworn": "結拜。",
+      "default": "洛河渡潛伏。"
+    },
+    "profile": {
+      "personality": "ruthless",
+      "label": "帶路大盜",
+      "martial": 60,
+      "awareness": 55,
+      "desc": "帶路大盜",
+      "onDetect": "attack",
+      "onOpenAttack": "attack",
+      "onSteal": "trap",
+      "prisonPlace": "luohe",
+      "prisonName": "黑牢",
+      "paroleDays": 0
+    },
+    "offer": {
+      "role": "sworn",
+      "fate": "ally",
+      "keywords": "結拜|帶路|入京|大盜|十八",
+      "reject": "茅十八影：「還不夠義氣。」",
+      "accept": "他拽你上船：「走！進京一趟。」",
+      "flags": [
+        "met_mao_shiba",
+        "palace_entry",
+        "map_huanggong"
+      ],
+      "skill": null
+    },
+    "chibi": {
+      "r": 0,
+      "c": 3
+    }
+  }
+]

@@ -1,0 +1,211 @@
+{
+  "total_slices": 120,
+  "beasts": [
+    {
+      "id": "beast_baihe",
+      "name": "雪羽白鶴",
+      "kind": "companion",
+      "r": 9,
+      "c": 0,
+      "file": "assets/chars/beast_baihe.png"
+    },
+    {
+      "id": "beast_cangying",
+      "name": "玄穹蒼鷹",
+      "kind": "companion",
+      "r": 9,
+      "c": 1,
+      "file": "assets/chars/beast_cangying.png"
+    },
+    {
+      "id": "beast_jinchi",
+      "name": "金翅雲鵬",
+      "kind": "mount",
+      "r": 9,
+      "c": 2,
+      "file": "assets/chars/beast_jinchi.png"
+    },
+    {
+      "id": "beast_shengui",
+      "name": "玄甲神龜",
+      "kind": "companion",
+      "r": 9,
+      "c": 3,
+      "file": "assets/chars/beast_shengui.png"
+    },
+    {
+      "id": "beast_qinglong",
+      "name": "蒼穹青龍",
+      "kind": "mount",
+      "r": 9,
+      "c": 4,
+      "file": "assets/chars/beast_qinglong.png"
+    },
+    {
+      "id": "beast_zhuque",
+      "name": "丹霞朱雀",
+      "kind": "mount",
+      "r": 9,
+      "c": 5,
+      "file": "assets/chars/beast_zhuque.png"
+    },
+    {
+      "id": "beast_xuanwu",
+      "name": "玄冥玄武",
+      "kind": "companion",
+      "r": 9,
+      "c": 6,
+      "file": "assets/chars/beast_xuanwu.png"
+    },
+    {
+      "id": "beast_baihu",
+      "name": "霜紋白虎",
+      "kind": "mount",
+      "r": 9,
+      "c": 7,
+      "file": "assets/chars/beast_baihu.png"
+    },
+    {
+      "id": "beast_bailang",
+      "name": "北原白狼",
+      "kind": "enemy",
+      "r": 9,
+      "c": 8,
+      "file": "assets/chars/beast_bailang.png"
+    },
+    {
+      "id": "beast_heixiong",
+      "name": "蒼山黑熊",
+      "kind": "enemy",
+      "r": 9,
+      "c": 9,
+      "file": "assets/chars/beast_heixiong.png"
+    },
+    {
+      "id": "beast_lingshe",
+      "name": "碧鳞靈蛇",
+      "kind": "enemy",
+      "r": 10,
+      "c": 0,
+      "file": "assets/chars/beast_lingshe.png"
+    },
+    {
+      "id": "beast_qilin",
+      "name": "瑞光麒麟",
+      "kind": "mount",
+      "r": 10,
+      "c": 1,
+      "file": "assets/chars/beast_qilin.png"
+    },
+    {
+      "id": "beast_huofeng",
+      "name": "赤焰鳳凰",
+      "kind": "mount",
+      "r": 10,
+      "c": 2,
+      "file": "assets/chars/beast_huofeng.png"
+    },
+    {
+      "id": "beast_yinhu",
+      "name": "玄霜銀狐",
+      "kind": "companion",
+      "r": 10,
+      "c": 3,
+      "file": "assets/chars/beast_yinhu.png"
+    },
+    {
+      "id": "beast_xueyuan",
+      "name": "雪獄魔猿",
+      "kind": "enemy",
+      "r": 10,
+      "c": 4,
+      "file": "assets/chars/beast_xueyuan.png"
+    },
+    {
+      "id": "beast_jianli",
+      "name": "青冥劍鯉",
+      "kind": "companion",
+      "r": 10,
+      "c": 5,
+      "file": "assets/chars/beast_jianli.png"
+    },
+    {
+      "id": "beast_moniu",
+      "name": "混世魔牛",
+      "kind": "enemy",
+      "r": 10,
+      "c": 6,
+      "file": "assets/chars/beast_moniu.png"
+    },
+    {
+      "id": "beast_jujiu",
+      "name": "大漠巨鷲",
+      "kind": "enemy",
+      "r": 10,
+      "c": 7,
+      "file": "assets/chars/beast_jujiu.png"
+    },
+    {
+      "id": "beast_leishou",
+      "name": "雷紋異獸",
+      "kind": "enemy",
+      "r": 10,
+      "c": 8,
+      "file": "assets/chars/beast_leishou.png"
+    },
+    {
+      "id": "beast_xuebao",
+      "name": "天山雪豹",
+      "kind": "enemy",
+      "r": 10,
+      "c": 9,
+      "file": "assets/chars/beast_xuebao.png"
+    }
+  ],
+  "extra_beasts": [
+    {
+      "id": "beast_xuanyu",
+      "name": "玄羽神鵰",
+      "kind": "companion",
+      "alias_of": "beast_jinchi"
+    }
+  ],
+  "b_variants": [
+    {
+      "id": "shawuhen",
+      "r": 0,
+      "c": 1,
+      "file": "assets/chars/shawuhen_b.png"
+    },
+    {
+      "id": "yechen",
+      "r": 0,
+      "c": 2,
+      "file": "assets/chars/yechen_b.png"
+    },
+    {
+      "id": "ouyang_fengdu",
+      "r": 8,
+      "c": 1,
+      "file": "assets/chars/ouyang_fengdu_b.png"
+    },
+    {
+      "id": "huang_yaoshi_x",
+      "r": 8,
+      "c": 2,
+      "file": "assets/chars/huang_yaoshi_x_b.png"
+    },
+    {
+      "id": "duo_long_x",
+      "r": 7,
+      "c": 0,
+      "file": "assets/chars/duo_long_x_b.png"
+    },
+    {
+      "id": "qu_yangqin",
+      "r": 11,
+      "c": 4,
+      "file": "assets/chars/qu_yangqin_b.png"
+    }
+  ]
+}

@@ -1,0 +1,818 @@
+{
+  "lin_feng": [
+    {
+      "type": "master",
+      "target": "ye_qingshan",
+      "label": "師徒（決裂）",
+      "reveal": "default"
+    },
+    {
+      "type": "master",
+      "target": "feng_qingya",
+      "label": "隱師授劍",
+      "revealFlag": "met_feng_qingya"
+    },
+    {
+      "type": "romance",
+      "target": "ren_yingluo",
+      "label": "情緣",
+      "revealFlag": "lin_ren_love"
+    },
+    {
+      "type": "rival",
+      "target": "ye_qingshan",
+      "label": "師徒反目",
+      "revealFlag": "ye_exposed"
+    },
+    {
+      "type": "romance",
+      "target": "ye_xiaoyu",
+      "label": "青梅舊情",
+      "reveal": "default"
+    }
+  ],
+  "ye_qingshan": [
+    {
+      "type": "family",
+      "target": "ye_xiaoyu",
+      "label": "父女",
+      "reveal": "default"
+    },
+    {
+      "type": "romance",
+      "target": "ning_shuying",
+      "label": "夫妻（貌合）",
+      "reveal": "default"
+    },
+    {
+      "type": "rival",
+      "target": "lin_feng",
+      "label": "逐徒",
+      "revealFlag": "ye_exposed"
+    },
+    {
+      "type": "ally",
+      "target": "zuo_lengying",
+      "label": "密約併吞",
+      "revealFlag": "ye_exposed"
+    }
+  ],
+  "ning_shuying": [
+    {
+      "type": "family",
+      "target": "ye_qingshan",
+      "label": "夫妻",
+      "reveal": "default"
+    },
+    {
+      "type": "ally",
+      "target": "lin_feng",
+      "label": "護徒",
+      "reveal": "default"
+    }
+  ],
+  "ye_xiaoyu": [
+    {
+      "type": "family",
+      "target": "ye_qingshan",
+      "label": "父女",
+      "reveal": "default"
+    },
+    {
+      "type": "romance",
+      "target": "lin_feng",
+      "label": "青梅",
+      "reveal": "default"
+    }
+  ],
+  "feng_qingya": [
+    {
+      "type": "disciple",
+      "target": "lin_feng",
+      "label": "隱師",
+      "revealFlag": "met_feng_qingya"
+    },
+    {
+      "type": "enemy",
+      "target": "ye_qingshan",
+      "label": "逼隱之仇",
+      "revealFlag": "met_feng_qingya"
+    }
+  ],
+  "ren_yingluo": [
+    {
+      "type": "romance",
+      "target": "lin_feng",
+      "label": "情緣",
+      "revealFlag": "lin_ren_love"
+    },
+    {
+      "type": "faction",
+      "target": "honglianzhu",
+      "label": "紅蓮副座",
+      "reveal": "default"
+    },
+    {
+      "type": "rival",
+      "target": "zhou_zhi_xue",
+      "label": "情敵三角",
+      "revealFlag": "met_zhou_zhi_xue"
+    },
+    {
+      "type": "rival",
+      "target": "dongfang_gubai",
+      "label": "篡位威脅",
+      "revealFlag": "dongfang_reveal"
+    }
+  ],
+  "dongfang_gubai": [
+    {
+      "type": "rival",
+      "target": "honglianzhu",
+      "label": "前教主篡位",
+      "revealFlag": "dongfang_reveal"
+    },
+    {
+      "type": "rival",
+      "target": "ren_yingluo",
+      "label": "副座之爭",
+      "revealFlag": "dongfang_reveal"
+    }
+  ],
+  "zhou_zhi_xue": [
+    {
+      "type": "romance",
+      "target": "zhang_wujiang",
+      "label": "單相思",
+      "revealFlag": "met_zhou_zhi_xue"
+    },
+    {
+      "type": "rival",
+      "target": "ren_yingluo",
+      "label": "情敵",
+      "revealFlag": "met_zhou_zhi_xue"
+    }
+  ],
+  "honglianzhu": [
+    {
+      "type": "faction",
+      "target": "ren_yingluo",
+      "label": "教主—副座",
+      "reveal": "default"
+    },
+    {
+      "type": "enemy",
+      "target": "dongfang_gubai",
+      "label": "篡位之敵",
+      "revealFlag": "dongfang_reveal"
+    }
+  ],
+  "yang_guochen": [
+    {
+      "type": "romance",
+      "target": "xiao_longyin",
+      "label": "師徒禁忌情",
+      "revealFlag": "tomb_taboo"
+    },
+    {
+      "type": "master",
+      "target": "xiao_longyin",
+      "label": "師徒",
+      "revealFlag": "tomb_taboo"
+    }
+  ],
+  "xiao_longyin": [
+    {
+      "type": "romance",
+      "target": "yang_guochen",
+      "label": "禁忌情",
+      "revealFlag": "tomb_taboo"
+    },
+    {
+      "type": "master",
+      "target": "yang_guochen",
+      "label": "師尊",
+      "revealFlag": "tomb_taboo"
+    },
+    {
+      "type": "ally",
+      "target": "mu_youlan",
+      "label": "同門幽墓",
+      "reveal": "default"
+    },
+    {
+      "type": "ally",
+      "target": "yechen",
+      "label": "守陵同道",
+      "reveal": "default"
+    }
+  ],
+  "yechen": [
+    {
+      "type": "ally",
+      "target": "mu_youlan",
+      "label": "守陵／隱士",
+      "reveal": "default"
+    },
+    {
+      "type": "ally",
+      "target": "xiao_longyin",
+      "label": "墓緣",
+      "revealFlag": "met_xiao_longyin"
+    }
+  ],
+  "mu_youlan": [
+    {
+      "type": "ally",
+      "target": "xiao_longyin",
+      "label": "同脈",
+      "reveal": "default"
+    },
+    {
+      "type": "ally",
+      "target": "yechen",
+      "label": "墓中舊識",
+      "reveal": "default"
+    }
+  ],
+  "qiao_fengshan": [
+    {
+      "type": "master",
+      "target": "hong_qigong_x",
+      "label": "太上師尊",
+      "reveal": "default"
+    },
+    {
+      "type": "faction",
+      "target": "powan_zhang",
+      "label": "破碗前後任",
+      "reveal": "default"
+    },
+    {
+      "type": "sworn",
+      "target": "guo_jingyi",
+      "label": "英雄相惜",
+      "revealFlag": "met_guo_jingyi"
+    }
+  ],
+  "hong_qigong_x": [
+    {
+      "type": "disciple",
+      "target": "qiao_fengshan",
+      "label": "太上收徒",
+      "reveal": "default"
+    },
+    {
+      "type": "faction",
+      "target": "powan_zhang",
+      "label": "破碗太上—舵主",
+      "reveal": "default"
+    }
+  ],
+  "powan_zhang": [
+    {
+      "type": "faction",
+      "target": "hong_qigong_x",
+      "label": "舵主—太上",
+      "reveal": "default"
+    },
+    {
+      "type": "faction",
+      "target": "qiao_fengshan",
+      "label": "現任—前任",
+      "reveal": "default"
+    }
+  ],
+  "guo_jingyi": [
+    {
+      "type": "romance",
+      "target": "huang_rongya",
+      "label": "伴侣",
+      "reveal": "default"
+    },
+    {
+      "type": "ally",
+      "target": "qiao_fengshan",
+      "label": "義氣相惜",
+      "revealFlag": "met_qiao_fengshan"
+    },
+    {
+      "type": "ally",
+      "target": "zhang_wujiang",
+      "label": "邊關前輩",
+      "reveal": "default"
+    }
+  ],
+  "huang_rongya": [
+    {
+      "type": "romance",
+      "target": "guo_jingyi",
+      "label": "伴侣",
+      "reveal": "default"
+    },
+    {
+      "type": "family",
+      "target": "huang_yaoshi_x",
+      "label": "父女（致敬）",
+      "revealFlag": "met_huang_yaoshi"
+    }
+  ],
+  "huang_yaoshi_x": [
+    {
+      "type": "family",
+      "target": "huang_rongya",
+      "label": "父女",
+      "revealFlag": "met_huang_rongya"
+    },
+    {
+      "type": "enemy",
+      "target": "ouyang_fengdu",
+      "label": "舊怨",
+      "revealFlag": "met_ouyang_fengdu"
+    },
+    {
+      "type": "ally",
+      "target": "hai_kuang",
+      "label": "島上奇人同僚",
+      "reveal": "default"
+    }
+  ],
+  "hai_kuang": [
+    {
+      "type": "ally",
+      "target": "huang_yaoshi_x",
+      "label": "落英同僚",
+      "reveal": "default"
+    }
+  ],
+  "ouyang_fengdu": [
+    {
+      "type": "enemy",
+      "target": "huang_yaoshi_x",
+      "label": "西毒東邪怨",
+      "reveal": "default"
+    },
+    {
+      "type": "enemy",
+      "target": "guo_jingyi",
+      "label": "邊關死敵",
+      "revealFlag": "met_guo_jingyi"
+    }
+  ],
+  "lin_chen": [
+    {
+      "type": "enemy",
+      "target": "mu_gaofeng_x",
+      "label": "滅門血仇",
+      "reveal": "default"
+    }
+  ],
+  "mu_gaofeng_x": [
+    {
+      "type": "enemy",
+      "target": "lin_chen",
+      "label": "逼徒仇",
+      "reveal": "default"
+    }
+  ],
+  "zuo_lengying": [
+    {
+      "type": "ally",
+      "target": "ye_qingshan",
+      "label": "密約",
+      "revealFlag": "ye_exposed"
+    },
+    {
+      "type": "rival",
+      "target": "chixiaxian",
+      "label": "五峰爭鋒",
+      "reveal": "default"
+    }
+  ],
+  "qu_yangqin": [
+    {
+      "type": "ally",
+      "target": "linqing",
+      "label": "正邪琴交",
+      "reveal": "default"
+    },
+    {
+      "type": "faction",
+      "target": "honglianzhu",
+      "label": "魔教琴客",
+      "reveal": "default"
+    }
+  ],
+  "linqing": [
+    {
+      "type": "ally",
+      "target": "qu_yangqin",
+      "label": "琴交",
+      "revealFlag": "met_qu_yangqin"
+    }
+  ],
+  "duan_muyu": [
+    {
+      "type": "ally",
+      "target": "qiao_fengshan",
+      "label": "遊歷相識",
+      "revealFlag": "met_qiao_fengshan"
+    }
+  ],
+  "xu_zhuoyun": [
+    {
+      "type": "master",
+      "target": "masteryun",
+      "label": "蒼雲師徒",
+      "reveal": "default"
+    }
+  ],
+  "masteryun": [
+    {
+      "type": "disciple",
+      "target": "xu_zhuoyun",
+      "label": "啞徒",
+      "reveal": "default"
+    }
+  ],
+  "zhang_wujiang": [
+    {
+      "type": "romance",
+      "target": "zhao_minyan",
+      "label": "郡主纠结",
+      "revealFlag": "met_zhao_minyan"
+    },
+    {
+      "type": "romance",
+      "target": "zhou_zhi_xue",
+      "label": "情絲",
+      "revealFlag": "met_zhou_zhi_xue"
+    }
+  ],
+  "zhao_minyan": [
+    {
+      "type": "romance",
+      "target": "zhang_wujiang",
+      "label": "試探情緣",
+      "revealFlag": "met_zhang_wujiang"
+    },
+    {
+      "type": "ally",
+      "target": "huang_rongya",
+      "label": "京畿機靈黨",
+      "revealFlag": "met_huang_rongya"
+    }
+  ],
+  "jingandi": [
+    {
+      "type": "family",
+      "target": "dongchang_gong",
+      "label": "兄弟（隱藏）",
+      "revealFlag": "donggong_truth_known"
+    },
+    {
+      "type": "ally",
+      "target": "wei_xiaozhou",
+      "label": "帝側玩伴／結拜",
+      "reveal": "default"
+    },
+    {
+      "type": "enemy",
+      "target": "jiu_nan_x",
+      "label": "刺駕隱敵",
+      "revealFlag": "jiunan_assassin"
+    },
+    {
+      "type": "enemy",
+      "target": "ao_baiying",
+      "label": "權臣可擒",
+      "revealFlag": "met_ao_baiying"
+    }
+  ],
+  "dongchang_gong": [
+    {
+      "type": "family",
+      "target": "jingandi",
+      "label": "皇兄（隱藏）",
+      "revealFlag": "donggong_truth_known"
+    }
+  ],
+  "wei_xiaozhou": [
+    {
+      "type": "ally",
+      "target": "jingandi",
+      "label": "帝側香主",
+      "reveal": "default"
+    },
+    {
+      "type": "master",
+      "target": "chen_jinnan_x",
+      "label": "反朝師尊",
+      "revealFlag": "met_chen_jinnan"
+    },
+    {
+      "type": "romance",
+      "target": "jianning_jun",
+      "label": "驕縱情緣",
+      "revealFlag": "jianning_love"
+    },
+    {
+      "type": "romance",
+      "target": "shuang_er_x",
+      "label": "忠心女侍",
+      "revealFlag": "shuang_er_follow"
+    },
+    {
+      "type": "sworn",
+      "target": "duo_long_x",
+      "label": "御前結拜",
+      "revealFlag": "met_duo_long"
+    },
+    {
+      "type": "sworn",
+      "target": "suo_etu_x",
+      "label": "朝臣結拜",
+      "revealFlag": "met_suo_etu"
+    },
+    {
+      "type": "ally",
+      "target": "mao_shiba_x",
+      "label": "帶路入京",
+      "revealFlag": "met_mao_shiba"
+    }
+  ],
+  "chen_jinnan_x": [
+    {
+      "type": "disciple",
+      "target": "wei_xiaozhou",
+      "label": "香主徒弟",
+      "revealFlag": "met_wei_xiaozhou"
+    },
+    {
+      "type": "ally",
+      "target": "jiu_nan_x",
+      "label": "反朝舊識",
+      "revealFlag": "met_jiu_nan"
+    }
+  ],
+  "jianning_jun": [
+    {
+      "type": "romance",
+      "target": "wei_xiaozhou",
+      "label": "強情",
+      "revealFlag": "jianning_love"
+    },
+    {
+      "type": "family",
+      "target": "jingandi",
+      "label": "皇親郡主",
+      "reveal": "default"
+    }
+  ],
+  "hai_dafu_x": [
+    {
+      "type": "rival",
+      "target": "dongchang_gong",
+      "label": "廠衛對立",
+      "reveal": "default"
+    },
+    {
+      "type": "ally",
+      "target": "jingandi",
+      "label": "盲侍帝側",
+      "revealFlag": "met_hai_dafu"
+    }
+  ],
+  "ao_baiying": [
+    {
+      "type": "rival",
+      "target": "yulin_tongling",
+      "label": "兵權之爭",
+      "reveal": "default"
+    },
+    {
+      "type": "rival",
+      "target": "da_jiangjun",
+      "label": "大將對峙",
+      "reveal": "default"
+    },
+    {
+      "type": "ally",
+      "target": "wu_sangui_x",
+      "label": "藩鎮暗通",
+      "revealFlag": "fan_wang"
+    }
+  ],
+  "yulin_tongling": [
+    {
+      "type": "rival",
+      "target": "ao_baiying",
+      "label": "衛宮對權臣",
+      "revealFlag": "met_ao_baiying"
+    }
+  ],
+  "da_jiangjun": [
+    {
+      "type": "rival",
+      "target": "ao_baiying",
+      "label": "沙場對峙",
+      "revealFlag": "met_ao_baiying"
+    }
+  ],
+  "shuang_er_x": [
+    {
+      "type": "romance",
+      "target": "wei_xiaozhou",
+      "label": "忠侍",
+      "revealFlag": "met_wei_xiaozhou"
+    }
+  ],
+  "su_quan_x": [
+    {
+      "type": "romance",
+      "target": "hong_antong_x",
+      "label": "教主夫人",
+      "reveal": "default"
+    },
+    {
+      "type": "rival",
+      "target": "hong_antong_x",
+      "label": "可奪教",
+      "revealFlag": "met_su_quan"
+    }
+  ],
+  "hong_antong_x": [
+    {
+      "type": "romance",
+      "target": "su_quan_x",
+      "label": "夫人",
+      "reveal": "default"
+    },
+    {
+      "type": "enemy",
+      "target": "shi_lang_x",
+      "label": "海戰對手",
+      "revealFlag": "met_shi_lang"
+    }
+  ],
+  "jiu_nan_x": [
+    {
+      "type": "disciple",
+      "target": "a_ke_x",
+      "label": "師徒",
+      "reveal": "default"
+    },
+    {
+      "type": "enemy",
+      "target": "jingandi",
+      "label": "刺駕",
+      "revealFlag": "jiunan_assassin"
+    },
+    {
+      "type": "ally",
+      "target": "chen_jinnan_x",
+      "label": "前朝遺脈",
+      "revealFlag": "met_chen_jinnan"
+    }
+  ],
+  "a_ke_x": [
+    {
+      "type": "master",
+      "target": "jiu_nan_x",
+      "label": "神尼徒弟",
+      "reveal": "default"
+    },
+    {
+      "type": "ally",
+      "target": "fang_yi_x",
+      "label": "刺客同路",
+      "revealFlag": "met_fang_yi"
+    }
+  ],
+  "mu_jianping_x": [
+    {
+      "type": "ally",
+      "target": "fang_yi_x",
+      "label": "沐府同行",
+      "reveal": "default"
+    },
+    {
+      "type": "family",
+      "target": "fang_yi_x",
+      "label": "府中情誼",
+      "reveal": "default"
+    }
+  ],
+  "fang_yi_x": [
+    {
+      "type": "ally",
+      "target": "mu_jianping_x",
+      "label": "護郡主",
+      "reveal": "default"
+    },
+    {
+      "type": "spy",
+      "target": "hong_antong_x",
+      "label": "島教細作",
+      "revealFlag": "met_hong_antong"
+    }
+  ],
+  "mao_dongzhu_x": [
+    {
+      "type": "spy",
+      "target": "hong_antong_x",
+      "label": "假太后細作",
+      "revealFlag": "fake_empress"
+    },
+    {
+      "type": "ally",
+      "target": "shen_guifei",
+      "label": "後宮聯手",
+      "revealFlag": "fake_empress"
+    }
+  ],
+  "shen_guifei": [
+    {
+      "type": "ally",
+      "target": "mao_dongzhu_x",
+      "label": "聯「太后」",
+      "revealFlag": "fake_empress"
+    },
+    {
+      "type": "spy",
+      "target": "mao_dongzhu_x",
+      "label": "互通聲氣",
+      "revealFlag": "fake_empress"
+    }
+  ],
+  "duo_long_x": [
+    {
+      "type": "sworn",
+      "target": "wei_xiaozhou",
+      "label": "結拜",
+      "revealFlag": "met_wei_xiaozhou"
+    },
+    {
+      "type": "ally",
+      "target": "jingandi",
+      "label": "御前侍衛",
+      "reveal": "default"
+    }
+  ],
+  "suo_etu_x": [
+    {
+      "type": "sworn",
+      "target": "wei_xiaozhou",
+      "label": "結拜",
+      "revealFlag": "met_wei_xiaozhou"
+    },
+    {
+      "type": "ally",
+      "target": "jingandi",
+      "label": "票擬忠臣",
+      "reveal": "default"
+    }
+  ],
+  "wu_sangui_x": [
+    {
+      "type": "ally",
+      "target": "ao_baiying",
+      "label": "藩鎮暗通",
+      "revealFlag": "met_ao_baiying"
+    },
+    {
+      "type": "rival",
+      "target": "jingandi",
+      "label": "藩王野心",
+      "revealFlag": "fan_wang"
+    }
+  ],
+  "shi_lang_x": [
+    {
+      "type": "ally",
+      "target": "jingandi",
+      "label": "水師忠臣",
+      "reveal": "default"
+    },
+    {
+      "type": "enemy",
+      "target": "hong_antong_x",
+      "label": "攻島",
+      "revealFlag": "met_hong_antong"
+    }
+  ],
+  "mao_shiba_x": [
+    {
+      "type": "sworn",
+      "target": "wei_xiaozhou",
+      "label": "帶路結義",
+      "revealFlag": "met_wei_xiaozhou"
+    },
+    {
+      "type": "ally",
+      "target": "chen_jinnan_x",
+      "label": "青梧舊識",
+      "revealFlag": "met_chen_jinnan"
+    }
+  ]
+}

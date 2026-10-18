@@ -95,3 +95,7 @@ npx serve .
 - 設計：`docs/freeinput-cheat-v16.md` · 自測：`node scripts/autorun_v16_headless.js`
 - Pages：https://oceanson17.github.io/jianghu-xing/
 
+## 更新 v17（戰鬥處置＋設定入口）
+- 戰敗／戰勝 AI 處置（寫意）；`更多` 頂部【設定・作弊台】
+- Pages：https://oceanson17.github.io/jianghu-xing/
+

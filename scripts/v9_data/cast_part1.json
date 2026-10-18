@@ -1,0 +1,1183 @@
+[
+  {
+    "id": "ye_qingshan",
+    "name": "葉青山",
+    "title": "蒼峰劍派掌門",
+    "loc": "chixia",
+    "line": "jianghu",
+    "intro": "青衫長鬚，笑意溫和卻不達眼底。",
+    "arcs": {
+      "main": "主線：蒼峰偽君子——假仁假義，暗害同門以固權。",
+      "side": "支線：可助林風／寧書影揭穿其偽。",
+      "hidden": "隱藏：與左冷影密約併吞五峰，證據在崖下石室。"
+    },
+    "destinies": {
+      "ally": "暫與你合作。",
+      "dead": "偽面撕破，隕於論劍。",
+      "enemy": "全派追殺。",
+      "exposed": "偽君子之名傳遍江湖。",
+      "default": "端坐蒼峰。"
+    },
+    "profile": {
+      "personality": "cunning",
+      "label": "偽君子掌門",
+      "martial": 85,
+      "awareness": 88,
+      "desc": "笑裡藏刀。",
+      "onDetect": "capture",
+      "onOpenAttack": "duel",
+      "onSteal": "trap",
+      "prisonPlace": "chixia",
+      "prisonName": "靜室",
+      "paroleDays": 1
+    },
+    "offer": {
+      "role": "rival",
+      "fate": "ally",
+      "keywords": "拜師|入派|蒼峰|掌門",
+      "reject": "葉青山撫鬚：「心術未正，暫且回去。」",
+      "accept": "葉青山點頭：「既有誠心，便入蒼峰門牆。」",
+      "flags": [
+        "cangfeng_invite",
+        "met_ye_qingshan"
+      ],
+      "skill": null
+    },
+    "chibi": {
+      "r": 3,
+      "c": 3
+    }
+  },
+  {
+    "id": "lin_feng",
+    "name": "林風",
+    "title": "蒼峰大弟子",
+    "loc": "chixia",
+    "line": "jianghu",
+    "intro": "青衫負劍，笑裡帶三分酒意。",
+    "arcs": {
+      "main": "主線：被逐後浪跡，可拜隱師風清崖。",
+      "side": "支線：與任盈蘿情緣／葉小雨青梅。",
+      "hidden": "隱藏：手握葉青山害師兄鐵證。"
+    },
+    "destinies": {
+      "ally": "與你把酒論劍。",
+      "dead": "醉倒崖下。",
+      "enemy": "劍鋒相對。",
+      "teacher": "授你浪劍半式。",
+      "muse": "情關未了。",
+      "default": "仍在赤霞崖徘徊。"
+    },
+    "profile": {
+      "personality": "proud",
+      "label": "放浪棄徒",
+      "martial": 78,
+      "awareness": 70,
+      "desc": "劍意灑脫。",
+      "onDetect": "duel",
+      "onOpenAttack": "duel",
+      "onSteal": "rebuke",
+      "prisonPlace": "chixia",
+      "prisonName": "靜室",
+      "paroleDays": 1
+    },
+    "offer": {
+      "role": "sworn",
+      "fate": "ally",
+      "keywords": "結義|金蘭|兄弟|同盟|請教劍",
+      "reject": "林風晃晃酒葫蘆：「酒未熱，義未至。」",
+      "accept": "林風砸葫蘆：「好！今日起你我把酒論劍。」",
+      "flags": [
+        "met_lin_feng",
+        "lin_feng_sworn"
+      ],
+      "skill": "cangfeng_sword"
+    },
+    "chibi": {
+      "r": 0,
+      "c": 2
+    }
+  },
+  {
+    "id": "ning_shuying",
+    "name": "寧書影",
+    "title": "蒼峰女俠",
+    "loc": "chixia",
+    "line": "jianghu",
+    "intro": "素衣執劍，目光清明。",
+    "arcs": {
+      "main": "主線：護林風、抑夫偽面。",
+      "side": "支線：教你蒼峰女劍。",
+      "hidden": "隱藏：早知葉青山不軌，隱忍待證。"
+    },
+    "destinies": {
+      "ally": "並肩護門。",
+      "dead": "血染素衣。",
+      "enemy": "劍指於你。",
+      "teacher": "授女劍一式。",
+      "default": "守於蒼峰。"
+    },
+    "profile": {
+      "personality": "merciful",
+      "label": "掌門妻護徒",
+      "martial": 72,
+      "awareness": 80,
+      "desc": "掌門妻護徒",
+      "onDetect": "capture",
+      "onOpenAttack": "rebuke",
+      "onSteal": "rebuke",
+      "prisonPlace": "chixia",
+      "prisonName": "靜室",
+      "paroleDays": 1
+    },
+    "offer": {
+      "role": "teacher",
+      "fate": "teacher",
+      "keywords": "拜師|請教|女劍|收我|蒼峰",
+      "reject": "寧書影：「時機未到。」",
+      "accept": "寧書影執劍為禮：「便授你女劍一式。」",
+      "flags": [
+        "met_ning_shuying"
+      ],
+      "skill": "cloud_slash"
+    },
+    "chibi": {
+      "r": 1,
+      "c": 0
+    }
+  },
+  {
+    "id": "ye_xiaoyu",
+    "name": "葉小雨",
+    "title": "蒼峰少主",
+    "loc": "longmen",
+    "line": "jianghu",
+    "intro": "雲髻斜簪，語氣嬌蠻卻含憂。",
+    "arcs": {
+      "main": "主線：父命錯嫁／逃婚至龍門。",
+      "side": "支線：青梅林風舊情。",
+      "hidden": "隱藏：可證葉青山偽書。"
+    },
+    "destinies": {
+      "ally": "認你作知己。",
+      "dead": "淚盡而亡。",
+      "enemy": "拒見。",
+      "married": "與你私奔。",
+      "muse": "心繫舊人。",
+      "default": "寄居龍門。"
+    },
+    "profile": {
+      "personality": "timid",
+      "label": "掌門女",
+      "martial": 35,
+      "awareness": 55,
+      "desc": "掌門女",
+      "onDetect": "flee",
+      "onOpenAttack": "flee",
+      "onSteal": "flee",
+      "prisonPlace": "longmen",
+      "prisonName": "靜室",
+      "paroleDays": 0
+    },
+    "offer": {
+      "role": "muse",
+      "fate": "muse",
+      "keywords": "定情|知己|幫助|逃婚|保護",
+      "reject": "葉小雨別過臉：「……你不懂。」",
+      "accept": "她低聲：「若你肯護我……我便信你一次。」",
+      "flags": [
+        "met_ye_xiaoyu",
+        "ye_xiaoyu_trust"
+      ],
+      "skill": null
+    },
+    "chibi": {
+      "r": 1,
+      "c": 0
+    }
+  },
+  {
+    "id": "lin_chen",
+    "name": "林辰",
+    "title": "滅門遺孤",
+    "loc": "qingcheng",
+    "line": "jianghu",
+    "intro": "少年白衣，袖藏斷刀。",
+    "arcs": {
+      "main": "主線：血仇復仇——仇人指向木高風。",
+      "side": "支線：可投破碗幫或蒼峰。",
+      "hidden": "隱藏：滅門實另有朝廷黑手。"
+    },
+    "destinies": {
+      "ally": "結為血友。",
+      "dead": "仇未報身先死。",
+      "enemy": "刀下不留。",
+      "hero": "仇報名揚。",
+      "default": "青城尋仇。"
+    },
+    "profile": {
+      "personality": "ruthless",
+      "label": "血仇遺孤",
+      "martial": 55,
+      "awareness": 50,
+      "desc": "血仇遺孤",
+      "onDetect": "attack",
+      "onOpenAttack": "duel",
+      "onSteal": "rebuke",
+      "prisonPlace": "qingcheng",
+      "prisonName": "靜室",
+      "paroleDays": 1
+    },
+    "offer": {
+      "role": "sworn",
+      "fate": "ally",
+      "keywords": "結義|報仇|同盟|幫助|血仇",
+      "reject": "林辰冷聲：「仇未報，不言義。」",
+      "accept": "林辰割掌：「血仇共擔——你我便是血友。」",
+      "flags": [
+        "met_lin_chen",
+        "lin_chen_sworn"
+      ],
+      "skill": null
+    },
+    "chibi": {
+      "r": 0,
+      "c": 2
+    }
+  },
+  {
+    "id": "ren_yingluo",
+    "name": "任盈蘿",
+    "title": "紅蓮副座",
+    "loc": "honglian",
+    "line": "jianghu",
+    "intro": "紅衣如火，笑裡藏鋒。",
+    "arcs": {
+      "main": "主線：魔教聖女情緣。",
+      "side": "支線：助林風／與周芷雪三角。",
+      "hidden": "隱藏：東方孤白篡位之內應線索。"
+    },
+    "destinies": {
+      "ally": "許你教中客座。",
+      "dead": "火海焚衣。",
+      "enemy": "火毒追杀。",
+      "muse": "情絲暗繫。",
+      "convert": "引你入紅蓮。",
+      "default": "坐鎮紅蓮。"
+    },
+    "profile": {
+      "personality": "cunning",
+      "label": "魔教聖女",
+      "martial": 82,
+      "awareness": 85,
+      "desc": "魔教聖女",
+      "onDetect": "attack",
+      "onOpenAttack": "duel",
+      "onSteal": "trap",
+      "prisonPlace": "honglian",
+      "prisonName": "靜室",
+      "paroleDays": 0
+    },
+    "offer": {
+      "role": "muse",
+      "fate": "muse",
+      "keywords": "定情|情緣|入教|同盟|盈蘿",
+      "reject": "任盈蘿輕笑：「火未燃透。」",
+      "accept": "她挑起紅袖：「既敢近火——便記下你。」",
+      "flags": [
+        "met_ren_yingluo",
+        "lin_ren_love"
+      ],
+      "skill": "lotus_flame"
+    },
+    "chibi": {
+      "r": 2,
+      "c": 2
+    }
+  },
+  {
+    "id": "feng_qingya",
+    "name": "風清崖",
+    "title": "蒼峰隱劍",
+    "loc": "wuyin",
+    "line": "jianghu",
+    "intro": "白髮披肩，劍匣落塵。",
+    "arcs": {
+      "main": "主線：隱師授獨孤一脈劍意（原創致敬）。",
+      "side": "支線：收林風為徒。",
+      "hidden": "隱藏：當年被葉青山逼隱。"
+    },
+    "destinies": {
+      "ally": "授你隱劍。",
+      "dead": "劍匣空置。",
+      "enemy": "拒授。",
+      "teacher": "收你入門。",
+      "hermit": "更深隱去。",
+      "default": "隱於無音。"
+    },
+    "profile": {
+      "personality": "merciful",
+      "label": "隱師授劍",
+      "martial": 95,
+      "awareness": 92,
+      "desc": "隱師授劍",
+      "onDetect": "capture",
+      "onOpenAttack": "rebuke",
+      "onSteal": "rebuke",
+      "prisonPlace": "wuyin",
+      "prisonName": "靜室",
+      "paroleDays": 3
+    },
+    "offer": {
+      "role": "disciple",
+      "fate": "teacher",
+      "keywords": "拜師|請教|隱劍|收我|獨孤|劍意",
+      "reject": "風清崖閉目：「劍緣未至。」",
+      "accept": "他啟匣半寸：「可。記住——劍在人在，人亡劍亡。」",
+      "flags": [
+        "met_feng_qingya",
+        "disciple_feng"
+      ],
+      "skill": "peak_intent"
+    },
+    "chibi": {
+      "r": 3,
+      "c": 0
+    }
+  },
+  {
+    "id": "qu_yangqin",
+    "name": "曲陽琴",
+    "title": "魔教琴客",
+    "loc": "meihua",
+    "line": "jianghu",
+    "intro": "負琴青衣，步履從容。",
+    "arcs": {
+      "main": "主線：正邪琴交。",
+      "side": "支線：與梅塢合譜。",
+      "hidden": "隱藏：曲中藏紅蓮密信。"
+    },
+    "destinies": {
+      "ally": "以琴相助。",
+      "dead": "弦斷人亡。",
+      "enemy": "琴音拒客。",
+      "muse": "為你譜曲。",
+      "default": "遊走梅塢。"
+    },
+    "profile": {
+      "personality": "merciful",
+      "label": "正邪琴客",
+      "martial": 50,
+      "awareness": 75,
+      "desc": "正邪琴客",
+      "onDetect": "flee",
+      "onOpenAttack": "rebuke",
+      "onSteal": "flee",
+      "prisonPlace": "meihua",
+      "prisonName": "靜室",
+      "paroleDays": 1
+    },
+    "offer": {
+      "role": "muse",
+      "fate": "muse",
+      "keywords": "知音|譜曲|琴|請教|合奏",
+      "reject": "曲陽琴輕撥：「曲未成。」",
+      "accept": "他微笑：「既是知音，這首《笑傲殘章》贈你。」",
+      "flags": [
+        "met_qu_yangqin"
+      ],
+      "skill": "qin_strike"
+    },
+    "chibi": {
+      "r": 1,
+      "c": 0
+    }
+  },
+  {
+    "id": "qiao_fengshan",
+    "name": "喬峰山",
+    "title": "破碗前任幫主",
+    "loc": "qingcheng",
+    "line": "jianghu",
+    "intro": "人高馬大，碗大如盆。",
+    "arcs": {
+      "main": "主線：身分危機——身世成謎。",
+      "side": "支線：與洪七影、破碗長老。",
+      "hidden": "隱藏：邊關血脈，可聯義或自絕於江湖。"
+    },
+    "destinies": {
+      "ally": "結義金蘭。",
+      "dead": "聚賢一戰殞命。",
+      "enemy": "幫規不容。",
+      "sworn": "與你結義。",
+      "vanished": "遠走塞外。",
+      "default": "蹲於青城。"
+    },
+    "profile": {
+      "personality": "lawful",
+      "label": "身分危機",
+      "martial": 90,
+      "awareness": 70,
+      "desc": "身分危機",
+      "onDetect": "duel",
+      "onOpenAttack": "duel",
+      "onSteal": "rebuke",
+      "prisonPlace": "qingcheng",
+      "prisonName": "靜室",
+      "paroleDays": 1
+    },
+    "offer": {
+      "role": "sworn",
+      "fate": "ally",
+      "keywords": "結義|金蘭|兄弟|身世|幫主",
+      "reject": "喬峰山沉聲：「此事……日後再說。」",
+      "accept": "他砸碗為盟：「好！今日起你我便是生死兄弟。」",
+      "flags": [
+        "met_qiao_fengshan",
+        "qiao_sworn"
+      ],
+      "skill": "jiaohua_quan"
+    },
+    "chibi": {
+      "r": 0,
+      "c": 3
+    }
+  },
+  {
+    "id": "duan_muyu",
+    "name": "段沐雨",
+    "title": "南疆遊歷郡主",
+    "loc": "luohe",
+    "line": "jianghu",
+    "intro": "白馬輕裘，一笑傾城。",
+    "arcs": {
+      "main": "主線：多情遊歷。",
+      "side": "支線：可與多角情緣交錯。",
+      "hidden": "隱藏：段氏一陽指殘訣。"
+    },
+    "destinies": {
+      "ally": "以指法相授。",
+      "dead": "客死異鄉。",
+      "enemy": "拂袖而去。",
+      "muse": "情絲纏繞。",
+      "teacher": "授一陽殘訣。",
+      "default": "遊於洛河。"
+    },
+    "profile": {
+      "personality": "proud",
+      "label": "多情郡主",
+      "martial": 75,
+      "awareness": 72,
+      "desc": "多情郡主",
+      "onDetect": "duel",
+      "onOpenAttack": "duel",
+      "onSteal": "rebuke",
+      "prisonPlace": "luohe",
+      "prisonName": "靜室",
+      "paroleDays": 1
+    },
+    "offer": {
+      "role": "muse",
+      "fate": "muse",
+      "keywords": "定情|請教|一陽|指法|郡主",
+      "reject": "段沐雨掩扇：「心猿未定。」",
+      "accept": "她點穴為禮：「便授你殘訣半式——莫妄用於情敵。」",
+      "flags": [
+        "met_duan_muyu"
+      ],
+      "skill": "void_finger"
+    },
+    "chibi": {
+      "r": 1,
+      "c": 1
+    }
+  },
+  {
+    "id": "xu_zhuoyun",
+    "name": "虛竹雲",
+    "title": "蒼雲啞徒",
+    "loc": "cangyun",
+    "line": "jianghu",
+    "intro": "僧衣素淨，從不言語。",
+    "arcs": {
+      "main": "主線：意外傳承——珍瓏殘棋開竅。",
+      "side": "支線：雲空暗護。",
+      "hidden": "隱藏：可成逍遙傳人（原創致敬）。"
+    },
+    "destinies": {
+      "ally": "以掌相護。",
+      "dead": "圓寂。",
+      "enemy": "閉門不見。",
+      "teacher": "傳你棋意掌。",
+      "promoted": "繼任住持候補。",
+      "default": "寺中掃葉。"
+    },
+    "profile": {
+      "personality": "merciful",
+      "label": "意外傳承",
+      "martial": 40,
+      "awareness": 60,
+      "desc": "意外傳承",
+      "onDetect": "flee",
+      "onOpenAttack": "flee",
+      "onSteal": "rebuke",
+      "prisonPlace": "cangyun",
+      "prisonName": "靜室",
+      "paroleDays": 3
+    },
+    "offer": {
+      "role": "disciple",
+      "fate": "teacher",
+      "keywords": "拜師|棋|請教|傳承|掌法",
+      "reject": "虛竹雲搖頭（仍不語）。",
+      "accept": "他將一枚棋子塞你掌心——棋意掌初成。",
+      "flags": [
+        "met_xu_zhuoyun",
+        "xuzhu_open"
+      ],
+      "skill": "cloud_palm"
+    },
+    "chibi": {
+      "r": 0,
+      "c": 0
+    }
+  },
+  {
+    "id": "zhang_wujiang",
+    "name": "張無疆",
+    "title": "邊關少年",
+    "loc": "bianguan",
+    "line": "jianghu",
+    "intro": "純善眉眼，背負乾糧袋。",
+    "arcs": {
+      "main": "主線：純善糾結——正邪兩難。",
+      "side": "支線：聯郭靖義／趙敏嫣。",
+      "hidden": "隱藏：乾糧袋藏奇門殘頁。"
+    },
+    "destinies": {
+      "ally": "與你共守邊關。",
+      "dead": "中毒而亡。",
+      "enemy": "心死遠走。",
+      "hero": "名震邊關。",
+      "muse": "情關難斷。",
+      "default": "邊關徘徊。"
+    },
+    "profile": {
+      "personality": "merciful",
+      "label": "純善少年",
+      "martial": 70,
+      "awareness": 55,
+      "desc": "純善少年",
+      "onDetect": "flee",
+      "onOpenAttack": "rebuke",
+      "onSteal": "rebuke",
+      "prisonPlace": "bianguan",
+      "prisonName": "靜室",
+      "paroleDays": 1
+    },
+    "offer": {
+      "role": "sworn",
+      "fate": "ally",
+      "keywords": "結義|幫助|乾糧|同盟|無疆",
+      "reject": "張無疆：「我……還不配。」",
+      "accept": "他遞過半塊餅：「以後有難，找我。」",
+      "flags": [
+        "met_zhang_wujiang"
+      ],
+      "skill": null
+    },
+    "chibi": {
+      "r": 2,
+      "c": 0
+    }
+  },
+  {
+    "id": "zhao_minyan",
+    "name": "趙敏嫣",
+    "title": "京畿郡主微服",
+    "loc": "jingji",
+    "line": "jianghu",
+    "intro": "男裝束髮，眼神狡黠。",
+    "arcs": {
+      "main": "主線：郡主混江湖。",
+      "side": "支線：試探張無疆／玩家。",
+      "hidden": "隱藏：實為京畿郡主，握兵符半枚。"
+    },
+    "destinies": {
+      "ally": "可向你借兵符半枚。",
+      "dead": "微服遇刺。",
+      "enemy": "京畿通緝。",
+      "muse": "情絲暗結。",
+      "default": "京畿巷弄。"
+    },
+    "profile": {
+      "personality": "cunning",
+      "label": "微服郡主",
+      "martial": 45,
+      "awareness": 78,
+      "desc": "微服郡主",
+      "onDetect": "trap",
+      "onOpenAttack": "flee",
+      "onSteal": "trap",
+      "prisonPlace": "jingji",
+      "prisonName": "靜室",
+      "paroleDays": 1
+    },
+    "offer": {
+      "role": "muse",
+      "fate": "muse",
+      "keywords": "定情|郡主|兵符|同盟|微服",
+      "reject": "趙敏嫣哼聲：「本郡主還沒看上你。」",
+      "accept": "她摘下面罩：「既識破我——便記下這半枚兵符緣。」",
+      "flags": [
+        "met_zhao_minyan",
+        "zhao_min_reveal"
+      ],
+      "skill": null
+    },
+    "chibi": {
+      "r": 1,
+      "c": 1
+    }
+  },
+  {
+    "id": "zhou_zhi_xue",
+    "name": "周芷雪",
+    "title": "紅蓮外門",
+    "loc": "honglian",
+    "line": "jianghu",
+    "intro": "素顏紅繩，目光執拗。",
+    "arcs": {
+      "main": "主線：情敵三角。",
+      "side": "支線：可助或阻任盈蘿。",
+      "hidden": "隱藏：身世與邊關有關。"
+    },
+    "destinies": {
+      "ally": "為你療傷。",
+      "dead": "火毒攻心。",
+      "enemy": "反目。",
+      "muse": "單相思成劫。",
+      "default": "紅蓮外門。"
+    },
+    "profile": {
+      "personality": "timid",
+      "label": "情敵外門",
+      "martial": 30,
+      "awareness": 40,
+      "desc": "情敵外門",
+      "onDetect": "flee",
+      "onOpenAttack": "flee",
+      "onSteal": "flee",
+      "prisonPlace": "honglian",
+      "prisonName": "靜室",
+      "paroleDays": 0
+    },
+    "offer": {
+      "role": "muse",
+      "fate": "muse",
+      "keywords": "定情|療傷|幫助|芷雪",
+      "reject": "周芷雪低頭：「我……配不上。」",
+      "accept": "她繫紅繩於你腕：「莫忘今日。」",
+      "flags": [
+        "met_zhou_zhi_xue"
+      ],
+      "skill": null
+    },
+    "chibi": {
+      "r": 1,
+      "c": 0
+    }
+  },
+  {
+    "id": "hong_qigong_x",
+    "name": "洪七影",
+    "title": "破碗太上",
+    "loc": "qingcheng",
+    "line": "jianghu",
+    "intro": "破衣垢面，笑罵江湖。",
+    "arcs": {
+      "main": "主線：丐幫太上，可授棒法。",
+      "side": "支線：考核喬峰山／玩家義氣。",
+      "hidden": "隱藏：知喬峰山身世而不說破。"
+    },
+    "destinies": {
+      "ally": "留碗粥給你。",
+      "dead": "碗碎人亡。",
+      "enemy": "全幫封殺。",
+      "teacher": "授棒法真傳。",
+      "default": "青城要飯。"
+    },
+    "profile": {
+      "personality": "merciful",
+      "label": "破碗太上",
+      "martial": 88,
+      "awareness": 85,
+      "desc": "破碗太上",
+      "onDetect": "capture",
+      "onOpenAttack": "rebuke",
+      "onSteal": "rebuke",
+      "prisonPlace": "qingcheng",
+      "prisonName": "靜室",
+      "paroleDays": 2
+    },
+    "offer": {
+      "role": "disciple",
+      "fate": "teacher",
+      "keywords": "拜師|棒法|叫花|收我|太上",
+      "reject": "洪七影扒飯：「還沒資格。」",
+      "accept": "他扔你一根打狗棒：「醜歸醜，打得巧才是真。」",
+      "flags": [
+        "met_hong_qigong",
+        "disciple_hongqi"
+      ],
+      "skill": "dogstick_form"
+    },
+    "chibi": {
+      "r": 1,
+      "c": 3
+    }
+  },
+  {
+    "id": "huang_yaoshi_x",
+    "name": "黃藥石",
+    "title": "落英島主",
+    "loc": "yanhui",
+    "line": "jianghu",
+    "intro": "青袍負手，語帶機鋒。",
+    "arcs": {
+      "main": "主線：東海奇人，奇門陣法。",
+      "side": "支線：考校海狂生／玩家。",
+      "hidden": "隱藏：與歐陽風毒舊怨。"
+    },
+    "destinies": {
+      "ally": "陣法相助。",
+      "dead": "葬身怒濤。",
+      "enemy": "海上圍殺。",
+      "teacher": "傳奇門半卷。",
+      "hermit": "閉島不見。",
+      "default": "醉臥煙港。"
+    },
+    "profile": {
+      "personality": "cunning",
+      "label": "東海奇人",
+      "martial": 92,
+      "awareness": 95,
+      "desc": "東海奇人",
+      "onDetect": "trap",
+      "onOpenAttack": "attack",
+      "onSteal": "trap",
+      "prisonPlace": "yanhui",
+      "prisonName": "靜室",
+      "paroleDays": 1
+    },
+    "offer": {
+      "role": "disciple",
+      "fate": "teacher",
+      "keywords": "拜師|奇門|落英|陣法|島主",
+      "reject": "黃藥石冷哼：「才學不足。」",
+      "accept": "他擲一瓣落英：「半卷奇門——莫辱師門。」",
+      "flags": [
+        "met_huang_yaoshi",
+        "sea_pass"
+      ],
+      "skill": "odd_formation"
+    },
+    "chibi": {
+      "r": 2,
+      "c": 3
+    }
+  },
+  {
+    "id": "ouyang_fengdu",
+    "name": "歐陽風毒",
+    "title": "黃沙毒叟",
+    "loc": "shamo",
+    "line": "jianghu",
+    "intro": "白髮披散，蛇杖叮噹。",
+    "arcs": {
+      "main": "主線：西毒仇敵線。",
+      "side": "支線：可拜毒或殺毒。",
+      "hidden": "隱藏：逆練毒功走火入魔。"
+    },
+    "destinies": {
+      "ally": "授你毒功半式。",
+      "dead": "毒發而亡。",
+      "enemy": "沙中伏殺。",
+      "mad": "徹底入魔。",
+      "teacher": "收毒徒。",
+      "default": "黃沙驛徘徊。"
+    },
+    "profile": {
+      "personality": "ruthless",
+      "label": "西毒仇敵",
+      "martial": 90,
+      "awareness": 80,
+      "desc": "西毒仇敵",
+      "onDetect": "attack",
+      "onOpenAttack": "attack",
+      "onSteal": "attack",
+      "prisonPlace": "shamo",
+      "prisonName": "靜室",
+      "paroleDays": 0
+    },
+    "offer": {
+      "role": "disciple",
+      "fate": "teacher",
+      "keywords": "拜師|毒功|蛇杖|收我|毒叟",
+      "reject": "歐陽風毒：「血不夠毒。」",
+      "accept": "他迫你服半丸：『既拜我——便與毒為伍。』",
+      "flags": [
+        "met_ouyang_fengdu"
+      ],
+      "skill": "iron_sand_palm"
+    },
+    "chibi": {
+      "r": 3,
+      "c": 1
+    }
+  },
+  {
+    "id": "xiao_longyin",
+    "name": "小龍吟",
+    "title": "幽墓傳人",
+    "loc": "yewang",
+    "line": "jianghu",
+    "intro": "白衣如雪，目若寒星。",
+    "arcs": {
+      "main": "主線：師徒禁忌情對象。",
+      "side": "支線：與楊過塵／慕幽蘭／夜塵。",
+      "hidden": "隱藏：墓中藏玉女心經殘卷。"
+    },
+    "destinies": {
+      "ally": "授柔掌。",
+      "dead": "與墓同寂。",
+      "enemy": "永拒墓門。",
+      "muse": "禁忌情深。",
+      "teacher": "收你為徒。",
+      "default": "守於墓影。"
+    },
+    "profile": {
+      "personality": "proud",
+      "label": "幽墓傳人",
+      "martial": 80,
+      "awareness": 88,
+      "desc": "幽墓傳人",
+      "onDetect": "capture",
+      "onOpenAttack": "duel",
+      "onSteal": "trap",
+      "prisonPlace": "yewang",
+      "prisonName": "靜室",
+      "paroleDays": 1
+    },
+    "offer": {
+      "role": "muse",
+      "fate": "muse",
+      "keywords": "定情|拜師|柔掌|墓|龍吟",
+      "reject": "小龍吟淡聲：「墓中無情。」",
+      "accept": "她拂袖：「既入墓緣——便授你柔掌半式。」",
+      "flags": [
+        "met_xiao_longyin",
+        "tomb_taboo"
+      ],
+      "skill": "soft_yin_palm"
+    },
+    "chibi": {
+      "r": 3,
+      "c": 0
+    }
+  },
+  {
+    "id": "yang_guochen",
+    "name": "楊過塵",
+    "title": "古墓棄徒",
+    "loc": "yewang",
+    "line": "jianghu",
+    "intro": "黑衣桀驁，神情如狼。",
+    "arcs": {
+      "main": "主線：師徒禁忌情。",
+      "side": "支線：玄鐵重劍線。",
+      "hidden": "隱藏：活死人墓禁制鑰匙。"
+    },
+    "destinies": {
+      "ally": "並肩破墓。",
+      "dead": "崖下折劍。",
+      "enemy": "劍鋒相對。",
+      "muse": "情關難捨。",
+      "rival": "互為宿敵。",
+      "default": "墓外徘徊。"
+    },
+    "profile": {
+      "personality": "proud",
+      "label": "古墓棄徒",
+      "martial": 85,
+      "awareness": 75,
+      "desc": "古墓棄徒",
+      "onDetect": "duel",
+      "onOpenAttack": "duel",
+      "onSteal": "rebuke",
+      "prisonPlace": "yewang",
+      "prisonName": "靜室",
+      "paroleDays": 1
+    },
+    "offer": {
+      "role": "sworn",
+      "fate": "ally",
+      "keywords": "結義|重劍|同盟|過塵|墓",
+      "reject": "楊過塵冷笑：「你也配？」",
+      "accept": "他扔你半截玄鐵：「拿去——別死太快。」",
+      "flags": [
+        "met_yang_guochen",
+        "tomb_taboo"
+      ],
+      "skill": "void_finger"
+    },
+    "chibi": {
+      "r": 0,
+      "c": 2
+    }
+  },
+  {
+    "id": "guo_jingyi",
+    "name": "郭靖義",
+    "title": "襄邊義俠",
+    "loc": "bianguan",
+    "line": "jianghu",
+    "intro": "忠厚眉目，掌風沉雄。",
+    "arcs": {
+      "main": "主線：忠厚大俠，邊關禦敵。",
+      "side": "支線：與黃蓉芽伴侶。",
+      "hidden": "隱藏：可傳降龍十八式殘章。"
+    },
+    "destinies": {
+      "ally": "邊關結義。",
+      "dead": "殉於邊關。",
+      "enemy": "視你為內奸。",
+      "hero": "名震天下。",
+      "teacher": "授降龍殘式。",
+      "default": "坐鎮邊關。"
+    },
+    "profile": {
+      "personality": "lawful",
+      "label": "忠厚大俠",
+      "martial": 88,
+      "awareness": 70,
+      "desc": "忠厚大俠",
+      "onDetect": "capture",
+      "onOpenAttack": "duel",
+      "onSteal": "rebuke",
+      "prisonPlace": "bianguan",
+      "prisonName": "靜室",
+      "paroleDays": 1
+    },
+    "offer": {
+      "role": "sworn",
+      "fate": "ally",
+      "keywords": "結義|降龍|請教|大俠|邊關",
+      "reject": "郭靖義：「國難當前，私義且緩。」",
+      "accept": "他鄭重抱拳：「既願守邊——你我便是兄弟。」",
+      "flags": [
+        "met_guo_jingyi",
+        "border_sworn"
+      ],
+      "skill": "xiake_strike"
+    },
+    "chibi": {
+      "r": 2,
+      "c": 0
+    }
+  },
+  {
+    "id": "huang_rongya",
+    "name": "黃蓉芽",
+    "title": "機靈女俠",
+    "loc": "jingji",
+    "line": "jianghu",
+    "intro": "髮間木釵，笑裡藏針。",
+    "arcs": {
+      "main": "主線：機靈伴侶線。",
+      "side": "支線：與黃靈兒可聯手。",
+      "hidden": "隱藏：落英奇門家傳。"
+    },
+    "destinies": {
+      "ally": "為你出謀。",
+      "dead": "巷中失蹤。",
+      "enemy": "設計坑你。",
+      "muse": "情絲暗結。",
+      "married": "定情共守。",
+      "default": "京畿遊走。"
+    },
+    "profile": {
+      "personality": "cunning",
+      "label": "機靈女俠",
+      "martial": 55,
+      "awareness": 90,
+      "desc": "機靈女俠",
+      "onDetect": "trap",
+      "onOpenAttack": "flee",
+      "onSteal": "trap",
+      "prisonPlace": "jingji",
+      "prisonName": "靜室",
+      "paroleDays": 1
+    },
+    "offer": {
+      "role": "muse",
+      "fate": "muse",
+      "keywords": "定情|計謀|奇門|蓉芽|幫手",
+      "reject": "黃蓉芽眨眼：「還不夠機靈。」",
+      "accept": "她塞你一張紙條：「跟我走——別問。」",
+      "flags": [
+        "met_huang_rongya"
+      ],
+      "skill": "petal_rain"
+    },
+    "chibi": {
+      "r": 1,
+      "c": 0
+    }
+  },
+  {
+    "id": "dongfang_gubai",
+    "name": "東方孤白",
+    "title": "紅蓮前教主",
+    "loc": "honglian",
+    "line": "jianghu",
+    "intro": "紅衣勝雪，陰陽莫辨。",
+    "arcs": {
+      "main": "主線：篡位隱線。",
+      "side": "支線：邪功殘本能誘。",
+      "hidden": "隱藏：可助或殺任盈蘿／紅蓮聖女。"
+    },
+    "destinies": {
+      "ally": "許你教中客卿。",
+      "dead": "教壇火起。",
+      "enemy": "必欲除你。",
+      "muse": "亦正亦邪情。",
+      "convert": "引你入邪。",
+      "default": "隱於教壇後。"
+    },
+    "profile": {
+      "personality": "ruthless",
+      "label": "篡位隱線",
+      "martial": 96,
+      "awareness": 92,
+      "desc": "篡位隱線",
+      "onDetect": "attack",
+      "onOpenAttack": "attack",
+      "onSteal": "trap",
+      "prisonPlace": "honglian",
+      "prisonName": "靜室",
+      "paroleDays": 0
+    },
+    "offer": {
+      "role": "convert",
+      "fate": "convert",
+      "keywords": "入教|篡位|孤白|教主|同盟",
+      "reject": "東方孤白：「尚未配見我。」",
+      "accept": "其眸光一閃：「既願——便踏這條不歸路。」",
+      "flags": [
+        "met_dongfang_gubai",
+        "dongfang_reveal"
+      ],
+      "skill": "lotus_flame"
+    },
+    "chibi": {
+      "r": 2,
+      "c": 2
+    }
+  },
+  {
+    "id": "zuo_lengying",
+    "name": "左冷影",
+    "title": "五峰會盟主",
+    "loc": "leifeng",
+    "line": "jianghu",
+    "intro": "灰袍冷面，聲如冰裂。",
+    "arcs": {
+      "main": "主線：併吞野心。",
+      "side": "支線：逼蒼峰／五峰會盟。",
+      "hidden": "隱藏：與葉青山密約。"
+    },
+    "destinies": {
+      "ally": "暫聯。",
+      "dead": "盟主之位崩。",
+      "enemy": "五峰追殺。",
+      "rival": "宿敵。",
+      "default": "坐鎮雷峰。"
+    },
+    "profile": {
+      "personality": "ruthless",
+      "label": "併吞野心",
+      "martial": 80,
+      "awareness": 85,
+      "desc": "併吞野心",
+      "onDetect": "capture",
+      "onOpenAttack": "attack",
+      "onSteal": "rebuke",
+      "prisonPlace": "leifeng",
+      "prisonName": "靜室",
+      "paroleDays": 1
+    },
+    "offer": {
+      "role": "rival",
+      "fate": "rival",
+      "keywords": "會盟|同盟|五峰|併吞",
+      "reject": "左冷影：「滾。」",
+      "accept": "他擲下一紙盟約：「暫用你——別礙事。」",
+      "flags": [
+        "met_zuo_lengying"
+      ],
+      "skill": null
+    },
+    "chibi": {
+      "r": 3,
+      "c": 2
+    }
+  },
+  {
+    "id": "mu_gaofeng_x",
+    "name": "木高風",
+    "title": "駝背惡霸",
+    "loc": "heishui",
+    "line": "jianghu",
+    "intro": "駝背金爪，笑裡藏刀。",
+    "arcs": {
+      "main": "主線：逼徒仇——逼害林辰師門。",
+      "side": "支線：可殺可囚。",
+      "hidden": "隱藏：受朝廷密令滅門。"
+    },
+    "destinies": {
+      "ally": "你竟與惡霸同行。",
+      "dead": "爪斷人亡。",
+      "enemy": "金爪追杀。",
+      "default": "潛伏黑水。"
+    },
+    "profile": {
+      "personality": "ruthless",
+      "label": "逼徒惡霸",
+      "martial": 65,
+      "awareness": 55,
+      "desc": "逼徒惡霸",
+      "onDetect": "attack",
+      "onOpenAttack": "attack",
+      "onSteal": "attack",
+      "prisonPlace": "heishui",
+      "prisonName": "靜室",
+      "paroleDays": 0
+    },
+    "offer": {
+      "role": "enemy",
+      "fate": "enemy",
+      "keywords": "報仇|討債|惡霸|金爪|殺死",
+      "reject": "木高風獰笑：「生意歸生意。」",
+      "accept": "他亮爪：「那就來！」",
+      "flags": [
+        "met_mu_gaofeng"
+      ],
+      "skill": null
+    },
+    "chibi": {
+      "r": 0,
+      "c": 3
+    }
+  }
+]

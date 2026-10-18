@@ -1,0 +1,1184 @@
+{
+  "total_slices": 60,
+  "mapped_count": 31,
+  "note": "label_internal is homage reference only; never use in player-facing strings or primary filenames",
+  "cells": [
+    {
+      "r": 0,
+      "c": 0,
+      "file": "assets/chars/sheet3_r00c00.png",
+      "label_internal": "郭靖",
+      "mapped_npc_id": "guo_jingyi",
+      "bbox": [
+        29,
+        72,
+        114,
+        248
+      ],
+      "cell_size": [
+        86,
+        108
+      ],
+      "alt_file": "assets/chars/guo_jingyi_c.png"
+    },
+    {
+      "r": 0,
+      "c": 1,
+      "file": "assets/chars/sheet3_r00c01.png",
+      "label_internal": "黃蓉",
+      "mapped_npc_id": "huang_rongya",
+      "bbox": [
+        145,
+        72,
+        222,
+        248
+      ],
+      "cell_size": [
+        78,
+        108
+      ],
+      "alt_file": "assets/chars/huang_rongya_c.png"
+    },
+    {
+      "r": 0,
+      "c": 2,
+      "file": "assets/chars/sheet3_r00c02.png",
+      "label_internal": "洪七公",
+      "mapped_npc_id": "hong_qigong_x",
+      "bbox": [
+        243,
+        72,
+        344,
+        248
+      ],
+      "cell_size": [
+        102,
+        108
+      ],
+      "alt_file": "assets/chars/hong_qigong_x_c.png"
+    },
+    {
+      "r": 0,
+      "c": 3,
+      "file": "assets/chars/sheet3_r00c03.png",
+      "label_internal": "黃藥師",
+      "mapped_npc_id": "huang_yaoshi_x",
+      "bbox": [
+        373,
+        72,
+        454,
+        248
+      ],
+      "cell_size": [
+        82,
+        108
+      ],
+      "alt_file": "assets/chars/huang_yaoshi_x_c.png"
+    },
+    {
+      "r": 0,
+      "c": 4,
+      "file": "assets/chars/sheet3_r00c04.png",
+      "label_internal": "歐陽鋒",
+      "mapped_npc_id": "ouyang_fengdu",
+      "bbox": [
+        489,
+        72,
+        557,
+        248
+      ],
+      "cell_size": [
+        69,
+        108
+      ],
+      "alt_file": "assets/chars/ouyang_fengdu_c.png"
+    },
+    {
+      "r": 0,
+      "c": 5,
+      "file": "assets/chars/sheet3_r00c05.png",
+      "label_internal": "周伯通",
+      "mapped_npc_id": null,
+      "bbox": [
+        586,
+        72,
+        670,
+        248
+      ],
+      "cell_size": [
+        85,
+        108
+      ]
+    },
+    {
+      "r": 0,
+      "c": 6,
+      "file": "assets/chars/sheet3_r00c06.png",
+      "label_internal": "一燈大師",
+      "mapped_npc_id": null,
+      "bbox": [
+        692,
+        72,
+        754,
+        248
+      ],
+      "cell_size": [
+        63,
+        108
+      ]
+    },
+    {
+      "r": 0,
+      "c": 7,
+      "file": "assets/chars/sheet3_r00c07.png",
+      "label_internal": "梅超風",
+      "mapped_npc_id": null,
+      "bbox": [
+        780,
+        72,
+        846,
+        248
+      ],
+      "cell_size": [
+        67,
+        108
+      ]
+    },
+    {
+      "r": 1,
+      "c": 0,
+      "file": "assets/chars/sheet3_r01c00.png",
+      "label_internal": "楊過",
+      "mapped_npc_id": "yang_guochen",
+      "bbox": [
+        84,
+        252,
+        164,
+        419
+      ],
+      "cell_size": [
+        81,
+        99
+      ],
+      "alt_file": "assets/chars/yang_guochen_c.png"
+    },
+    {
+      "r": 1,
+      "c": 1,
+      "file": "assets/chars/sheet3_r01c01.png",
+      "label_internal": "小龍女",
+      "mapped_npc_id": "xiao_longyin",
+      "bbox": [
+        209,
+        252,
+        291,
+        419
+      ],
+      "cell_size": [
+        83,
+        99
+      ],
+      "alt_file": "assets/chars/xiao_longyin_c.png"
+    },
+    {
+      "r": 1,
+      "c": 2,
+      "file": "assets/chars/sheet3_r01c02.png",
+      "label_internal": "郭襄",
+      "mapped_npc_id": null,
+      "bbox": [
+        332,
+        252,
+        408,
+        419
+      ],
+      "cell_size": [
+        77,
+        99
+      ]
+    },
+    {
+      "r": 1,
+      "c": 3,
+      "file": "assets/chars/sheet3_r01c03.png",
+      "label_internal": "金輪法王",
+      "mapped_npc_id": null,
+      "bbox": [
+        444,
+        252,
+        550,
+        419
+      ],
+      "cell_size": [
+        107,
+        99
+      ]
+    },
+    {
+      "r": 1,
+      "c": 4,
+      "file": "assets/chars/sheet3_r01c04.png",
+      "label_internal": "李莫愁",
+      "mapped_npc_id": "meifuren",
+      "bbox": [
+        583,
+        252,
+        657,
+        419
+      ],
+      "cell_size": [
+        75,
+        99
+      ],
+      "alt_file": "assets/chars/meifuren_c.png"
+    },
+    {
+      "r": 2,
+      "c": 0,
+      "file": "assets/chars/sheet3_r02c00.png",
+      "label_internal": "令狐沖",
+      "mapped_npc_id": "lin_feng",
+      "bbox": [
+        22,
+        423,
+        103,
+        599
+      ],
+      "cell_size": [
+        82,
+        108
+      ],
+      "alt_file": "assets/chars/lin_feng_c.png"
+    },
+    {
+      "r": 2,
+      "c": 1,
+      "file": "assets/chars/sheet3_r02c01.png",
+      "label_internal": "任盈盈",
+      "mapped_npc_id": "ren_yingluo",
+      "bbox": [
+        136,
+        423,
+        210,
+        599
+      ],
+      "cell_size": [
+        75,
+        108
+      ],
+      "alt_file": "assets/chars/ren_yingluo_c.png"
+    },
+    {
+      "r": 2,
+      "c": 2,
+      "file": "assets/chars/sheet3_r02c02.png",
+      "label_internal": "東方不敗",
+      "mapped_npc_id": "dongfang_gubai",
+      "bbox": [
+        243,
+        423,
+        327,
+        599
+      ],
+      "cell_size": [
+        85,
+        108
+      ],
+      "alt_file": "assets/chars/dongfang_gubai_c.png"
+    },
+    {
+      "r": 2,
+      "c": 3,
+      "file": "assets/chars/sheet3_r02c03.png",
+      "label_internal": "岳不群",
+      "mapped_npc_id": "ye_qingshan",
+      "bbox": [
+        360,
+        423,
+        421,
+        599
+      ],
+      "cell_size": [
+        62,
+        108
+      ],
+      "alt_file": "assets/chars/ye_qingshan_c.png"
+    },
+    {
+      "r": 2,
+      "c": 4,
+      "file": "assets/chars/sheet3_r02c04.png",
+      "label_internal": "林平之",
+      "mapped_npc_id": "lin_chen",
+      "bbox": [
+        457,
+        423,
+        528,
+        599
+      ],
+      "cell_size": [
+        72,
+        108
+      ],
+      "alt_file": "assets/chars/lin_chen_c.png"
+    },
+    {
+      "r": 2,
+      "c": 5,
+      "file": "assets/chars/sheet3_r02c05.png",
+      "label_internal": "儀琳",
+      "mapped_npc_id": null,
+      "bbox": [
+        564,
+        423,
+        615,
+        599
+      ],
+      "cell_size": [
+        52,
+        106
+      ]
+    },
+    {
+      "r": 2,
+      "c": 6,
+      "file": "assets/chars/sheet3_r02c06.png",
+      "label_internal": "風清揚",
+      "mapped_npc_id": "feng_qingya",
+      "bbox": [
+        659,
+        423,
+        725,
+        599
+      ],
+      "cell_size": [
+        67,
+        108
+      ],
+      "alt_file": "assets/chars/feng_qingya_c.png"
+    },
+    {
+      "r": 2,
+      "c": 7,
+      "file": "assets/chars/sheet3_r02c07.png",
+      "label_internal": "任我行",
+      "mapped_npc_id": null,
+      "bbox": [
+        750,
+        423,
+        848,
+        599
+      ],
+      "cell_size": [
+        99,
+        108
+      ]
+    },
+    {
+      "r": 3,
+      "c": 0,
+      "file": "assets/chars/sheet3_r03c00.png",
+      "label_internal": "張無忌",
+      "mapped_npc_id": "zhang_wujiang",
+      "bbox": [
+        101,
+        604,
+        185,
+        775
+      ],
+      "cell_size": [
+        85,
+        103
+      ],
+      "alt_file": "assets/chars/zhang_wujiang_c.png"
+    },
+    {
+      "r": 3,
+      "c": 1,
+      "file": "assets/chars/sheet3_r03c01.png",
+      "label_internal": "趙敏",
+      "mapped_npc_id": "zhao_minyan",
+      "bbox": [
+        209,
+        604,
+        300,
+        775
+      ],
+      "cell_size": [
+        92,
+        103
+      ],
+      "alt_file": "assets/chars/zhao_minyan_c.png"
+    },
+    {
+      "r": 3,
+      "c": 2,
+      "file": "assets/chars/sheet3_r03c02.png",
+      "label_internal": "周芷若",
+      "mapped_npc_id": "zhou_zhi_xue",
+      "bbox": [
+        337,
+        604,
+        415,
+        775
+      ],
+      "cell_size": [
+        79,
+        103
+      ],
+      "alt_file": "assets/chars/zhou_zhi_xue_c.png"
+    },
+    {
+      "r": 3,
+      "c": 3,
+      "file": "assets/chars/sheet3_r03c03.png",
+      "label_internal": "小昭",
+      "mapped_npc_id": null,
+      "bbox": [
+        451,
+        604,
+        523,
+        775
+      ],
+      "cell_size": [
+        73,
+        103
+      ]
+    },
+    {
+      "r": 3,
+      "c": 4,
+      "file": "assets/chars/sheet3_r03c04.png",
+      "label_internal": "謝遜",
+      "mapped_npc_id": null,
+      "bbox": [
+        550,
+        604,
+        642,
+        775
+      ],
+      "cell_size": [
+        93,
+        103
+      ]
+    },
+    {
+      "r": 3,
+      "c": 5,
+      "file": "assets/chars/sheet3_r03c05.png",
+      "label_internal": "張三丰",
+      "mapped_npc_id": "daoxuan",
+      "bbox": [
+        673,
+        604,
+        748,
+        775
+      ],
+      "cell_size": [
+        76,
+        103
+      ],
+      "alt_file": "assets/chars/daoxuan_c.png"
+    },
+    {
+      "r": 4,
+      "c": 0,
+      "file": "assets/chars/sheet3_r04c00.png",
+      "label_internal": "喬峰",
+      "mapped_npc_id": "qiao_fengshan",
+      "bbox": [
+        66,
+        779,
+        171,
+        951
+      ],
+      "cell_size": [
+        106,
+        104
+      ],
+      "alt_file": "assets/chars/qiao_fengshan_c.png"
+    },
+    {
+      "r": 4,
+      "c": 1,
+      "file": "assets/chars/sheet3_r04c01.png",
+      "label_internal": "段譽",
+      "mapped_npc_id": "duan_muyu",
+      "bbox": [
+        205,
+        779,
+        293,
+        951
+      ],
+      "cell_size": [
+        89,
+        104
+      ],
+      "alt_file": "assets/chars/duan_muyu_c.png"
+    },
+    {
+      "r": 4,
+      "c": 2,
+      "file": "assets/chars/sheet3_r04c02.png",
+      "label_internal": "虛竹",
+      "mapped_npc_id": "xu_zhuoyun",
+      "bbox": [
+        336,
+        779,
+        393,
+        951
+      ],
+      "cell_size": [
+        58,
+        104
+      ],
+      "alt_file": "assets/chars/xu_zhuoyun_c.png"
+    },
+    {
+      "r": 4,
+      "c": 3,
+      "file": "assets/chars/sheet3_r04c03.png",
+      "label_internal": "王語嫣",
+      "mapped_npc_id": "sha_yuyan",
+      "bbox": [
+        456,
+        779,
+        537,
+        951
+      ],
+      "cell_size": [
+        82,
+        104
+      ],
+      "alt_file": "assets/chars/sha_yuyan_c.png"
+    },
+    {
+      "r": 4,
+      "c": 4,
+      "file": "assets/chars/sheet3_r04c04.png",
+      "label_internal": "慕容復",
+      "mapped_npc_id": "murong",
+      "bbox": [
+        582,
+        779,
+        656,
+        951
+      ],
+      "cell_size": [
+        75,
+        104
+      ],
+      "alt_file": "assets/chars/murong_c.png"
+    },
+    {
+      "r": 4,
+      "c": 5,
+      "file": "assets/chars/sheet3_r04c05.png",
+      "label_internal": "鳩摩智",
+      "mapped_npc_id": null,
+      "bbox": [
+        712,
+        779,
+        790,
+        951
+      ],
+      "cell_size": [
+        79,
+        104
+      ]
+    },
+    {
+      "r": 5,
+      "c": 0,
+      "file": "assets/chars/sheet3_r05c00.png",
+      "label_internal": "阿朱",
+      "mapped_npc_id": null,
+      "bbox": [
+        94,
+        961,
+        166,
+        1085
+      ],
+      "cell_size": [
+        73,
+        84
+      ]
+    },
+    {
+      "r": 5,
+      "c": 1,
+      "file": "assets/chars/sheet3_r05c01.png",
+      "label_internal": "阿紫",
+      "mapped_npc_id": null,
+      "bbox": [
+        225,
+        961,
+        300,
+        1085
+      ],
+      "cell_size": [
+        76,
+        84
+      ]
+    },
+    {
+      "r": 6,
+      "c": 0,
+      "file": "assets/chars/sheet3_r06c00.png",
+      "label_internal": "韋小寶",
+      "mapped_npc_id": "wei_xiaozhou",
+      "bbox": [
+        74,
+        1089,
+        152,
+        1245
+      ],
+      "cell_size": [
+        79,
+        88
+      ],
+      "alt_file": "assets/chars/wei_xiaozhou_c.png"
+    },
+    {
+      "r": 6,
+      "c": 1,
+      "file": "assets/chars/sheet3_r06c01.png",
+      "label_internal": "康熙",
+      "mapped_npc_id": "jingandi",
+      "bbox": [
+        200,
+        1089,
+        271,
+        1245
+      ],
+      "cell_size": [
+        72,
+        88
+      ],
+      "alt_file": "assets/chars/jingandi_c.png"
+    },
+    {
+      "r": 6,
+      "c": 2,
+      "file": "assets/chars/sheet3_r06c02.png",
+      "label_internal": "雙兒",
+      "mapped_npc_id": "shuang_er_x",
+      "bbox": [
+        335,
+        1089,
+        408,
+        1245
+      ],
+      "cell_size": [
+        74,
+        88
+      ],
+      "alt_file": "assets/chars/shuang_er_x_c.png"
+    },
+    {
+      "r": 6,
+      "c": 3,
+      "file": "assets/chars/sheet3_r06c03.png",
+      "label_internal": "建寧公主",
+      "mapped_npc_id": "jianning_jun",
+      "bbox": [
+        458,
+        1089,
+        538,
+        1245
+      ],
+      "cell_size": [
+        81,
+        88
+      ],
+      "alt_file": "assets/chars/jianning_jun_c.png"
+    },
+    {
+      "r": 6,
+      "c": 4,
+      "file": "assets/chars/sheet3_r06c04.png",
+      "label_internal": "阿珂",
+      "mapped_npc_id": "a_ke_x",
+      "bbox": [
+        586,
+        1089,
+        670,
+        1245
+      ],
+      "cell_size": [
+        85,
+        88
+      ],
+      "alt_file": "assets/chars/a_ke_x_c.png"
+    },
+    {
+      "r": 6,
+      "c": 5,
+      "file": "assets/chars/sheet3_r06c05.png",
+      "label_internal": "陳近南",
+      "mapped_npc_id": "chen_jinnan_x",
+      "bbox": [
+        704,
+        1089,
+        798,
+        1245
+      ],
+      "cell_size": [
+        95,
+        88
+      ],
+      "alt_file": "assets/chars/chen_jinnan_x_c.png"
+    },
+    {
+      "r": 7,
+      "c": 0,
+      "file": "assets/chars/sheet3_r07c00.png",
+      "label_internal": "鰲拜",
+      "mapped_npc_id": "ao_baiying",
+      "bbox": [
+        97,
+        1252,
+        185,
+        1386
+      ],
+      "cell_size": [
+        89,
+        94
+      ],
+      "alt_file": "assets/chars/ao_baiying_c.png"
+    },
+    {
+      "r": 7,
+      "c": 1,
+      "file": "assets/chars/sheet3_r07c01.png",
+      "label_internal": "洪安通",
+      "mapped_npc_id": "hong_antong_x",
+      "bbox": [
+        227,
+        1252,
+        312,
+        1386
+      ],
+      "cell_size": [
+        86,
+        94
+      ],
+      "alt_file": "assets/chars/hong_antong_x_c.png"
+    },
+    {
+      "r": 8,
+      "c": 0,
+      "file": "assets/chars/sheet3_r08c00.png",
+      "label_internal": "胡斐",
+      "mapped_npc_id": null,
+      "bbox": [
+        51,
+        1388,
+        153,
+        1537
+      ],
+      "cell_size": [
+        103,
+        81
+      ]
+    },
+    {
+      "r": 8,
+      "c": 1,
+      "file": "assets/chars/sheet3_r08c01.png",
+      "label_internal": "程靈素",
+      "mapped_npc_id": null,
+      "bbox": [
+        200,
+        1388,
+        284,
+        1537
+      ],
+      "cell_size": [
+        85,
+        81
+      ]
+    },
+    {
+      "r": 8,
+      "c": 2,
+      "file": "assets/chars/sheet3_r08c02.png",
+      "label_internal": "苗人鳳",
+      "mapped_npc_id": null,
+      "bbox": [
+        326,
+        1388,
+        410,
+        1537
+      ],
+      "cell_size": [
+        85,
+        81
+      ]
+    },
+    {
+      "r": 8,
+      "c": 3,
+      "file": "assets/chars/sheet3_r08c03.png",
+      "label_internal": "陳家洛",
+      "mapped_npc_id": null,
+      "bbox": [
+        453,
+        1388,
+        534,
+        1537
+      ],
+      "cell_size": [
+        82,
+        81
+      ]
+    },
+    {
+      "r": 8,
+      "c": 4,
+      "file": "assets/chars/sheet3_r08c04.png",
+      "label_internal": "霍青桐",
+      "mapped_npc_id": null,
+      "bbox": [
+        584,
+        1388,
+        677,
+        1537
+      ],
+      "cell_size": [
+        94,
+        81
+      ]
+    },
+    {
+      "r": 8,
+      "c": 5,
+      "file": "assets/chars/sheet3_r08c05.png",
+      "label_internal": "香香公主",
+      "mapped_npc_id": null,
+      "bbox": [
+        732,
+        1388,
+        818,
+        1537
+      ],
+      "cell_size": [
+        87,
+        81
+      ]
+    },
+    {
+      "r": 9,
+      "c": 0,
+      "file": "assets/chars/sheet3_r09c00.png",
+      "label_internal": "袁承志",
+      "mapped_npc_id": null,
+      "bbox": [
+        56,
+        1541,
+        141,
+        1674
+      ],
+      "cell_size": [
+        86,
+        93
+      ]
+    },
+    {
+      "r": 9,
+      "c": 1,
+      "file": "assets/chars/sheet3_r09c01.png",
+      "label_internal": "夏雪宜",
+      "mapped_npc_id": null,
+      "bbox": [
+        202,
+        1541,
+        278,
+        1674
+      ],
+      "cell_size": [
+        77,
+        93
+      ]
+    },
+    {
+      "r": 9,
+      "c": 2,
+      "file": "assets/chars/sheet3_r09c02.png",
+      "label_internal": "溫青青",
+      "mapped_npc_id": null,
+      "bbox": [
+        333,
+        1541,
+        400,
+        1674
+      ],
+      "cell_size": [
+        68,
+        93
+      ]
+    },
+    {
+      "r": 9,
+      "c": 3,
+      "file": "assets/chars/sheet3_r09c03.png",
+      "label_internal": "狄雲",
+      "mapped_npc_id": null,
+      "bbox": [
+        460,
+        1541,
+        533,
+        1674
+      ],
+      "cell_size": [
+        74,
+        93
+      ]
+    },
+    {
+      "r": 9,
+      "c": 4,
+      "file": "assets/chars/sheet3_r09c04.png",
+      "label_internal": "水笙",
+      "mapped_npc_id": null,
+      "bbox": [
+        587,
+        1541,
+        676,
+        1674
+      ],
+      "cell_size": [
+        90,
+        93
+      ]
+    },
+    {
+      "r": 9,
+      "c": 5,
+      "file": "assets/chars/sheet3_r09c05.png",
+      "label_internal": "石破天",
+      "mapped_npc_id": null,
+      "bbox": [
+        734,
+        1541,
+        804,
+        1674
+      ],
+      "cell_size": [
+        71,
+        93
+      ]
+    },
+    {
+      "r": 10,
+      "c": 0,
+      "file": "assets/chars/sheet3_r10c00.png",
+      "label_internal": "丁噹",
+      "mapped_npc_id": null,
+      "bbox": [
+        82,
+        1678,
+        169,
+        1816
+      ],
+      "cell_size": [
+        88,
+        98
+      ]
+    },
+    {
+      "r": 10,
+      "c": 1,
+      "file": "assets/chars/sheet3_r10c01.png",
+      "label_internal": "阿繡",
+      "mapped_npc_id": null,
+      "bbox": [
+        225,
+        1678,
+        298,
+        1816
+      ],
+      "cell_size": [
+        74,
+        98
+      ]
+    },
+    {
+      "r": 10,
+      "c": 2,
+      "file": "assets/chars/sheet3_r10c02.png",
+      "label_internal": "蕭中慧",
+      "mapped_npc_id": null,
+      "bbox": [
+        350,
+        1678,
+        451,
+        1816
+      ],
+      "cell_size": [
+        102,
+        98
+      ]
+    },
+    {
+      "r": 10,
+      "c": 3,
+      "file": "assets/chars/sheet3_r10c03.png",
+      "label_internal": "李文秀",
+      "mapped_npc_id": null,
+      "bbox": [
+        508,
+        1678,
+        600,
+        1816
+      ],
+      "cell_size": [
+        93,
+        98
+      ]
+    },
+    {
+      "r": 10,
+      "c": 4,
+      "file": "assets/chars/sheet3_r10c04.png",
+      "label_internal": "阿青",
+      "mapped_npc_id": null,
+      "bbox": [
+        673,
+        1678,
+        751,
+        1816
+      ],
+      "cell_size": [
+        79,
+        98
+      ]
+    }
+  ],
+  "c_variants": [
+    {
+      "id": "guo_jingyi",
+      "file": "assets/chars/guo_jingyi_c.png"
+    },
+    {
+      "id": "huang_rongya",
+      "file": "assets/chars/huang_rongya_c.png"
+    },
+    {
+      "id": "hong_qigong_x",
+      "file": "assets/chars/hong_qigong_x_c.png"
+    },
+    {
+      "id": "huang_yaoshi_x",
+      "file": "assets/chars/huang_yaoshi_x_c.png"
+    },
+    {
+      "id": "ouyang_fengdu",
+      "file": "assets/chars/ouyang_fengdu_c.png"
+    },
+    {
+      "id": "yang_guochen",
+      "file": "assets/chars/yang_guochen_c.png"
+    },
+    {
+      "id": "xiao_longyin",
+      "file": "assets/chars/xiao_longyin_c.png"
+    },
+    {
+      "id": "meifuren",
+      "file": "assets/chars/meifuren_c.png"
+    },
+    {
+      "id": "lin_feng",
+      "file": "assets/chars/lin_feng_c.png"
+    },
+    {
+      "id": "ren_yingluo",
+      "file": "assets/chars/ren_yingluo_c.png"
+    },
+    {
+      "id": "dongfang_gubai",
+      "file": "assets/chars/dongfang_gubai_c.png"
+    },
+    {
+      "id": "ye_qingshan",
+      "file": "assets/chars/ye_qingshan_c.png"
+    },
+    {
+      "id": "lin_chen",
+      "file": "assets/chars/lin_chen_c.png"
+    },
+    {
+      "id": "feng_qingya",
+      "file": "assets/chars/feng_qingya_c.png"
+    },
+    {
+      "id": "zhang_wujiang",
+      "file": "assets/chars/zhang_wujiang_c.png"
+    },
+    {
+      "id": "zhao_minyan",
+      "file": "assets/chars/zhao_minyan_c.png"
+    },
+    {
+      "id": "zhou_zhi_xue",
+      "file": "assets/chars/zhou_zhi_xue_c.png"
+    },
+    {
+      "id": "daoxuan",
+      "file": "assets/chars/daoxuan_c.png"
+    },
+    {
+      "id": "qiao_fengshan",
+      "file": "assets/chars/qiao_fengshan_c.png"
+    },
+    {
+      "id": "duan_muyu",
+      "file": "assets/chars/duan_muyu_c.png"
+    },
+    {
+      "id": "xu_zhuoyun",
+      "file": "assets/chars/xu_zhuoyun_c.png"
+    },
+    {
+      "id": "sha_yuyan",
+      "file": "assets/chars/sha_yuyan_c.png"
+    },
+    {
+      "id": "murong",
+      "file": "assets/chars/murong_c.png"
+    },
+    {
+      "id": "wei_xiaozhou",
+      "file": "assets/chars/wei_xiaozhou_c.png"
+    },
+    {
+      "id": "jingandi",
+      "file": "assets/chars/jingandi_c.png"
+    },
+    {
+      "id": "shuang_er_x",
+      "file": "assets/chars/shuang_er_x_c.png"
+    },
+    {
+      "id": "jianning_jun",
+      "file": "assets/chars/jianning_jun_c.png"
+    },
+    {
+      "id": "a_ke_x",
+      "file": "assets/chars/a_ke_x_c.png"
+    },
+    {
+      "id": "chen_jinnan_x",
+      "file": "assets/chars/chen_jinnan_x_c.png"
+    },
+    {
+      "id": "ao_baiying",
+      "file": "assets/chars/ao_baiying_c.png"
+    },
+    {
+      "id": "hong_antong_x",
+      "file": "assets/chars/hong_antong_x_c.png"
+    }
+  ]
+}
