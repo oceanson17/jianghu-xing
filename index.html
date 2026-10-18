@@ -3494,7 +3494,13 @@ try { saveGameSilent(); } catch (e) {}
       dcLastOpDay: 0,
       pendingTrial: null,
       civQuestDone: {},
-      saveVer: 8
+      birthId: null,
+      birthLabel: null,
+      reincarnationCount: 0,
+      pastKarmaEcho: 0,
+      pastLives: [],
+      pendingRebirth: null,
+      saveVer: 9
     };
   }
 
@@ -3789,6 +3795,15 @@ try { saveGameSilent(); } catch (e) {}
     });
     if (typeof data.karma === "number") data.karma = Math.max(-100, Math.min(100, data.karma));
     data.saveVer = 7;
+    
+    data.birthId = raw.birthId || null;
+    data.birthLabel = raw.birthLabel || null;
+    data.reincarnationCount = typeof raw.reincarnationCount === "number" ? raw.reincarnationCount : 0;
+    data.pastKarmaEcho = typeof raw.pastKarmaEcho === "number" ? raw.pastKarmaEcho : 0;
+    data.pastLives = Array.isArray(raw.pastLives) ? raw.pastLives : [];
+    data.pendingRebirth = raw.pendingRebirth || null;
+    if (typeof data.saveVer !== "number" || data.saveVer < 9) data.saveVer = 9;
+
     return data;
   }
 
@@ -3889,7 +3904,7 @@ try { saveGameSilent(); } catch (e) {}
     "donggong_reconciled","donggong_sold_out","donggong_evidence_burned",
     "donggong_abandon_revenge","side_donggong","donggong_saved_once",
     "donggong_night_talk","donggong_name_hint","donggong_search_done","donggong_enemy_letter","donggong_shield_today",
-    "dating_unlocked",
+    "dating_unlocked","rebirth_done","pending_rebirth",
     "met_ye_qingshan", "met_lin_feng", "met_ning_shuying", "met_ye_xiaoyu", "met_lin_chen", "met_ren_yingluo", "met_feng_qingya", "met_qu_yangqin", "met_qiao_fengshan", "met_duan_muyu", "met_xu_zhuoyun", "met_zhang_wujiang", "met_zhao_minyan", "met_zhou_zhi_xue", "met_hong_qigong", "met_huang_yaoshi", "met_ouyang_fengdu", "met_xiao_longyin", "met_yang_guochen", "met_guo_jingyi", "met_huang_rongya", "met_dongfang_gubai", "met_zuo_lengying", "met_mu_gaofeng", "met_wei_xiaozhou", "met_chen_jinnan", "met_jianning", "met_hai_dafu", "met_ao_baiying", "met_shuang_er", "met_su_quan", "met_hong_antong", "met_jiu_nan", "met_a_ke", "met_mu_jianping", "met_fang_yi", "met_mao_dongzhu", "met_duo_long", "met_suo_etu", "met_wu_sangui", "met_shi_lang", "met_mao_shiba", "ye_exposed", "lin_ren_love", "lin_feng_sworn", "ye_xiaoyu_trust", "lin_chen_sworn", "disciple_feng", "qiao_sworn", "xuzhu_open", "zhao_min_reveal", "disciple_hongqi", "dongfang_reveal", "tomb_taboo", "border_sworn", "court_double", "qingwu_member", "jianning_love", "shuang_er_follow", "jiunan_assassin", "fang_yi_turned", "fake_empress", "fan_wang", "cangfeng_hypocrite_done", "side_tomb_taboo_done", "side_qiao_done", "side_court_double_done", "side_fake_empress_done", "side_jiunan_done", "side_fan_wang_done"
   ];
 
@@ -4809,6 +4824,18 @@ try { saveGameSilent(); } catch (e) {}
       if (cb) setTimeout(cb, 80);
       setTimeout(() => { try { maybeLoverInitiative("combat"); } catch (e) {} }, 600);
     } else {
+      const fatal = !!(c && (c.fatalOnLose || c.lethalOnLose));
+      const heatFatal = (S.palaceHeat || 0) >= 80 && /huanggong|wumen|xingxing|yongxing|tianlao|dongchang|neiting|hougong/.test(String(S.loc || ""));
+      if (fatal || heatFatal) {
+        ui.combat = null;
+        if (typeof triggerPlayerDeath === "function") {
+          triggerPlayerDeath(fatal ? (c.fatalReason || "力戰身亡") : "宮牆之內戰敗身死", {
+            scene: c.deathScene || null,
+            text: "刀光散盡。你倒在塵埃裡，耳中只餘遠去的腳步。"
+          });
+          return;
+        }
+      }
       S.hp = 1; S.statuses = [];
       toast("戰敗，被救回營地", true);
       S.loc = "hub";
@@ -7535,6 +7562,9 @@ try { saveGameSilent(); } catch (e) {}
     window._jhRender = render;
     const app = document.getElementById("app");
     if (!S.name) { app.innerHTML = renderTitle(); bindTitle(); return; }
+    if (S.pendingRebirth && !ui.combat) {
+      try { openRebirthUI({ mode: "reveal", cause: S.pendingRebirth.cause }); } catch (e) {}
+    }
     if (ui.combat) { app.innerHTML = renderCombat(); bindCombat(); return; }
     app.innerHTML = renderHub();
     bindHub();
@@ -7575,6 +7605,8 @@ try { saveGameSilent(); } catch (e) {}
         <button type="button" class="btn primary" data-g="male">男</button>
         <button type="button" class="btn" data-g="female">女</button>
       </div>
+      <p class="small" style="margin:12px 0 8px">出身（可投胎再換）</p>
+      <select class="input" id="birth-sel"></select>
       <p class="small" style="margin:12px 0 8px">起始特質</p>
       <div class="select-grid" id="traits"></div></div>
       <div class="btn-row"><button class="btn primary" id="btn-start">踏入江湖</button>
@@ -7595,18 +7627,33 @@ try { saveGameSilent(); } catch (e) {}
       b.onclick = () => { selected = t.id; tg.querySelectorAll(".btn").forEach(x => x.classList.remove("primary")); b.classList.add("primary"); };
       tg.appendChild(b);
     });
+    const bsel = document.getElementById("birth-sel");
+    if (bsel && typeof BIRTH_BACKGROUNDS !== "undefined") {
+      BIRTH_BACKGROUNDS.forEach(function(bg) {
+        const o = document.createElement("option");
+        o.value = bg.id; o.textContent = bg.name + "——" + String(bg.blurb || "").slice(0, 18);
+        bsel.appendChild(o);
+      });
+      bsel.value = "orphan";
+    }
     document.getElementById("btn-back").onclick = () => { S = defaultState(); render(); };
     document.getElementById("btn-start").onclick = () => {
       const name = (document.getElementById("hero-name").value || "").trim() || "無名俠客";
+      const birthId = bsel ? bsel.value : "orphan";
       S = defaultState(); S.name = name; S.trait = selected;
       S.gender = (gender === "female") ? "女" : "男";
       S.disguise = (S.gender === "女") ? "nan" : null;
       const tr = TRAITS.find(t => t.id === selected);
       Object.keys(tr.mods).forEach(k => { S[k] = (S[k] || 0) + tr.mods[k]; });
       if (tr.items) tr.items.forEach(i => addItem(i, 1));
-      ensureQuests(); ensureAllNpcMem(); ensureBonds(); saveGame();
+      ensureQuests(); ensureAllNpcMem(); ensureBonds();
+      if (typeof applyBirthBackground === "function" && typeof birthById === "function") {
+        applyBirthBackground(birthById(birthId), { gender: S.gender });
+      }
+      saveGame();
       const gnote = S.gender === "女" ? "女（預設女扮男裝示人，可於角色頁切換）" : "男";
-      showStory("你離開故鄉，落腳山間營地。第一章「霧起青城」開始。\n性別：" + gnote + "（影響皇宮線）。\n提示：地圖自由輸入可對在場人物說話；善惡值會觸發專屬劇情。");
+      const bg = typeof birthById === "function" ? birthById(S.birthId || birthId) : null;
+      showStory((bg && bg.blurb ? bg.blurb : "你離開故鄉，落腳山間營地。") + "第一章「霧起青城」開始。\n出身：" + (S.birthLabel || "遊俠") + "\n性別：" + gnote + "（影響皇宮線）。\n提示：身死可投胎轉世；善惡會觸發專屬劇情。");
     };
   }
 
@@ -7884,7 +7931,7 @@ try { saveGameSilent(); } catch (e) {}
       <div class="cell ${karmaColorClass()}" style="grid-column:span 2">善惡<b>${typeof S.karma==="number"?S.karma:0}</b> <span class="small">${karmaBandLabel()}</span></div>
     </div>
     <p class="small">${escapeHtml(karmaNextHint())}</p>
-    <p class="small">經驗 ${S.exp}/${S.level * 22} · 性別 ${S.gender==="female"||S.gender==="女"?"女":"男"} · 宮職 ${palaceRoleLabel()} · 朝廷威望 ${typeof S.courtPrestige==="number"?S.courtPrestige:0} · 帝心 ${typeof S.emperorFavor==="number"?S.emperorFavor:0} · 宮熱 ${typeof S.palaceHeat==="number"?S.palaceHeat:0}${hasItem("hanxue_horse")?" · 汗血寶馬":""} · 福緣影響機緣${S.forgeBonus?` · 淬煉+${S.forgeBonus}`:""}${flag("eunuch")?" · 太監籍":""}</p>
+    <p class="small">經驗 ${S.exp}/${S.level * 22} · 性別 ${S.gender==="female"||S.gender==="女"?"女":"男"} · 宮職 ${palaceRoleLabel()} · 朝廷威望 ${typeof S.courtPrestige==="number"?S.courtPrestige:0} · 帝心 ${typeof S.emperorFavor==="number"?S.emperorFavor:0} · 宮熱 ${typeof S.palaceHeat==="number"?S.palaceHeat:0}${hasItem("hanxue_horse")?" · 汗血寶馬":""} · 福緣影響機緣${S.forgeBonus?` · 淬煉+${S.forgeBonus}`:""}${flag("eunuch")?" · 太監籍":""}${(typeof birthLabelLine==="function" && birthLabelLine())?" · "+birthLabelLine():(S.birthLabel?" · 出身 "+S.birthLabel:"")}</p>
     <h3>羈絆解鎖</h3>`;
     const ul = listUnlocks();
     if (!ul.length) html += `<p class="small">尚未解鎖專屬功能</p>`;
@@ -8495,13 +8542,14 @@ try { saveGameSilent(); } catch (e) {}
     bumpEmperorFavor(-20, "欽犯");
     // severe path: not always hard game-over — imprison + near-death if not opts.fatal
     if (opts.fatal || (S.palaceHeat || 0) >= 85) {
-      text += "刑場鼓聲落定。你未能避開——意識沉入黑水。\n（判定失敗 " + dodgeScore + " / " + dodgeNeed + " · 結局：刑場）";
+      text += "刑場鼓聲落定。你未能避開——意識沉入黑水。\n（判定失敗 " + dodgeScore + " / " + dodgeNeed + " · 身死・可投胎）";
+      if (typeof triggerPlayerDeath === "function") {
+        return Object.assign({ tier: "lethal_death", score: dodgeScore, need: dodgeNeed },
+          triggerPlayerDeath(def.name || "問斬", { scene: scene, text: text }));
+      }
       S.endingId = "palace_punish_death";
       S.ending = { title: "刑場終焉", epi: "宮牆之內，龍威如山。你的名字，從此只在慎刑司檔案裡出現一次。" };
       showStory(text, scene);
-      if (typeof resolveEnding === "function") {
-        try { /* keep ending fields; render will show */ } catch (e) {}
-      }
       render();
       return { ok: false, tier: "lethal_death", score: dodgeScore, need: dodgeNeed };
     }
@@ -11365,6 +11413,11 @@ try { saveGameSilent(); } catch (e) {}
     if ((S.palaceHeat || 0) >= 40) p -= 10;
     if ((S.palaceHeat || 0) >= 70) p -= 8;
     if ((S.karma || 0) <= -40) p += 5; // factory path fear
+    // birth echo: 皇裔／內廷種子略抬權勢觀感
+    if (S.birthId === "prince" || S.birthId === "princess") p += 22;
+    else if (S.birthId === "official_heir") p += 10;
+    else if (S.birthId === "palace_maid_seed" || S.birthId === "eunuch_seed") p += 6;
+    else if (S.birthId === "beggar") p -= 4;
     return Math.max(0, Math.min(100, p));
   }
 
@@ -11385,7 +11438,11 @@ try { saveGameSilent(); } catch (e) {}
       karma: S.karma || 0,
       perceivedGender: typeof perceivedGender === "function" ? perceivedGender() : S.gender,
       eunuchFlag: !!flag("eunuch"),
-      canDebate: typeof canShangdianYizheng === "function" && canShangdianYizheng()
+      canDebate: typeof canShangdianYizheng === "function" && canShangdianYizheng(),
+      birthId: S.birthId || null,
+      birthLabel: S.birthLabel || null,
+      reincarnationCount: S.reincarnationCount || 0,
+      pastKarmaEcho: S.pastKarmaEcho || 0
     };
   }
 
@@ -11469,13 +11526,22 @@ try { saveGameSilent(); } catch (e) {}
   function courtIdentityPromptBlock(npcId) {
     const id = courtIdentityBlob();
     const stance = identityStanceForNpc(npcId);
+    const delta = typeof statusDeltaForPrompt === "function" ? statusDeltaForPrompt(npcId) : ("權勢" + id.power + "／" + stance);
+    const fac = COURT_NPC_FACTION[npcId] || "jianghu";
+    const high = fac === "throne" || fac === "harem" || fac === "factory" || fac === "military";
+    let harden = "";
+    if (high && id.power < 35) {
+      harden = " 你是高位／禁中人物，對低階／白身必須可拒（deny_quest）、輕蔑（scorn）、罰（punish 軟刑）、關押（imprison）；禁止無故巴結低階。";
+    }
     return "【宮廷身份上下文】玩家仕途=" + id.trackLabel + "／" + id.rank +
       "（約" + id.pinApprox + "品）威望=" + id.prestige + " 權勢分=" + id.power +
       " 服侍=" + (id.serveTarget || "無") + " 分殿=" + (id.eunuchHall || "無") +
       " 帝心=" + id.emperorFavor + " 宮熱=" + id.palaceHeat + " 善惡=" + id.karma +
-      " 太監籍=" + id.eunuchFlag + "。你對玩家應採態度【" + stance + "】：" + identityStanceHint(stance) +
-      " 禁真實清帝名與金庸真名。若判定升官／送禮／輕蔑拒服侍／開任務／關押／改好感／調殿／塞交易——必須在 JSON 加 courtActions 陣列（見協議），本地會寫入存檔。" +
-      " courtActions 例：{\"type\":\"gift_item\",\"item\":\"palace_silk\",\"n\":1} | promote | favor_delta | scorn | flattery_gift | open_quest | imprison | assign_hall | pending_deal | prestige | shop_discount";
+      " 太監籍=" + id.eunuchFlag +
+      " 出身=" + (id.birthLabel || "未誌") + " 投胎世數=" + (id.reincarnationCount || 0) +
+      "。【身份態勢】" + delta + "。你對玩家應採態度【" + stance + "】：" + identityStanceHint(stance) + harden +
+      " 禁真實清帝名與金庸真名。若判定升官／送禮／輕蔑拒服侍／開任務／關押／用刑／改好感／調殿／塞交易——必須在 JSON 加 courtActions 陣列（見協議），本地會寫入存檔。" +
+      " courtActions 例：{\"type\":\"gift_item\",\"item\":\"palace_silk\",\"n\":1} | promote | favor_delta | scorn | flattery_gift | open_quest | deny_quest | imprison | punish | assign_hall | pending_deal | prestige | shop_discount | demote_heat";
   }
 
   function applyCourtAiAction(npcId, action) {
@@ -11577,6 +11643,14 @@ try { saveGameSilent(); } catch (e) {}
       } else if (t === "deny_quest") {
         S.courtNpcDeny[npcId] = S.day;
         note = "（對方拒給差事）";
+      } else if (t === "punish" || t === "punish_soft" || t === "palace_punish") {
+        const kind = action.kind || action.punish || "tingzhang";
+        if (typeof applyPalacePunishment === "function") {
+          try {
+            applyPalacePunishment(kind, { why: action.why || ((NPCS[npcId] && NPCS[npcId].name) || "權貴") + "發落", by: npcId, fatal: !!action.fatal });
+            note = "（被發落・" + ((typeof PUNISH_KINDS !== "undefined" && PUNISH_KINDS[kind]) ? PUNISH_KINDS[kind].name : kind) + "）";
+          } catch (ep) { note = "（險些受罰）"; }
+        } else note = "（對方欲罰你）";
       } else if (t === "imprison" || t === "capture_jail") {
         S.courtImprisonBias = Math.max(S.courtImprisonBias || 0, 1);
         if (typeof beginImprisonment === "function") {
@@ -11640,10 +11714,22 @@ try { saveGameSilent(); } catch (e) {}
 
   function stanceDerivedActions(npcId, stance) {
     const acts = [];
-    if (stance === "scorn") acts.push({ type: "scorn", favor: 3, heat: Math.random() < 0.25 ? 2 : 0 });
+    const fac = COURT_NPC_FACTION[npcId] || "jianghu";
+    const high = fac === "throne" || fac === "harem" || fac === "factory" || fac === "military";
+    const power = typeof courtPowerScore === "function" ? courtPowerScore() : 0;
+    if (stance === "scorn") {
+      acts.push({ type: "scorn", favor: 3, heat: Math.random() < 0.4 ? 2 : 0, denyQuest: true });
+      if (high && power < 40) {
+        acts.push({ type: "deny_quest" });
+        if (Math.random() < 0.45) acts.push({ type: "demote_heat", heat: 3, prestige: 2 });
+        if (Math.random() < 0.28) acts.push({ type: "punish", kind: Math.random() < 0.5 ? "tingzhang" : "fine" });
+        else if (Math.random() < 0.18) acts.push({ type: "imprison" });
+      }
+    }
     else if (stance === "snub") {
-      if (Math.random() < 0.35) acts.push({ type: "deny_quest" });
+      if (Math.random() < 0.55 || (high && power < 35)) acts.push({ type: "deny_quest" });
       acts.push({ type: "favor_delta", amount: -1 });
+      if (high && power < 25 && Math.random() < 0.25) acts.push({ type: "demote_heat", heat: 2 });
     } else if (stance === "flattery") {
       acts.push({ type: "flattery_gift", item: Math.random() < 0.5 ? "palace_silk" : "eunuch_gift_box", favor: 2, discount: 8, days: 3 });
     } else if (stance === "fear") {
@@ -11755,7 +11841,7 @@ try { saveGameSilent(); } catch (e) {}
       "只輸出JSON：{\"say\":\"2-5句\",\"behavior\":\"help|hostile|flee|gift|trade|quest_hint|attack|ignore|follow|capture|wound|dodge|guard|rebuke|lecture|parole|release|trap|duel|accept|teach|refuse|train\",\"offerId\":null,\"flagUpdates\":{},\"fateHint\":null,\"grants\":{},\"memoryNote\":\"一句\",\"intent\":\"" + intentGuess + "\",\"courtActions\":[]}" +
       " 命運=" + S.fates[npcId] + " 信任=" + mem.trust + " 羈絆=" + bondSummary(npcId) + " 模式=" + mode + " 關押=" + isImprisoned() +
       " 可選offer=" + JSON.stringify((NPC_OFFERS[npcId]||[]).map(function(o){ return o.id; }));
-    const userObj = { player: S.name, mode: mode, utterance: playerText, intentGuess: intentGuess, world: JSON.parse(contextBlob()), memory: mem, location: S.loc, courtIdentity: courtIdentityBlob(), stance: identityStanceForNpc(npcId) };
+    const userObj = { player: S.name, mode: mode, utterance: playerText, intentGuess: intentGuess, world: JSON.parse(contextBlob()), memory: mem, location: S.loc, courtIdentity: courtIdentityBlob(), stance: identityStanceForNpc(npcId), statusDelta: (typeof statusDeltaForPrompt === "function" ? statusDeltaForPrompt(npcId) : "") };
     const text = await deepseekChat(sys, JSON.stringify(userObj), 700);
     const parsed = parseAiJson(text);
     if (parsed) return sanitizeAiResult(parsed, npcId);
@@ -12981,6 +13067,351 @@ try { saveGameSilent(); } catch (e) {}
       r3 && r3.verdict === "light"
     };
   };
+
+  // ========== V11: REINCARNATION 投胎 + STATUS ETIQUETTE DELTA ==========
+  // Homage only（景安／青梧）. Death → 投胎轉世 with birth backgrounds.
+
+  const BIRTH_BACKGROUNDS = [
+    { id: "prince", name: "皇子", gender: "男", loc: "qianqing", gold: 120, renown: 8,
+      mods: { charm: 3, wit: 2, honor: 2, force: 1 },
+      flags: ["palace_entry", "map_huanggong", "map_qianqing", "neiting_access", "map_wumen"],
+      favor: 12, heat: 0, track: "none", grade: 0, pin: 0, role: null,
+      items: ["palace_jade", "candy"], blurb: "你睜眼時已在乾清側殿錦褥上。乳母低聲喚「殿下」。" },
+    { id: "princess", name: "公主", gender: "女", loc: "hougong", gold: 110, renown: 6,
+      mods: { charm: 4, wit: 1, luck: 1 },
+      flags: ["palace_entry", "map_huanggong", "hougong_access", "map_yuhuayuan", "neiting_access"],
+      favor: 10, heat: 0, track: "none", grade: 0, pin: 0, role: null,
+      items: ["palace_silk", "bronze_mirror"], blurb: "璇璣殿外風鈴輕響。有人稱你「郡主／公主」。" },
+    { id: "official_heir", name: "官員子弟", gender: null, loc: "jingji", gold: 80, renown: 4,
+      mods: { wit: 3, honor: 2, charm: 1 },
+      flags: ["map_wenyuan"], favor: 2, heat: 0, track: "civil", grade: 0, pin: 9,
+      role: null, items: ["court_seal_ink", "wine"], blurb: "京畿宅門匾額猶在。家裡要你讀書入仕。" },
+    { id: "merchant", name: "商戶", gender: null, loc: "hub", gold: 150, renown: 2,
+      mods: { luck: 3, wit: 2, charm: 1 },
+      flags: ["trade_pass"], favor: 0, heat: 0, track: "none", grade: 0, pin: 0,
+      role: null, items: ["cloth", "wine"], blurb: "算盤與貨箱是你的第一堂課。商路通向江湖。" },
+    { id: "beggar", name: "乞丐", gender: null, loc: "qingcheng", gold: 5, renown: 0,
+      mods: { bone: 2, luck: 2, force: -1, charm: -1 },
+      flags: [], favor: 0, heat: 0, track: "none", grade: 0, pin: 0,
+      role: null, items: ["broken_bowl_staff", "beggar_robe", "herb"], blurb: "破碗與冷風。有人踢你一腳，有人丟來半塊餅。" },
+    { id: "orphan", name: "江湖孤兒", gender: null, loc: "hub", gold: 20, renown: 0,
+      mods: { force: 2, agi: 2, bone: 1 },
+      flags: [], favor: 0, heat: 0, track: "none", grade: 0, pin: 0,
+      role: null, items: ["wood_sword", "herb", "cloth"], blurb: "師父不在了。你只記得刀光與一句「活下去」。" },
+    { id: "border_soldier", name: "邊軍", gender: "男", loc: "bianguan", gold: 35, renown: 3,
+      mods: { force: 3, bone: 2, agi: 1, honor: 1 },
+      flags: ["rep_30", "north_pass"], favor: 0, heat: 0, track: "military", grade: 0, pin: 8,
+      role: "guard", items: ["tiger_talon", "med_salve"], blurb: "號角撕開沙塵。你醒來時已穿上邊軍號衣。" },
+    { id: "palace_maid_seed", name: "宮女種子", gender: "女", loc: "hougong", gold: 15, renown: 0,
+      mods: { charm: 2, perception: 2, focus: 1 },
+      flags: ["palace_entry", "map_huanggong", "hougong_access", "map_yuhuayuan"],
+      favor: 0, heat: 2, track: "maid", grade: 1, pin: 0, role: "maid",
+      items: ["palace_silk", "candy"], blurb: "掌事姑姑點名：新來的——從灑掃做起。" },
+    { id: "eunuch_seed", name: "內侍種子", gender: "男", loc: "jingshen", gold: 18, renown: 0,
+      mods: { perception: 2, wit: 1, charm: 1, force: -1 },
+      flags: ["eunuch", "palace_entry", "map_huanggong", "map_jingshen", "visited_jingshen", "neiting_access"],
+      favor: 0, heat: 4, track: "eunuch", grade: 1, pin: 0, role: "eunuch",
+      items: ["eunuch_gift_box", "herb"], blurb: "淨身房一側燈影。名冊上多了一行小字——你入了太監籍（寫意）。" },
+    { id: "bandit", name: "綠林草莽", gender: null, loc: "heishui", gold: 40, renown: 1,
+      mods: { force: 3, agi: 2, honor: -2 },
+      flags: [], favor: -2, heat: 0, track: "none", grade: 0, pin: 0,
+      role: null, items: ["wood_sword", "wine"], blurb: "黑水寨酒氣衝鼻。刀疤臉叫你「新來的」。", karmaDelta: -5 }
+  ];
+
+  function birthById(id) {
+    for (let i = 0; i < BIRTH_BACKGROUNDS.length; i++) {
+      if (BIRTH_BACKGROUNDS[i].id === id) return BIRTH_BACKGROUNDS[i];
+    }
+    return BIRTH_BACKGROUNDS[5]; // orphan fallback
+  }
+
+  function ensureReincarnationState() {
+    if (typeof S.reincarnationCount !== "number") S.reincarnationCount = 0;
+    if (!S.birthId) S.birthId = null;
+    if (!S.birthLabel) S.birthLabel = null;
+    if (typeof S.pastKarmaEcho !== "number") S.pastKarmaEcho = 0;
+    if (!Array.isArray(S.pastLives)) S.pastLives = [];
+    if (!S.pendingRebirth) S.pendingRebirth = null;
+    if (typeof S.saveVer !== "number" || S.saveVer < 9) S.saveVer = 9;
+  }
+
+  function statusDeltaForPrompt(npcId) {
+    ensureReincarnationState();
+    ensureCourtIdentityState();
+    const power = typeof courtPowerScore === "function" ? courtPowerScore() : 0;
+    const stance = typeof identityStanceForNpc === "function" ? identityStanceForNpc(npcId) : "neutral";
+    const fac = COURT_NPC_FACTION[npcId] || "jianghu";
+    const highNpc = fac === "throne" || fac === "harem" || fac === "factory" || fac === "military" || fac === "civil";
+    const lowPlayer = power < 35 || (S.courtTrack === "none" && !flag("eunuch") && !(S.palaceRole));
+    let delta = "權勢" + power + "／態度" + stance;
+    if (S.birthLabel) delta += "／出身" + S.birthLabel;
+    if (S.reincarnationCount > 0) delta += "／投胎×" + S.reincarnationCount + "（前世業殘響" + (S.pastKarmaEcho || 0) + "）";
+    if (highNpc && lowPlayer) delta += "／【上對下】可拒差、嘲諷、罰跪、升宮熱、關押；勿巴結低階";
+    if (highNpc && power >= 70) delta += "／【畏權】宜 defer／flattery";
+    return delta;
+  }
+
+  function snapshotPastLife(cause) {
+    ensureReincarnationState();
+    return {
+      day: S.day,
+      name: S.name,
+      cause: cause || "未知",
+      karma: S.karma || 0,
+      renown: S.renown || 0,
+      birthId: S.birthId || null,
+      birthLabel: S.birthLabel || null,
+      courtTrack: S.courtTrack || "none",
+      palaceRole: S.palaceRole || null,
+      endingHint: (S.ending && S.ending.title) || S.endingId || null
+    };
+  }
+
+  function applyBirthBackground(bg, opts) {
+    opts = opts || {};
+    if (!bg) bg = birthById("orphan");
+    ensureReincarnationState();
+    // gender
+    if (bg.gender === "男" || bg.gender === "女") S.gender = bg.gender;
+    else if (opts.gender === "男" || opts.gender === "女") S.gender = opts.gender;
+    // keep existing gender if null bias
+    S.disguise = (S.gender === "女") ? "nan" : null;
+    S.birthId = bg.id;
+    S.birthLabel = bg.name;
+    S.loc = bg.loc || "hub";
+    S.gold = Math.max(0, (bg.gold != null ? bg.gold : 30) + Math.floor(Math.random() * 11) - 5);
+    S.renown = bg.renown || 0;
+    S.hp = S.hpMax; S.neili = S.neiliMax;
+    S.statuses = [];
+    S.prison = null;
+    S.trauma = Math.max(0, Math.floor((S.trauma || 0) * 0.15));
+    // mods
+    const mods = bg.mods || {};
+    Object.keys(mods).forEach(function(k) {
+      if (typeof S[k] === "number") S[k] = Math.max(1, (S[k] || 0) + mods[k]);
+    });
+    // flags
+    S.flags = S.flags || {};
+    (bg.flags || []).forEach(function(f) { S.flags[f] = true; });
+    if (bg.track && bg.track !== "none") {
+      S.courtTrack = bg.track;
+      S.courtGrade = bg.grade || 0;
+      S.courtPin = bg.pin || 0;
+      S.courtPrestige = Math.max(S.courtPrestige || 0, bg.track === "maid" || bg.track === "eunuch" ? 8 : 15);
+    } else {
+      S.courtTrack = "none"; S.courtGrade = 0; S.courtPin = 0;
+    }
+    if (bg.role) S.palaceRole = bg.role;
+    else S.palaceRole = null;
+    S.emperorFavor = (bg.favor || 0) + Math.floor((S.pastKarmaEcho || 0) / 20);
+    S.palaceHeat = bg.heat || 0;
+    S.serveTargetId = null;
+    S.eunuchAssignedHall = null;
+    S.pendingDeal = null;
+    S.dcJoined = false; S.dcRank = 0; S.dcPrestige = 0; S.dcHeat = 0;
+    S.dcSubs = []; S.dcArrests = {}; S.pendingTrial = null;
+    if (bg.items && typeof addItem === "function") {
+      bg.items.forEach(function(id) { if (ITEMS[id]) addItem(id, 1); });
+    }
+    if (typeof bg.karmaDelta === "number" && typeof adjustKarma === "function") {
+      // direct set remnant already applied; small birth tint
+      S.karma = Math.max(-100, Math.min(100, (S.karma || 0) + bg.karmaDelta));
+    }
+    setFlag("map_" + (bg.loc || "hub"));
+    // ensure map flag; location table is LOCATIONS[]
+    return bg;
+  }
+
+  function wipeForRebirth(past) {
+    ensureReincarnationState();
+    const keepNameHint = S.name;
+    const count = (S.reincarnationCount || 0) + 1;
+    const pastLives = (S.pastLives || []).slice(-7);
+    pastLives.push(past || snapshotPastLife("投胎"));
+    const echo = Math.round((past && typeof past.karma === "number" ? past.karma : (S.karma || 0)) * 0.35);
+    const trait = S.trait || "";
+    // fresh state shell
+    const name = keepNameHint; // will rename in UI optionally
+    const fresh = defaultState();
+    // preserve meta
+    fresh.name = name;
+    fresh.trait = trait;
+    fresh.reincarnationCount = count;
+    fresh.pastLives = pastLives;
+    fresh.pastKarmaEcho = echo;
+    fresh.karma = echo; // karma echo into new life
+    fresh.birthId = null;
+    fresh.birthLabel = null;
+    fresh.pendingRebirth = null;
+    fresh.saveVer = 9;
+    // mild luck from many rebirths
+    if (count >= 2) fresh.luck = (fresh.luck || 5) + 1;
+    if (count >= 4) fresh.perception = (fresh.perception || 5) + 1;
+    S = fresh;
+    ensureAllNpcMem();
+    if (typeof ensureBonds === "function") ensureBonds();
+    if (typeof ensureQuests === "function") ensureQuests();
+    if (typeof ensurePalaceState === "function") ensurePalaceState();
+    if (typeof ensureCourtCareer === "function") ensureCourtCareer();
+    ensureReincarnationState();
+  }
+
+  function openRebirthUI(opts) {
+    opts = opts || {};
+    ensureReincarnationState();
+    const cause = (S.pendingRebirth && S.pendingRebirth.cause) || opts.cause || "身死";
+    const past = (S.pendingRebirth && S.pendingRebirth.past) || null;
+    const mode = opts.mode || (opts.choose ? "choose" : "reveal");
+    let html = "<div class=\"rebirth-sheet\"><h3>☯ 投胎轉世</h3>";
+    html += "<div class=\"story-box small\">前緣已盡（" + escapeHtml(cause) + "）。中陰彷徨——擇一出身，或聽天由命。</div>";
+    if (past) {
+      html += "<p class=\"small\">前世：" + escapeHtml(past.name || "") +
+        " · 善惡 " + (past.karma || 0) +
+        (past.birthLabel ? " · 曾為" + escapeHtml(past.birthLabel) : "") +
+        " · 殘響將帶入今生</p>";
+    }
+    if ((S.reincarnationCount || 0) > 0) {
+      html += "<p class=\"small\">這是你第 " + ((S.reincarnationCount || 0) + (S.birthId ? 0 : 1)) + " 次臨世。</p>";
+    }
+    html += "<div class=\"btn-row\" style=\"flex-direction:column;gap:8px\">";
+    if (mode === "choose") {
+      BIRTH_BACKGROUNDS.forEach(function(bg) {
+        html += "<button type=\"button\" class=\"btn\" data-birth=\"" + bg.id + "\"><strong>" +
+          escapeHtml(bg.name) + "</strong><div class=\"small\">" + escapeHtml(bg.blurb) + "</div></button>";
+      });
+    }
+    html += "<button type=\"button\" class=\"btn primary\" id=\"btn-rebirth-random\">聽天由命（隨機出身）</button>";
+    if (mode !== "choose") {
+      html += "<button type=\"button\" class=\"btn\" id=\"btn-rebirth-choose\">我要自選出身</button>";
+    }
+    html += "</div></div>";
+    openModal(html);
+    const rnd = document.getElementById("btn-rebirth-random");
+    if (rnd) rnd.onclick = function() {
+      const bg = BIRTH_BACKGROUNDS[Math.floor(Math.random() * BIRTH_BACKGROUNDS.length)];
+      finalizeRebirth(bg.id, { reveal: true });
+    };
+    const ch = document.getElementById("btn-rebirth-choose");
+    if (ch) ch.onclick = function() { openRebirthUI({ mode: "choose", cause: cause }); };
+    document.querySelectorAll("[data-birth]").forEach(function(b) {
+      b.onclick = function() { finalizeRebirth(b.getAttribute("data-birth"), { reveal: false }); };
+    });
+  }
+
+  function finalizeRebirth(birthId, opts) {
+    opts = opts || {};
+    ensureReincarnationState();
+    const pending = S.pendingRebirth;
+    const past = pending && pending.past ? pending.past : snapshotPastLife("投胎");
+    const keepGender = S.gender;
+    wipeForRebirth(past);
+    // optional rename nudge kept same; player can change later via... we keep name with ·轉 suffix lightly
+    if (past && past.name && S.reincarnationCount > 1 && S.name === past.name) {
+      // keep same name (輪迴記憶殘影)
+    }
+    const bg = birthById(birthId);
+    // if birth forces gender, apply; else restore
+    if (!bg.gender) S.gender = keepGender || S.gender;
+    applyBirthBackground(bg, {});
+    S.pendingRebirth = null;
+    S.endingId = null;
+    S.ending = null;
+    try { saveGameSilent(); } catch (e1) { try { saveGame(); } catch (e2) {} }
+    try { closeModal(); } catch (eClose) {}
+    const echoLine = (S.pastKarmaEcho || 0) !== 0
+      ? ("\n前世業力殘響：" + (S.pastKarmaEcho > 0 ? "善念尚存" : "惡業未消") + "（善惡" + (S.pastKarmaEcho > 0 ? "＋" : "") + S.pastKarmaEcho + "）")
+      : "";
+    const title = opts.reveal ? "命運擲骰——你投生為「" + bg.name + "」。" : "你擇定出身：「" + bg.name + "」。";
+    showStory("【投胎】" + title + "\n" + bg.blurb + echoLine +
+      "\n\n今生姓名仍喚 " + S.name + "（可於日後機緣改名於說書人口中）。\n出身：" + bg.name + " · 地點：" +
+      (((LOCATIONS.find(function(l){return l.id===S.loc;})||{}).name) || S.loc) + " · 第 " + S.reincarnationCount + " 世。");
+    try { render(); } catch (e3) {}
+  }
+
+  function triggerPlayerDeath(cause, opts) {
+    opts = opts || {};
+    ensureReincarnationState();
+    const past = snapshotPastLife(cause || "身死");
+    S.pendingRebirth = { cause: cause || "身死", past: past, scene: opts.scene || null, day: S.day };
+    S.hp = 0;
+    S.endingId = "pending_rebirth";
+    S.ending = { title: "中陰未散", epi: "一縷真靈未散，待投胎轉世。" };
+    const scene = opts.scene;
+    const text = (opts.text ? opts.text + "\n\n" : "") +
+      "【身死】" + (cause || "你的故事在此斷絕") + "。\n燈光與刀影遠去——你聽見輪迴的水聲。\n（可投胎轉世，擇新出身再入江湖／青梧）";
+    // custom modal with rebirth CTA
+    if (scene && ASSETS[scene]) S.sceneOverride = scene;
+    const banner = (scene && typeof asset === "function" && asset(scene))
+      ? "<div style=\"margin:0 0 10px;border-radius:8px;overflow:hidden;border:1px solid #3a2a1a\"><img src=\"" + asset(scene) + "\" alt=\"\" style=\"width:100%;max-height:180px;object-fit:cover;display:block\" /></div>"
+      : "";
+    openModal("<h3>江湖記事・身死</h3>" + banner +
+      "<div class=\"story-box\">" + escapeHtml(text) + "</div>" +
+      "<div class=\"btn-row\" style=\"flex-direction:column;gap:8px\">" +
+      "<button type=\"button\" class=\"btn primary\" id=\"btn-go-rebirth\">☯ 投胎轉世</button>" +
+      "<button type=\"button\" class=\"btn ghost\" id=\"btn-death-linger\">……再看一眼</button></div>");
+    const go = document.getElementById("btn-go-rebirth");
+    if (go) go.onclick = function() { openRebirthUI({ mode: "reveal", cause: cause }); };
+    const linger = document.getElementById("btn-death-linger");
+    if (linger) linger.onclick = function() { openRebirthUI({ mode: "reveal", cause: cause }); };
+    try { saveGameSilent(); } catch (e) {}
+    return { ok: false, rebirth: true };
+  }
+
+  function birthLabelLine() {
+    ensureReincarnationState();
+    if (!S.birthLabel) return "";
+    let s = "出身 " + S.birthLabel;
+    if (S.reincarnationCount > 0) s += " · 第" + S.reincarnationCount + "世";
+    if (S.pastKarmaEcho) s += " · 業殘響" + (S.pastKarmaEcho > 0 ? "＋" : "") + S.pastKarmaEcho;
+    return s;
+  }
+
+  // Headless: death → rebirth
+  window.__JH_AUTORUN_REBIRTH = function() {
+    ensureReincarnationState();
+    S.name = S.name || "試劍人";
+    S.gender = "男";
+    S.palaceHeat = 90;
+    S.karma = -20;
+    S.loc = "wumen";
+    const before = { karma: S.karma, name: S.name, heat: S.palaceHeat };
+    // force lethal death path via trigger
+    triggerPlayerDeath("午門問斬（自測）", { scene: "punishWumenZhanshou", text: "自測・問斬" });
+    if (!S.pendingRebirth) return { ok: false, err: "no pendingRebirth" };
+    finalizeRebirth("orphan", { reveal: true });
+    const ok = !!(S.birthId === "orphan" && S.reincarnationCount >= 1 && S.pendingRebirth == null && S.hp > 0);
+    // second life: prince
+    S.palaceHeat = 99;
+    triggerPlayerDeath("刑場（自測2）", { scene: "punishXingxingTai" });
+    finalizeRebirth("prince", { reveal: false });
+    const ok2 = S.birthId === "prince" && S.reincarnationCount >= 2 && flag("palace_entry") && S.loc === "qianqing";
+    // etiquette status delta string
+    const delta = statusDeltaForPrompt("shen_guifei");
+    const hasDelta = /出身|投胎|權勢/.test(delta);
+    return {
+      ok: ok && ok2 && hasDelta,
+      before: before,
+      birth: S.birthId,
+      count: S.reincarnationCount,
+      delta: delta,
+      lives: (S.pastLives || []).length
+    };
+  };
+
+  if (window.__JH_DEBUG) {
+    Object.assign(window.__JH_DEBUG, {
+      BIRTH_BACKGROUNDS: BIRTH_BACKGROUNDS,
+      triggerPlayerDeath: triggerPlayerDeath,
+      openRebirthUI: openRebirthUI,
+      finalizeRebirth: finalizeRebirth,
+      applyBirthBackground: applyBirthBackground,
+      statusDeltaForPrompt: statusDeltaForPrompt,
+      birthLabelLine: birthLabelLine
+    });
+  }
+
+  // ========== END V11 ==========
+
 
     // ========== END V10 ==========
 
