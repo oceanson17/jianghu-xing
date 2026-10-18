@@ -88,3 +88,10 @@ npx serve .
 - **不做** 18禁／殘忍細描／情色 AI
 - 設計：`docs/tasteful-eunuch-dc-v15.md` · 自測：`node scripts/autorun_v15_headless.js`
 - Pages：https://oceanson17.github.io/jianghu-xing/
+
+## 事件自由輸入＋設定作弊台 v16（2026-10-18）
+- 當差／AI 場景／朝廷差遣可自擬言行，AI 或離線裁決並真改存檔
+- 更多 → **設定・作弊台**：自然指令（如「皇帝升玩家為大太監」）白名單突變
+- 設計：`docs/freeinput-cheat-v16.md` · 自測：`node scripts/autorun_v16_headless.js`
+- Pages：https://oceanson17.github.io/jianghu-xing/
+

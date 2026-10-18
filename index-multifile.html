@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="theme-color" content="#1a120c" />
+  <title>江湖行 · 像素Q版</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="app"></div>
+  <div id="toast" class="toast"></div>
+  <div id="modal-bg" class="modal-bg" onclick="if(event.target===this){(window.dismissStoryModal||window.closeModal)()}">
+    <div class="modal" id="modal-body"></div>
+  </div>
+  <script src="game.js"></script>
+</body>
+</html>

@@ -778,7 +778,8 @@
       acts.push({
         id: "ai_plot_board",
         label: "【劇情板】AI 支線",
-        run: function(){ openAiPlotBoard(); }
+        fn: function(){ try { openAiPlotBoard(); } catch (err) { console.warn(err); toast("劇情板開啟失敗", true); } },
+        run: function(){ try { openAiPlotBoard(); } catch (err) { console.warn(err); toast("劇情板開啟失敗", true); } }
       });
       return acts;
     };
