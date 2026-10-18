@@ -65,3 +65,13 @@ npx serve .
 - 時辰／人情帳／節令／傳聞板v2／技藝潛修
 - 設計：`docs/birth-complexity-v12.md`
 - Pages：https://oceanson17.github.io/jianghu-xing/
+
+## AI 劇情自由度 v13（2026-10-18）
+- 設定：Key／Pro·Flash／思考模式／劇情自由度（穩健·高·沙盤）／測試連線
+- AI `worldActions` 可開支線、場景事件、挪 NPC、改旗標／好感／任務（寫回存檔）
+- 場景自由輸入走世界導演；戀人＋羈絆可主動來信
+- 無 Key 離線導演仍可用
+- 設計：`docs/ai-plot-agency-v13.md`
+- 自測：`node scripts/autorun_v13_headless.js`
+- Pages：https://oceanson17.github.io/jianghu-xing/
+
