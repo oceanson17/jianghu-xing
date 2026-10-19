@@ -164,10 +164,14 @@
       "sheet3_alt": "assets/chars/jianning_jun_c.png"
     },
     "jingandi": {
-      "r": 3,
-      "c": 6,
+      "name": "景安帝",
+      "note": "t104u young emperor homage — never 康熙",
       "file": "assets/chars/jingandi.png",
-      "sheet3_alt": "assets/chars/jingandi_c.png"
+      "full": "assets/chars/jingandi_full.png",
+      "atlas": {
+        "r": 3,
+        "c": 6
+      }
     },
     "jiu_nan_x": {
       "r": 3,
@@ -1242,5 +1246,13 @@
         "file": "assets/chars/hong_antong_x_c.png"
       }
     ]
+  },
+  "t104u_female": {
+    "noble": "assets/hero_f_noble.png",
+    "traveler": "assets/hero_f_traveler.png",
+    "herbalist": "assets/hero_f_herbalist.png",
+    "beggar": "assets/hero_f_beggar.png",
+    "beggar2": "assets/hero_f_beggar2.png",
+    "map": "birth/identity/disguise via resolveFemaleHeroLook"
   }
 }
