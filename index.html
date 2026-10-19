@@ -19620,13 +19620,11 @@ try { saveGameSilent(); } catch (e) {}
     Object.keys(V21_EXTRA_PINS).forEach(function(id) {
       if (!MAP_PINS[id]) MAP_PINS[id] = V21_EXTRA_PINS[id];
     });
-    // NPC homes (only if still at default mismatched — apply once via flag)
-    if (!flag("v21_npc_homes")) {
-      Object.keys(V21_NPC_HOME).forEach(function(id) {
-        if (NPCS[id]) NPCS[id].loc = V21_NPC_HOME[id];
-      });
-      setFlag("v21_npc_homes", true);
-    }
+    // NPC homes: always re-apply (NPCS table resets each page load)
+    Object.keys(V21_NPC_HOME).forEach(function(id) {
+      if (NPCS[id] && V21_NPC_HOME[id]) NPCS[id].loc = V21_NPC_HOME[id];
+    });
+    setFlag("v21_npc_homes", true);
     // shop expand
     try {
       const addShop = function(loc, ids) {
@@ -20173,8 +20171,14 @@ try { saveGameSilent(); } catch (e) {}
     });
     body.querySelectorAll("[data-v21-gifthub]").forEach(function(b) {
       b.onclick = function() {
+        const nid = b.getAttribute("data-v21-gifthub");
         bg.classList.remove("show");
-        openGiftPicker(b.getAttribute("data-v21-gifthub"));
+        if (S.v21 && S.v21.pendingGift && hasItem(S.v21.pendingGift)) {
+          const gid = S.v21.pendingGift; S.v21.pendingGift = null;
+          giftToNpc(nid, gid);
+        } else {
+          openGiftPicker(nid);
+        }
       };
     });
     const cl = document.getElementById("v21-fav-close");
