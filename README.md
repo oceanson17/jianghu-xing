@@ -125,3 +125,9 @@ npx serve .
 - NPC 說話／行動欄直接有「⚙ 設定」
 - 設計：`docs/prison-cheat-release-v22.md`
 - Pages：https://oceanson17.github.io/jianghu-xing/
+
+## 名聲體系 v23（退役宮熱・2026-10-19）
+- 取消「宮熱」；改為**名聲**（公開形象）、**NPC 好感**、**朝廷威望**（宮差）
+- 舊存檔宮熱自動折算；AI 驅動 `renown`／`prestige`／`favor_delta`
+- 設計：`docs/reputation-v23.md` · 自測：`node scripts/autorun_v23_headless.js`
+- Pages：https://oceanson17.github.io/jianghu-xing/
