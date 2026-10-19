@@ -119,3 +119,9 @@ npx serve .
 - **武功**：熟練度 1–10、苦練、秘籍研讀、實戰成長；威力隨熟練提升
 - 設計：`docs/v21-major-overhaul.md` · 自測：`node scripts/autorun_v21_headless.js`
 - Pages：https://oceanson17.github.io/jianghu-xing/
+
+## 關押釋放作弊 v22（2026-10-19）
+- 「設定」指令「皇帝親來放人／釋放玩家」會**完整清除**關押旗
+- NPC 說話／行動欄直接有「⚙ 設定」
+- 設計：`docs/prison-cheat-release-v22.md`
+- Pages：https://oceanson17.github.io/jianghu-xing/
