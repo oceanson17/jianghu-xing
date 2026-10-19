@@ -731,3 +731,16 @@ section.block { margin-bottom: 14px; }
 .filter-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
 .filter-row .btn { min-height: 32px; padding: 4px 8px; font-size: 0.75rem; }
 .map-pin-face .chibi, .map-pin-face .hero-av { width: 22px !important; height: 22px !important; }
+
+
+/* V24 Quest Auto-Nav */
+.q-nav-banner {
+  background: linear-gradient(135deg, rgba(40,28,12,0.98), rgba(24,14,8,0.95));
+  border: 2px solid #a87830;
+  border-radius: 8px;
+  padding: 8px 10px;
+  margin: 8px 0 10px;
+  box-shadow: 0 3px 0 #0a0604;
+}
+.q-next { color: #e8c878; margin-top: 4px; font-weight: 600; }
+.q-card .btn-row { flex-wrap: wrap; gap: 6px; }

@@ -131,3 +131,10 @@ npx serve .
 - 舊存檔宮熱自動折算；AI 驅動 `renown`／`prestige`／`favor_delta`
 - 設計：`docs/reputation-v23.md` · 自測：`node scripts/autorun_v23_headless.js`
 - Pages：https://oceanson17.github.io/jianghu-xing/
+
+
+## 任務自動導航 v24（2026-10-19）
+- 任務簿一鍵「🧭 導航」／「追蹤」；地圖橫幅導航當前任務
+- 抵達後自動開 NPC／朝廷交付／民間機緣（可關）
+- 設計：`docs/quest-autonav-v24.md` · 代碼：`scripts/v24_quest_autonav.js`
+- Pages：https://oceanson17.github.io/jianghu-xing/
