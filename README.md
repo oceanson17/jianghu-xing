@@ -103,3 +103,11 @@ npx serve .
 - 東廠衙署地圖常開可直往
 - 女角男裝可「騙過／入籍」廠衛（紙面太監途・不經淨身）；寫意
 - Pages：https://oceanson17.github.io/jianghu-xing/
+
+## 任務系統 v20（2026-10-19）
+- 任務簿：主線／支線／朝廷／民間／AI；進度條、提示、前往、交付、獎勵預覽
+- 朝廷差約 7 日過期扣威望；一鍵修復卡任務
+- AI 生支線接劇情板；地圖／情緣／更多入口
+- 設計：`docs/quest-system-v20.md` · 自測：`node scripts/autorun_v20_headless.js`
+- 致敬群俠傳任務簿手感（Homage）· Pages：https://oceanson17.github.io/jianghu-xing/
+

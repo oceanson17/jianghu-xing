@@ -671,3 +671,54 @@ section.block { margin-bottom: 14px; }
 .map-hero { position: relative; }
 .map-hero-av { position: absolute; left: 8px; top: 8px; z-index: 2; }
 .map-hero-av .chibi, .map-hero-av .hero-av { width: 40px; height: 40px; border-radius: 6px; border: 1px solid #c9a86c; }
+
+
+/* V20 Quest Journal */
+.q-journal-banner, .q-map-strip {
+  background: linear-gradient(135deg, rgba(60,36,18,0.95), rgba(30,18,10,0.92));
+  border: 2px solid var(--border-hi, #8a6230);
+  border-radius: 8px;
+  padding: 8px 10px;
+  margin: 8px 0;
+  box-shadow: 0 3px 0 #0a0604;
+}
+.q-map-strip { display: flex; gap: 8px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+.q-track { color: var(--gold2, #e8c878); font-size: 0.82rem; font-weight: 600; line-height: 1.35; }
+.q-list { max-height: 52vh; overflow: auto; -webkit-overflow-scrolling: touch; }
+.q-card {
+  background: var(--bg2, #24160e);
+  border: 2px solid var(--border, #5a3a22);
+  border-radius: 8px;
+  padding: 8px 10px;
+  margin-bottom: 8px;
+}
+.q-card.is-stuck { border-color: #a85040; }
+.q-card.cat-main { border-left: 4px solid #d4a017; }
+.q-card.cat-side { border-left: 4px solid #4a90a4; }
+.q-card.cat-court { border-left: 4px solid #b8860b; }
+.q-card.cat-folk { border-left: 4px solid #6b8e23; }
+.q-card.cat-ai { border-left: 4px solid #9b59b6; }
+.q-card.cat-dating { border-left: 4px solid #c06080; }
+.q-head { margin-bottom: 4px; }
+.q-cat {
+  display: inline-block; font-size: 0.68rem; padding: 1px 6px; border-radius: 4px;
+  background: #3a2818; color: var(--gold2, #e8c878); border: 1px solid var(--border);
+  margin-right: 4px;
+}
+.q-tag {
+  display: inline-block; font-size: 0.65rem; padding: 1px 6px; border-radius: 4px; margin-left: 4px;
+}
+.q-tag.stuck { background: #5a2020; color: #f0a0a0; }
+.q-tag.fail { background: #402018; color: #e08060; }
+.q-tag.warn { background: #5a4010; color: #f0d080; }
+.q-tag.done { background: #204028; color: #90e0a0; }
+.q-bar {
+  height: 6px; background: #1a1008; border-radius: 3px; margin: 6px 0 4px;
+  border: 1px solid var(--border); overflow: hidden;
+}
+.q-bar i {
+  display: block; height: 100%; background: linear-gradient(90deg, #8a6230, #e8c878);
+  border-radius: 2px;
+}
+.q-reward { color: #c8a060; }
+.q-filters .btn { font-size: 0.72rem; }
