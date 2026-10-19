@@ -722,3 +722,12 @@ section.block { margin-bottom: 14px; }
 }
 .q-reward { color: #c8a060; }
 .q-filters .btn { font-size: 0.72rem; }
+
+/* V21 overhaul */
+.world-map-wrap { position: relative; width: 100%; border-radius: 10px; overflow: hidden; border: 1px solid rgba(200,160,80,0.55); }
+.v21-favor-bar { height: 6px; background: rgba(0,0,0,0.35); border-radius: 4px; margin-top: 4px; overflow: hidden; }
+.v21-favor-bar > i { display: block; height: 100%; background: linear-gradient(90deg, #c07040, #e0b060); border-radius: 4px; }
+.v21-item-meta { color: #a09070; font-size: 0.72rem; margin-top: 2px; }
+.filter-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+.filter-row .btn { min-height: 32px; padding: 4px 8px; font-size: 0.75rem; }
+.map-pin-face .chibi, .map-pin-face .hero-av { width: 22px !important; height: 22px !important; }

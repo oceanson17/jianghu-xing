@@ -111,3 +111,11 @@ npx serve .
 - 設計：`docs/quest-system-v20.md` · 自測：`node scripts/autorun_v20_headless.js`
 - 致敬群俠傳任務簿手感（Homage）· Pages：https://oceanson17.github.io/jianghu-xing/
 
+## 大改 v21（2026-10-19）
+- **物品**：種類／來源／用途；禮品／材料／秘籍／食飲；商店擴充
+- **好感＋追求**：`npcFavor`；敘舊／送禮；高好感 NPC 主動追求（接／知音／拒）
+- **劇情**：破碗夜籌、邊關急報、靈芝芽、無弦絲、灰港夜珠、蒼峰戰帖、雪原獵牙、塢中夜曲、廢鐵重鑄、觀星一夜
+- **群俠式地圖**：世界圖可點 pin＋在場 NPC 頭像（原創致敬名，無金庸 IP）
+- **武功**：熟練度 1–10、苦練、秘籍研讀、實戰成長；威力隨熟練提升
+- 設計：`docs/v21-major-overhaul.md` · 自測：`node scripts/autorun_v21_headless.js`
+- Pages：https://oceanson17.github.io/jianghu-xing/
