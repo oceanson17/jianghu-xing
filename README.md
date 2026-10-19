@@ -99,3 +99,7 @@ npx serve .
 - 戰敗／戰勝 AI 處置（寫意）；`更多` 頂部【設定・作弊台】
 - Pages：https://oceanson17.github.io/jianghu-xing/
 
+## V19（東廠常開・女扮男裝入籍）
+- 東廠衙署地圖常開可直往
+- 女角男裝可「騙過／入籍」廠衛（紙面太監途・不經淨身）；寫意
+- Pages：https://oceanson17.github.io/jianghu-xing/
